@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1rw36n1yhwe1"]
+
+[ext_resource type="Script" path="res://characters/dummy/dummy.gd" id="1_a0o3q"]
+[ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="2_cs1ew"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hapcu"]
+
+[node name="Dummy" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_a0o3q")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_hapcu")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_cs1ew")
