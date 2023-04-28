@@ -22,7 +22,7 @@ enum state {
 }
 
 func _ready():
-	$AttackCollision.body_entered.connect(func(body): body.damaged())
+	$AttackCollision.body_entered.connect(func(body): body.damaged(1))
 	$DashCollision.body_entered.connect(func(body): 
 		body.knocked(velocity_static)
 		cstate = state.MOVE)

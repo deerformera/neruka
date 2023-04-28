@@ -1,0 +1,158 @@
+[gd_scene load_steps=21 format=3 uid="uid://fqu0hju0adrx"]
+
+[ext_resource type="Script" path="res://characters/dummy/dummy_passive.gd" id="1_m5rnr"]
+[ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="1_um8xb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_845mf"]
+size = Vector2(32, 32)
+
+[sub_resource type="Animation" id="Animation_v020m"]
+resource_name = "avoid"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.882353, 1, 0.882353, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"calm"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_y6j2a"]
+resource_name = "hurt"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_hh8c7"]
+resource_name = "knock"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_8f6kt"]
+resource_name = "normal"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.882353, 1, 0.882353, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_aee5x"]
+_data = {
+"avoid": SubResource("Animation_v020m"),
+"hurt": SubResource("Animation_y6j2a"),
+"knock": SubResource("Animation_hh8c7"),
+"normal": SubResource("Animation_8f6kt")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_eivkj"]
+animation = &"avoid"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4x2il"]
+animation = &"hurt"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tjgbq"]
+animation = &"knock"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v3c3d"]
+animation = &"normal"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_701x0"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_logk8"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_h4pwj"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mhcxd"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wu0el"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fw16j"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_evy1u"]
+states/avoid/node = SubResource("AnimationNodeAnimation_eivkj")
+states/avoid/position = Vector2(564, 100)
+states/hurt/node = SubResource("AnimationNodeAnimation_4x2il")
+states/hurt/position = Vector2(330, 167)
+states/knock/node = SubResource("AnimationNodeAnimation_tjgbq")
+states/knock/position = Vector2(330, 32)
+states/normal/node = SubResource("AnimationNodeAnimation_v3c3d")
+states/normal/position = Vector2(330, 100)
+transitions = ["hurt", "avoid", SubResource("AnimationNodeStateMachineTransition_701x0"), "knock", "avoid", SubResource("AnimationNodeStateMachineTransition_logk8"), "normal", "knock", SubResource("AnimationNodeStateMachineTransition_h4pwj"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_mhcxd"), "Start", "normal", SubResource("AnimationNodeStateMachineTransition_wu0el"), "avoid", "normal", SubResource("AnimationNodeStateMachineTransition_fw16j")]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_ebbl2"]
+
+[node name="DummyPassive" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_m5rnr")
+health = 9999
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_845mf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0.882353, 1, 0.882353, 1)
+texture = ExtResource("1_um8xb")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_aee5x")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_evy1u")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_ebbl2")

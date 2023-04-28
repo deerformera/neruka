@@ -1,12 +1,15 @@
 extends CharacterBody2D
 
-@onready var timer = Utils.create_timer(self, 0.2, func(): $Sprite2D.modulate = Color(1,1,1))
+@export_range(0, 9999) var health: int
+@export_range(0, 9999) var damage: int
 
-func damaged():
-	$Sprite2D.modulate = Color(1,0,0)
-	timer.start()
+@onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get("parameters/playback")
 
-func knocked(vec):
-	self.global_position += vec * 10
-	$Sprite2D.modulate = Color(1, 1, 0)
-	timer.start()
+func damaged(value):
+	animstate.travel("hurt")
+	self.health -= value
+	if self.health <= 0: self.queue_free()
+
+func knocked(value):
+	animstate.travel("knock")
+	self.global_position += value * 10

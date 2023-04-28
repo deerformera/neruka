@@ -1,0 +1,190 @@
+[gd_scene load_steps=24 format=3 uid="uid://c3jow3sbm6cem"]
+
+[ext_resource type="Script" path="res://characters/dummy/dummy_semiPassive.gd" id="1_3bjsk"]
+[ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="2_76vlw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8sksd"]
+size = Vector2(32, 32)
+
+[sub_resource type="Animation" id="Animation_l6sxb"]
+resource_name = "avoid"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0.882353, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DetectArea")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"detect"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_wmrkb"]
+resource_name = "hurt"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_xp0nj"]
+resource_name = "knock"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_hf0o3"]
+resource_name = "normal"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0.882353, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3kpts"]
+_data = {
+"avoid": SubResource("Animation_l6sxb"),
+"hurt": SubResource("Animation_wmrkb"),
+"knock": SubResource("Animation_xp0nj"),
+"normal": SubResource("Animation_hf0o3")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4qf2r"]
+animation = &"avoid"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c3lkq"]
+animation = &"hurt"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1uqpy"]
+animation = &"knock"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tju5a"]
+animation = &"normal"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qhdyo"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8cnlr"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nepfp"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_afgfe"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_khjtd"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uxa10"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ddlwf"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ild7g"]
+states/avoid/node = SubResource("AnimationNodeAnimation_4qf2r")
+states/avoid/position = Vector2(543, 100)
+states/hurt/node = SubResource("AnimationNodeAnimation_c3lkq")
+states/hurt/position = Vector2(357, 40)
+states/knock/node = SubResource("AnimationNodeAnimation_1uqpy")
+states/knock/position = Vector2(357, 161)
+states/normal/node = SubResource("AnimationNodeAnimation_tju5a")
+states/normal/position = Vector2(357, 100)
+transitions = ["hurt", "avoid", SubResource("AnimationNodeStateMachineTransition_qhdyo"), "knock", "avoid", SubResource("AnimationNodeStateMachineTransition_8cnlr"), "Start", "normal", SubResource("AnimationNodeStateMachineTransition_nepfp"), "avoid", "normal", SubResource("AnimationNodeStateMachineTransition_afgfe"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_khjtd"), "normal", "knock", SubResource("AnimationNodeStateMachineTransition_uxa10"), "normal", "avoid", SubResource("AnimationNodeStateMachineTransition_ddlwf")]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_4oe04"]
+
+[sub_resource type="GDScript" id="GDScript_q5qqk"]
+resource_name = "DetectArea"
+script/source = "extends Area2D
+
+@onready var detect_timer: Timer = Utils.create_timer(self, 1, func(): 
+	if get_parent().animstate.get_current_node() == \"avoid\": return
+	get_parent().animstate.travel(\"avoid\"))
+
+func _ready():
+	self.body_entered.connect(func(body): detect_timer.start())
+	self.body_exited.connect(func(body): detect_timer.stop())
+
+func detect():
+	if self.get_overlapping_bodies().is_empty(): 
+		get_parent().animstate.travel(\"normal\")
+
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b78uu"]
+radius = 64.0
+
+[node name="DummySemiPassive" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_3bjsk")
+health = 9999
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8sksd")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 0.882353, 1)
+texture = ExtResource("2_76vlw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_3kpts")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_ild7g")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_4oe04")
+
+[node name="DetectArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = SubResource("GDScript_q5qqk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea"]
+shape = SubResource("CircleShape2D_b78uu")

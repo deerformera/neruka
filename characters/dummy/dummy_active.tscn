@@ -1,0 +1,190 @@
+[gd_scene load_steps=24 format=3 uid="uid://bxqx6alven6qm"]
+
+[ext_resource type="Script" path="res://characters/dummy/dummy_active.gd" id="1_gvb65"]
+[ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="1_j76go"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_iuxgq"]
+size = Vector2(32, 32)
+
+[sub_resource type="Animation" id="Animation_lcoby"]
+resource_name = "chase"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0.882353, 0.882353, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DetectArea")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"detect"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_wwx8v"]
+resource_name = "hurt"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_4wo2r"]
+resource_name = "knock"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_dwsfc"]
+resource_name = "normal"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0.882353, 0.882353, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_exga7"]
+_data = {
+"chase": SubResource("Animation_lcoby"),
+"hurt": SubResource("Animation_wwx8v"),
+"knock": SubResource("Animation_4wo2r"),
+"normal": SubResource("Animation_dwsfc")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kn8ci"]
+animation = &"chase"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_40ut7"]
+animation = &"hurt"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0r1ta"]
+animation = &"knock"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7jle6"]
+animation = &"normal"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ysttm"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_oc4do"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_aarng"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wwluo"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_25qrn"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_il3qc"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s2hbl"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_a7ngy"]
+states/chase/node = SubResource("AnimationNodeAnimation_kn8ci")
+states/chase/position = Vector2(525, 100)
+states/hurt/node = SubResource("AnimationNodeAnimation_40ut7")
+states/hurt/position = Vector2(343, 39)
+states/knock/node = SubResource("AnimationNodeAnimation_0r1ta")
+states/knock/position = Vector2(343, 156)
+states/normal/node = SubResource("AnimationNodeAnimation_7jle6")
+states/normal/position = Vector2(343, 100)
+transitions = ["Start", "normal", SubResource("AnimationNodeStateMachineTransition_ysttm"), "chase", "normal", SubResource("AnimationNodeStateMachineTransition_oc4do"), "normal", "chase", SubResource("AnimationNodeStateMachineTransition_aarng"), "hurt", "chase", SubResource("AnimationNodeStateMachineTransition_wwluo"), "knock", "chase", SubResource("AnimationNodeStateMachineTransition_25qrn"), "normal", "knock", SubResource("AnimationNodeStateMachineTransition_il3qc"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_s2hbl")]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_5gv62"]
+
+[sub_resource type="GDScript" id="GDScript_s72nw"]
+resource_name = "DetectArea"
+script/source = "extends Area2D
+
+@onready var detect_timer: Timer = Utils.create_timer(self, 1, func(): 
+	if get_parent().animstate.get_current_node() == \"chase\": return
+	get_parent().animstate.travel(\"chase\"))
+
+func _ready():
+	self.body_entered.connect(func(body): detect_timer.start())
+	self.body_exited.connect(func(body): detect_timer.stop())
+
+func detect():
+	if self.get_overlapping_bodies().is_empty(): 
+		get_parent().animstate.travel(\"normal\")
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_u8gw5"]
+radius = 64.0
+
+[node name="DummyActive" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_gvb65")
+health = 9999
+speed = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_iuxgq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(1, 0.882353, 0.882353, 1)
+texture = ExtResource("1_j76go")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_exga7")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_a7ngy")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_5gv62")
+
+[node name="DetectArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = SubResource("GDScript_s72nw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea"]
+shape = SubResource("CircleShape2D_u8gw5")

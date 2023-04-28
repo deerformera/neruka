@@ -1,17 +1,118 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1rw36n1yhwe1"]
+[gd_scene load_steps=18 format=3 uid="uid://c1rw36n1yhwe1"]
 
 [ext_resource type="Script" path="res://characters/dummy/dummy.gd" id="1_a0o3q"]
 [ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="2_cs1ew"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hapcu"]
 
+[sub_resource type="Animation" id="Animation_corst"]
+resource_name = "hurt"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_lgk0i"]
+resource_name = "knock"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_o1iqv"]
+resource_name = "normal"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7x5ng"]
+_data = {
+"hurt": SubResource("Animation_corst"),
+"knock": SubResource("Animation_lgk0i"),
+"normal": SubResource("Animation_o1iqv")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_f28n1"]
+animation = &"hurt"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yonql"]
+animation = &"knock"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4sicn"]
+animation = &"normal"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kalu4"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_v65lj"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qq66e"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bo2uq"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dr1cn"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7cbgf"]
+states/hurt/node = SubResource("AnimationNodeAnimation_f28n1")
+states/hurt/position = Vector2(371, 30)
+states/knock/node = SubResource("AnimationNodeAnimation_yonql")
+states/knock/position = Vector2(371, 177)
+states/normal/node = SubResource("AnimationNodeAnimation_4sicn")
+states/normal/position = Vector2(371, 100)
+transitions = ["Start", "normal", SubResource("AnimationNodeStateMachineTransition_kalu4"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_v65lj"), "normal", "knock", SubResource("AnimationNodeStateMachineTransition_qq66e"), "hurt", "normal", SubResource("AnimationNodeStateMachineTransition_bo2uq"), "knock", "normal", SubResource("AnimationNodeStateMachineTransition_dr1cn")]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_2chj4"]
+
 [node name="Dummy" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_a0o3q")
+health = 9999
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_hapcu")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_cs1ew")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_7x5ng")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_7cbgf")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_2chj4")
