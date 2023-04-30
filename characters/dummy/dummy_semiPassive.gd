@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends StaticBody2D
 
 @export_category("Properties")
 @export_range(0, 9999) var health = 1

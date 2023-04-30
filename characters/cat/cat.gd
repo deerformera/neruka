@@ -1,85 +1,70 @@
 extends CharacterBody2D
 
-var SPEED: int = 200
-var velocity_static: Vector2 = Vector2.ZERO
-var cstate: state = state.MOVE
+@export_category("Properties")
+@export_range(0, 9999) var health = 1
+@export_range(0, 9999) var damage = 1
+@export_range(0, 9999) var speed = 1
 
-@onready var timer_leap = Utils.create_timer(self, 0.25, func(): cstate = state.MOVE)
-@onready var timer_dash_reg = Utils.create_timer(self, 0.4, dash_reg_timeout)
-@onready var timer_dash = Utils.create_timer(self, 0.2, func():
-	cstate = state.MOVE
-	$DashCollision/CollisionShape2D.disabled = true)
+@onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get("parameters/playback")
+@onready var leap_timer: Timer = Utils.create_timer(self, 0.6, func(): $Line2D.visible = true)
 
-@onready var timer_attack = Utils.create_timer(self, 0.15, func(): 
-	cstate = state.MOVE
-	$AttackCollision/CollisionShape2D.disabled = true)
+var velocity_static: Vector2
 
-enum state {
-	MOVE,
-	LEAP,
-	DASH,
-	ATTACK
-}
-
-func _ready():
-	$AttackCollision.body_entered.connect(func(body): body.damaged(1))
-	$DashCollision.body_entered.connect(func(body): 
-		body.knocked(velocity_static)
-		cstate = state.MOVE)
-	
 func _physics_process(delta):
-	match cstate:
-		state.MOVE:
-			velocity = Input.get_vector("n_left", "n_right", "n_up", "n_down")
-			$Line2D.set_point_position(1, Vector2(lerpf($Line2D.get_point_position(1).x, 160, 0.4), 0))
-			if velocity != Vector2():
-				$AnimationTree.set("parameters/walk/blend_position", velocity)
-				$AnimationTree.active = true
+	match animstate.get_current_node():
+		"normal":
+			velocity = Input.get_vector("n_left", "n_right", "n_up", "n_down") * speed
+			if velocity: 
 				velocity_static = velocity
-			else:
-				$AnimationTree.active = false
-			velocity = velocity * SPEED
-		state.LEAP:
-			velocity = velocity_static * 400
-		state.DASH:
-			velocity = velocity_static * 800
-		state.ATTACK:
-			velocity = Vector2.ZERO
-	
+				$AnimationTree.get("parameters/normal/playback").travel("walk")
+			else: $AnimationTree.get("parameters/normal/playback").travel("sit")
+			$Line2D.set_point_position(1, velocity_static)
+			$KnockArea/CollisionShape2D.disabled = true
+		"leap":
+			velocity = (velocity_static * 2)
+		"dash":
+			velocity = velocity_static * 2.5
+			$KnockArea/CollisionShape2D.disabled = false
+		"attack1":
+			velocity = Vector2()
 	move_and_slide()
-	
-	$Line2D.rotation = velocity_static.angle()
-	$AttackCollision.rotation = velocity_static.angle()
-	$Camera2D.offset = lerp($Camera2D.offset, velocity_static * 20, 0.1)
-
-
 
 func _input(event):
-	if cstate == state.MOVE:
-		if event.is_action_pressed("n_attack"):
-			cstate = state.ATTACK
-			$AttackCollision/CollisionShape2D.disabled = false
-			global_position += velocity_static * 10
-			timer_attack.start()
-		
-		if event.is_action_pressed("n_leap"):
-			timer_dash_reg.start()
-		if event.is_action_released("n_leap"):
-			if timer_dash_reg.is_stopped():
-				cstate = state.DASH
-				$DashCollision/CollisionShape2D.disabled = false
-				timer_dash.start()
-				SPEED = 200
-			else:
-				cstate = state.LEAP
-				velocity = Vector2.ZERO
-				timer_leap.start()
+	match animstate.get_current_node():
+		"normal":
+			if event.is_action_pressed("n_attack"):
+				animstate.travel("attack1")
+				global_position += velocity_static.normalized() * 15
+				$AttackArea/CollisionShape2D.disabled = false
+				await get_tree().create_timer(0.02).timeout
+				$AttackArea/CollisionShape2D.disabled = true
 			
-			timer_dash_reg.stop()
-			$Line2D.visible = false
+			if event.is_action_pressed("n_leap"):
+				leap_timer.start()
+			if event.is_action_released("n_leap"):
+				if leap_timer.is_stopped():
+					animstate.travel("dash")
+					$Line2D.visible = false
+				else:
+					leap_timer.stop()
+					animstate.travel("leap")
+		
+		"attack1":
+			if event.is_action_pressed("n_attack"):
+				animstate.travel("attack2")
+				global_position += velocity_static.normalized() * 5
+				$AttackArea/CollisionShape2D.disabled = false
+				await get_tree().create_timer(0.02).timeout
+				$AttackArea/CollisionShape2D.disabled = true
+		"attack2":
+			if event.is_action_pressed("n_attack"):
+				animstate.travel("attack1")
+				global_position += velocity_static.normalized() * 5
+				$AttackArea/CollisionShape2D.disabled = false
+				await get_tree().create_timer(0.02).timeout
+				$AttackArea/CollisionShape2D.disabled = true
 
-func dash_reg_timeout():
-	$Line2D.set_point_position(1, Vector2())
-	$Line2D.visible = true
-	SPEED = 50
-
+func damaged(value):
+	animstate.travel("hurt")
+	self.health -= value
+	if self.health <= 0: self.queue_free()

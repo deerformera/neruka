@@ -133,7 +133,7 @@ transitions = ["hurt", "avoid", SubResource("AnimationNodeStateMachineTransition
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_ebbl2"]
 
-[node name="DummyPassive" type="CharacterBody2D"]
+[node name="DummyPassive" type="StaticBody2D"]
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_m5rnr")

@@ -8,9 +8,9 @@ extends StaticBody2D
 @onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get("parameters/playback")
 
 func _physics_process(delta):
-	if animstate.get_current_node() == "avoid":
+	if animstate.get_current_node() == "":
 		var cat: CharacterBody2D = get_tree().get_first_node_in_group("cat")
-		self.global_position -= (cat.global_position - self.global_position).normalized() * speed
+#		self.global_position -= (cat.global_position - self.global_position).normalized() * speed
 
 func damaged(value):
 	animstate.travel("hurt")
@@ -21,5 +21,4 @@ func knocked(value):
 	animstate.travel("knock")
 	self.global_position += value * 10
 
-func calm(): animstate.travel("normal")
-
+#func calm(): animstate.travel("normal")

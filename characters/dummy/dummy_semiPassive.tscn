@@ -157,7 +157,7 @@ func detect():
 [sub_resource type="CircleShape2D" id="CircleShape2D_b78uu"]
 radius = 64.0
 
-[node name="DummySemiPassive" type="CharacterBody2D"]
+[node name="DummySemiPassive" type="StaticBody2D"]
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_3bjsk")
