@@ -34,7 +34,7 @@ func _input(event):
 		"normal":
 			if event.is_action_pressed("n_attack"):
 				animstate.travel("attack1")
-				global_position += velocity_static.normalized() * 15
+				global_position += velocity_static.normalized() * 5
 				$AttackArea/CollisionShape2D.disabled = false
 				await get_tree().create_timer(0.02).timeout
 				$AttackArea/CollisionShape2D.disabled = true
