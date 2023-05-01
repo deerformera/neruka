@@ -99,7 +99,7 @@ animation = &"chase"
 animation = &"hurt"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0r1ta"]
-animation = &"knock"
+animation = &"normal"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7jle6"]
 animation = &"normal"

@@ -6,24 +6,31 @@ extends CharacterBody2D
 @export_range(0, 9999) var speed = 1
 
 @onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get("parameters/playback")
-@onready var leap_timer: Timer = Utils.create_timer(self, 0.6, func(): $Line2D.visible = true)
+@onready var leap_timer: Timer = Utils.create_timer(self, 0.8, func(): 
+	charge = true
+	$Line2D.visible = true)
 
 var velocity_static: Vector2
+var charge = false
 
 func _physics_process(delta):
 	match animstate.get_current_node():
 		"normal":
-			velocity = Input.get_vector("n_left", "n_right", "n_up", "n_down") * speed
+			velocity = Input.get_vector("n_left", "n_right", "n_up", "n_down")
+			if charge: velocity = velocity * speed / 2 
+			else: velocity = velocity * speed
+			
 			if velocity: 
-				velocity_static = velocity
+				velocity_static = velocity.normalized()
 				$AnimationTree.get("parameters/normal/playback").travel("walk")
 			else: $AnimationTree.get("parameters/normal/playback").travel("sit")
-			$Line2D.set_point_position(1, velocity_static)
+			
+			$Line2D.set_point_position(1, (velocity_static * 200))
 			$KnockArea/CollisionShape2D.disabled = true
 		"leap":
-			velocity = (velocity_static * 2)
+			velocity = (velocity_static * speed) * 2
 		"dash":
-			velocity = velocity_static * 2.5
+			velocity = (velocity_static * speed) * 2.5
 			$KnockArea/CollisionShape2D.disabled = false
 		"attack1":
 			velocity = Vector2()
@@ -34,16 +41,18 @@ func _input(event):
 		"normal":
 			if event.is_action_pressed("n_attack"):
 				animstate.travel("attack1")
-				global_position += velocity_static.normalized() * 5
+				global_position += velocity_static * 5
 				$AttackArea/CollisionShape2D.disabled = false
 				await get_tree().create_timer(0.02).timeout
 				$AttackArea/CollisionShape2D.disabled = true
 			
 			if event.is_action_pressed("n_leap"):
 				leap_timer.start()
+				
 			if event.is_action_released("n_leap"):
-				if leap_timer.is_stopped():
+				if charge:
 					animstate.travel("dash")
+					charge = false
 					$Line2D.visible = false
 				else:
 					leap_timer.stop()
@@ -52,14 +61,14 @@ func _input(event):
 		"attack1":
 			if event.is_action_pressed("n_attack"):
 				animstate.travel("attack2")
-				global_position += velocity_static.normalized() * 5
+				global_position += velocity_static * 5
 				$AttackArea/CollisionShape2D.disabled = false
 				await get_tree().create_timer(0.02).timeout
 				$AttackArea/CollisionShape2D.disabled = true
 		"attack2":
 			if event.is_action_pressed("n_attack"):
 				animstate.travel("attack1")
-				global_position += velocity_static.normalized() * 5
+				global_position += velocity_static * 5
 				$AttackArea/CollisionShape2D.disabled = false
 				await get_tree().create_timer(0.02).timeout
 				$AttackArea/CollisionShape2D.disabled = true
