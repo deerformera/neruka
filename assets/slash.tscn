@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://mxato7vy53hm"]
+
+[ext_resource type="Texture2D" uid="uid://d3km06nlq5vvl" path="res://assets/slash.png" id="1_hobm5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_itw55"]
+atlas = ExtResource("1_hobm5")
+region = Rect2(0, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hwmgm"]
+atlas = ExtResource("1_hobm5")
+region = Rect2(40, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0wwt"]
+atlas = ExtResource("1_hobm5")
+region = Rect2(80, 0, 40, 40)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_aksuy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_itw55")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hwmgm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l0wwt")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[sub_resource type="GDScript" id="GDScript_slu4p"]
+script/source = "extends AnimatedSprite2D
+
+func _ready():
+	animation_finished.connect(func(): queue_free())
+	self.rotation = get_parent().velocity_static.angle()
+	self.position += get_parent().velocity_static * 20
+"
+
+[node name="slash" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_aksuy")
+autoplay = "default"
+script = SubResource("GDScript_slu4p")

@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://b86fvmex5c4q1"]
+
+[ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="1_a8dcr"]
+
+[sub_resource type="GDScript" id="GDScript_fwcfu"]
+script/source = "extends Area2D
+
+@onready var dir = (get_tree().get_first_node_in_group(\"cat\").global_position - self.global_position).normalized()
+@export var speed: int
+
+func _ready():
+	body_entered.connect(func(body):
+		body.damaged(1)
+		monitoring = false
+		)
+
+func _physics_process(delta):
+	self.position += dir * speed
+	if self.position.length() >= 1000:
+		self.queue_free()
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8fbwl"]
+size = Vector2(6, 6)
+
+[node name="FlorBullet" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = SubResource("GDScript_fwcfu")
+speed = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_8fbwl")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_a8dcr")

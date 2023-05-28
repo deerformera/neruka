@@ -9,6 +9,7 @@ extends CharacterBody2D
 @onready var leap_timer: Timer = Utils.create_timer(self, 0.8, func(): 
 	charge = true
 	$Line2D.visible = true)
+@onready var slash = preload("res://assets/slash.tscn")
 
 var velocity_static: Vector2
 var charge = false
@@ -17,7 +18,8 @@ func _physics_process(delta):
 	match animstate.get_current_node():
 		"normal":
 			velocity = Input.get_vector("n_left", "n_right", "n_up", "n_down")
-			if charge: velocity = velocity * speed / 2 
+			if Utils.android_mode: velocity = $Analog.velocity
+			if charge: velocity = velocity * speed / 3
 			else: velocity = velocity * speed
 			
 			if velocity: 
@@ -45,6 +47,7 @@ func _input(event):
 				$AttackArea/CollisionShape2D.disabled = false
 				await get_tree().create_timer(0.02).timeout
 				$AttackArea/CollisionShape2D.disabled = true
+				add_child(slash.instantiate())
 			
 			if event.is_action_pressed("n_leap"):
 				leap_timer.start()
@@ -62,12 +65,14 @@ func _input(event):
 			if event.is_action_pressed("n_attack"):
 				animstate.travel("attack2")
 				global_position += velocity_static * 5
+				add_child(slash.instantiate())
 				$AttackArea/CollisionShape2D.disabled = false
 				await get_tree().create_timer(0.02).timeout
 				$AttackArea/CollisionShape2D.disabled = true
 		"attack2":
 			if event.is_action_pressed("n_attack"):
 				animstate.travel("attack1")
+				add_child(slash.instantiate())
 				global_position += velocity_static * 5
 				$AttackArea/CollisionShape2D.disabled = false
 				await get_tree().create_timer(0.02).timeout
@@ -75,5 +80,6 @@ func _input(event):
 
 func damaged(value):
 	animstate.travel("hurt")
+	velocity = Vector2.ZERO
 	self.health -= value
 	if self.health <= 0: self.queue_free()

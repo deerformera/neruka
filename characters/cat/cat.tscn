@@ -1,24 +1,9 @@
-[gd_scene load_steps=133 format=3 uid="uid://b7mbrqybxoisl"]
+[gd_scene load_steps=135 format=3 uid="uid://b7mbrqybxoisl"]
 
 [ext_resource type="Script" path="res://characters/cat/cat.gd" id="1_in7u4"]
 [ext_resource type="Texture2D" uid="uid://di8mddxsx8aoa" path="res://characters/cat/cat.png" id="1_y0c4x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pkkab"]
-
-[sub_resource type="Animation" id="Animation_k45wg"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [232]
-}
 
 [sub_resource type="Animation" id="Animation_helbl"]
 resource_name = "attack1_down"
@@ -31,7 +16,7 @@ tracks/0/path = NodePath("../Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1),
+"times": PackedFloat32Array(0, 0.05, 0.15),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [192, 193, 194]
@@ -836,9 +821,40 @@ tracks/0/keys = {
 "values": [24, 25, 26, 27, 28, 29, 30, 31]
 }
 
+[sub_resource type="Animation" id="Animation_1k1ws"]
+resource_name = "hurt"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 1), Color(1, 1, 1, 1), Color(1, 0, 0, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_wwyg5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rcvpb"]
 _data = {
-"RESET": SubResource("Animation_k45wg"),
+"RESET": SubResource("Animation_wwyg5"),
 "attack1_down": SubResource("Animation_helbl"),
 "attack1_down_left": SubResource("Animation_8b5vp"),
 "attack1_down_right": SubResource("Animation_ie0jl"),
@@ -863,6 +879,7 @@ _data = {
 "dash_up": SubResource("Animation_sro1w"),
 "dash_up_left": SubResource("Animation_iq6v6"),
 "dash_up_right": SubResource("Animation_l6s5e"),
+"hurt": SubResource("Animation_1k1ws"),
 "leap_down": SubResource("Animation_5i2ku"),
 "leap_down_left": SubResource("Animation_h2soc"),
 "leap_down_right": SubResource("Animation_scy6w"),
@@ -1018,7 +1035,8 @@ blend_point_7/node = SubResource("AnimationNodeAnimation_7ep62")
 blend_point_7/pos = Vector2(-1, 0)
 blend_mode = 1
 
-[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_voh5w"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_am2xy"]
+animation = &"hurt"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_471b2"]
 animation = &"leap_left"
@@ -1173,14 +1191,8 @@ advance_mode = 2
 switch_mode = 2
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_07h55"]
-switch_mode = 2
-advance_mode = 2
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xuyc0"]
 advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5vsth"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_smea5"]
 
@@ -1200,6 +1212,12 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jjlh0"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hi241"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_w1pqa"]
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_og80s"]
 states/Start/position = Vector2(427, 100)
 states/attack1/node = SubResource("AnimationNodeBlendSpace2D_xytd7")
@@ -1208,13 +1226,13 @@ states/attack2/node = SubResource("AnimationNodeBlendSpace2D_mv1ht")
 states/attack2/position = Vector2(427, 190)
 states/dash/node = SubResource("AnimationNodeBlendSpace2D_p2a8w")
 states/dash/position = Vector2(712, 100)
-states/hurt/node = SubResource("AnimationNodeBlendSpace2D_voh5w")
-states/hurt/position = Vector2(575, 17)
+states/hurt/node = SubResource("AnimationNodeAnimation_am2xy")
+states/hurt/position = Vector2(575, 22)
 states/leap/node = SubResource("AnimationNodeBlendSpace2D_u52vj")
 states/leap/position = Vector2(712, 190)
 states/normal/node = SubResource("AnimationNodeStateMachine_h84i2")
 states/normal/position = Vector2(575, 100)
-transitions = ["leap", "normal", SubResource("AnimationNodeStateMachineTransition_gobeo"), "dash", "normal", SubResource("AnimationNodeStateMachineTransition_u261r"), "hurt", "normal", SubResource("AnimationNodeStateMachineTransition_07h55"), "Start", "normal", SubResource("AnimationNodeStateMachineTransition_xuyc0"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_5vsth"), "normal", "dash", SubResource("AnimationNodeStateMachineTransition_smea5"), "normal", "leap", SubResource("AnimationNodeStateMachineTransition_23fiy"), "normal", "attack1", SubResource("AnimationNodeStateMachineTransition_lkj8s"), "attack1", "normal", SubResource("AnimationNodeStateMachineTransition_5xfki"), "attack2", "normal", SubResource("AnimationNodeStateMachineTransition_bx76s"), "attack1", "attack2", SubResource("AnimationNodeStateMachineTransition_8c0us"), "attack2", "attack1", SubResource("AnimationNodeStateMachineTransition_jjlh0")]
+transitions = ["leap", "normal", SubResource("AnimationNodeStateMachineTransition_gobeo"), "dash", "normal", SubResource("AnimationNodeStateMachineTransition_u261r"), "Start", "normal", SubResource("AnimationNodeStateMachineTransition_xuyc0"), "normal", "dash", SubResource("AnimationNodeStateMachineTransition_smea5"), "normal", "leap", SubResource("AnimationNodeStateMachineTransition_23fiy"), "normal", "attack1", SubResource("AnimationNodeStateMachineTransition_lkj8s"), "attack1", "normal", SubResource("AnimationNodeStateMachineTransition_5xfki"), "attack2", "normal", SubResource("AnimationNodeStateMachineTransition_bx76s"), "attack1", "attack2", SubResource("AnimationNodeStateMachineTransition_8c0us"), "attack2", "attack1", SubResource("AnimationNodeStateMachineTransition_jjlh0"), "hurt", "normal", SubResource("AnimationNodeStateMachineTransition_hi241"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_w1pqa")]
 graph_offset = Vector2(30, -35)
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_va3sn"]
@@ -1245,8 +1263,8 @@ func _ready(): self.connect(\"body_entered\", func(body): body.damaged(1))
 func _physics_process(delta): self.rotation = get_parent().velocity_static.angle()
 "
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hkb3d"]
-size = Vector2(32, 40)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fors5"]
+size = Vector2(40, 40)
 
 [sub_resource type="GDScript" id="GDScript_ctjsi"]
 resource_name = "KnockArea"
@@ -1258,11 +1276,26 @@ func _ready(): self.connect(\"body_entered\", func(body): body.knocked(get_paren
 [sub_resource type="CircleShape2D" id="CircleShape2D_s7apy"]
 radius = 20.0
 
+[sub_resource type="GDScript" id="GDScript_sxgiq"]
+resource_name = "Analog"
+script/source = "extends CanvasLayer
+
+var velocity: Vector2
+
+func _ready():
+	self.visible = Utils.android_mode
+
+func _input(event):
+	if $MarginContainer/Button.button_pressed:
+		if event is InputEventScreenDrag:
+			velocity = ((event.position - $MarginContainer/Button.global_position) - ($MarginContainer/Button.custom_minimum_size / 2)).normalized()
+	else: velocity = Vector2()
+"
+
 [node name="Cat" type="CharacterBody2D" groups=["cat"]]
 collision_layer = 2
 collision_mask = 7
 script = ExtResource("1_in7u4")
-health = 50
 speed = 200
 
 [node name="Line2D" type="Line2D" parent="."]
@@ -1280,7 +1313,7 @@ texture_repeat = 1
 texture = ExtResource("1_y0c4x")
 hframes = 8
 vframes = 40
-frame = 232
+frame = 135
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimationTree")
@@ -1296,7 +1329,6 @@ parameters/playback = SubResource("AnimationNodeStateMachinePlayback_va3sn")
 parameters/attack1/blend_position = Vector2(0, 0)
 parameters/attack2/blend_position = Vector2(0, 0)
 parameters/dash/blend_position = Vector2(-0.0288, 0.379913)
-parameters/hurt/blend_position = Vector2(0, 0)
 parameters/leap/blend_position = Vector2(0, 0)
 parameters/normal/playback = SubResource("AnimationNodeStateMachinePlayback_lwjg0")
 parameters/normal/sit/blend_position = Vector2(-0.00559551, 0.0655022)
@@ -1312,8 +1344,8 @@ collision_mask = 4
 script = SubResource("GDScript_8d3oc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
-position = Vector2(24, 0)
-shape = SubResource("RectangleShape2D_hkb3d")
+position = Vector2(20, 0)
+shape = SubResource("RectangleShape2D_fors5")
 disabled = true
 
 [node name="KnockArea" type="Area2D" parent="."]
@@ -1324,3 +1356,25 @@ script = SubResource("GDScript_ctjsi")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KnockArea"]
 shape = SubResource("CircleShape2D_s7apy")
 disabled = true
+
+[node name="Analog" type="CanvasLayer" parent="."]
+script = SubResource("GDScript_sxgiq")
+
+[node name="MarginContainer" type="MarginContainer" parent="Analog"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="Button" type="Button" parent="Analog/MarginContainer"]
+custom_minimum_size = Vector2(216, 216)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+focus_mode = 0
+keep_pressed_outside = true
