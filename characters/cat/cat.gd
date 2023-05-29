@@ -82,4 +82,8 @@ func damaged(value):
 	animstate.travel("hurt")
 	velocity = Vector2.ZERO
 	self.health -= value
-	if self.health <= 0: self.queue_free()
+	if self.health <= 0: self.die()
+
+func die():
+	print(self.name, " died")
+	queue_free()

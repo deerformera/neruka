@@ -64,3 +64,4 @@ position = Vector2(-136, -91)
 
 [node name="Flor" parent="." instance=ExtResource("7_0jjgk")]
 position = Vector2(282, 229)
+health = 20
