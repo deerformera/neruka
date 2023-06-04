@@ -5,10 +5,14 @@
 [sub_resource type="GDScript" id="GDScript_fwcfu"]
 script/source = "extends Area2D
 
-@onready var dir = (get_tree().get_first_node_in_group(\"cat\").global_position - self.global_position).normalized()
+var dir = Vector2()
 @export var speed: int
 
 func _ready():
+	var cat = get_tree().get_first_node_in_group(\"cat\")
+	if cat: dir = (cat.global_position - self.global_position).normalized()
+	else: queue_free()
+	
 	body_entered.connect(func(body):
 		body.damaged(1)
 		monitoring = false

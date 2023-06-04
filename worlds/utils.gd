@@ -19,10 +19,19 @@ var dummies := {
 		"fn": func(): get_tree().root.get_node("World").add_child(dummies.dummy.instantiate())
 	},
 	{
-		"name": "show collision",
-		"fn": func(): get_tree().debug_collisions_hint = !get_tree().debug_collisions_hint
+		"name": "add orb",
+		"fn": func(): get_tree().get_first_node_in_group("cat").add_child(load("res://assets/orb.tscn").instantiate())
 	}
 ]
+
+var player = {
+	"inventory": [
+		[0,0],
+		[0,0],
+		[0,0],
+		[0,0]
+	]
+}
 
 func _ready():
 	for debug_item in debug_list:

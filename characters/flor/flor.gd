@@ -7,6 +7,7 @@ extends CharacterBody2D
 
 @onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get("parameters/playback")
 @onready var bullets := preload("res://assets/projectiles/flor_bullet.tscn")
+@onready var orbs := preload("res://assets/orb.tscn")
 
 func shoot():
 	add_child(bullets.instantiate())
@@ -21,5 +22,7 @@ func knocked(value):
 	self.global_position += value * 10
 
 func die():
-	print(self.name, " died")
+	var orb = orbs.instantiate()
+	orb.global_position = self.global_position
+	get_tree().root.get_node("World").add_child(orb)
 	queue_free()

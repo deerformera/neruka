@@ -1,0 +1,110 @@
+[gd_scene load_steps=12 format=3 uid="uid://cyfv5n0vb1ls1"]
+
+[ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="1_kwu18"]
+
+[sub_resource type="GDScript" id="GDScript_eifvt"]
+resource_name = "Orb"
+script/source = "extends Node2D
+
+@onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get(\"parameters/playback\")
+
+var move: bool = false
+var dir: Vector2 = Vector2()
+
+func _ready():
+	var cat = get_tree().get_first_node_in_group(\"cat\")
+	if cat != null: move = true
+
+func _physics_process(delta):
+	if animstate.get_current_node() == \"drop\":
+		global_position = lerp(global_position, dir, 0.2)
+	if move:
+		if animstate.get_current_node() == \"pick\":
+			var pos = (get_tree().get_first_node_in_group(\"cat\").global_position - self.global_position)
+			self.global_position += pos.normalized() * 5
+			
+			if pos.length() <= 10:
+				get_tree().get_first_node_in_group(\"cat\").pick(1)
+				queue_free()
+
+func drop():
+	dir = Vector2(randf_range(global_position.x - 50, global_position.x + 50), randf_range(global_position.y - 50, global_position.y + 50))
+"
+
+[sub_resource type="Animation" id="Animation_tkr1i"]
+resource_name = "drop"
+length = 0.5
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"drop"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_tue54"]
+resource_name = "pick"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"values": []
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ok5pt"]
+_data = {
+"drop": SubResource("Animation_tkr1i"),
+"pick": SubResource("Animation_tue54")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ukvtw"]
+animation = &"drop"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_o8342"]
+animation = &"pick"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_keptg"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vovid"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_5kx3h"]
+states/drop/node = SubResource("AnimationNodeAnimation_ukvtw")
+states/drop/position = Vector2(391, 100)
+states/pick/node = SubResource("AnimationNodeAnimation_o8342")
+states/pick/position = Vector2(677, 100)
+transitions = ["Start", "drop", SubResource("AnimationNodeStateMachineTransition_keptg"), "drop", "pick", SubResource("AnimationNodeStateMachineTransition_vovid")]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_kv8yi"]
+
+[node name="Orb" type="Node2D"]
+script = SubResource("GDScript_eifvt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_kwu18")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ok5pt")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_5kx3h")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_kv8yi")

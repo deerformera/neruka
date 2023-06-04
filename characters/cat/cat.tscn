@@ -1,4 +1,4 @@
-[gd_scene load_steps=135 format=3 uid="uid://b7mbrqybxoisl"]
+[gd_scene load_steps=136 format=3 uid="uid://b7mbrqybxoisl"]
 
 [ext_resource type="Script" path="res://characters/cat/cat.gd" id="1_in7u4"]
 [ext_resource type="Texture2D" uid="uid://di8mddxsx8aoa" path="res://characters/cat/cat.png" id="1_y0c4x"]
@@ -1283,14 +1283,20 @@ script/source = "extends CanvasLayer
 var velocity: Vector2
 
 func _ready():
-	self.visible = Utils.android_mode
+	$Analog.visible = Utils.android_mode
 
 func _input(event):
-	if $MarginContainer/Button.button_pressed:
+	if $Analog/Button.button_pressed:
 		if event is InputEventScreenDrag:
 			velocity = ((event.position - $MarginContainer/Button.global_position) - ($MarginContainer/Button.custom_minimum_size / 2)).normalized()
 	else: velocity = Vector2()
+
+func _physics_process(delta):
+	$DebugInventory/Label.text = str(Utils.player.inventory)
 "
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8hawt"]
+bg_color = Color(0, 0, 0, 0.392157)
 
 [node name="Cat" type="CharacterBody2D" groups=["cat"]]
 collision_layer = 2
@@ -1357,10 +1363,10 @@ script = SubResource("GDScript_ctjsi")
 shape = SubResource("CircleShape2D_s7apy")
 disabled = true
 
-[node name="Analog" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = SubResource("GDScript_sxgiq")
 
-[node name="MarginContainer" type="MarginContainer" parent="Analog"]
+[node name="Analog" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -1371,10 +1377,22 @@ size_flags_vertical = 4
 theme_override_constants/margin_left = 100
 theme_override_constants/margin_bottom = 100
 
-[node name="Button" type="Button" parent="Analog/MarginContainer"]
+[node name="Button" type="Button" parent="CanvasLayer/Analog"]
 custom_minimum_size = Vector2(216, 216)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 focus_mode = 0
 keep_pressed_outside = true
+
+[node name="DebugInventory" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1.0
+offset_bottom = 23.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8hawt")
+
+[node name="Label" type="Label" parent="CanvasLayer/DebugInventory"]
+layout_mode = 2

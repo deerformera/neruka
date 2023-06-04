@@ -85,5 +85,15 @@ func damaged(value):
 	if self.health <= 0: self.die()
 
 func die():
-	print(self.name, " died")
 	queue_free()
+
+func pick(obj):
+	for inv in Utils.player["inventory"]:
+		if inv[0] == obj:
+			inv[1] += 1
+			return
+	for inv in Utils.player["inventory"]:
+		if inv[0] == 0:
+			inv[0] = obj
+			inv[1] += 1
+			return
