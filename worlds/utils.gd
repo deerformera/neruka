@@ -25,12 +25,7 @@ var dummies := {
 ]
 
 var player = {
-	"inventory": [
-		[0,0],
-		[0,0],
-		[0,0],
-		[0,0]
-	]
+	"inventory": []
 }
 
 func _ready():

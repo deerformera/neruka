@@ -43,11 +43,6 @@ func _input(event):
 		"normal":
 			if event.is_action_pressed("n_attack"):
 				animstate.travel("attack1")
-				global_position += velocity_static * 5
-				$AttackArea/CollisionShape2D.disabled = false
-				await get_tree().create_timer(0.02).timeout
-				$AttackArea/CollisionShape2D.disabled = true
-				add_child(slash.instantiate())
 			
 			if event.is_action_pressed("n_leap"):
 				leap_timer.start()
@@ -64,19 +59,9 @@ func _input(event):
 		"attack1":
 			if event.is_action_pressed("n_attack"):
 				animstate.travel("attack2")
-				global_position += velocity_static * 5
-				add_child(slash.instantiate())
-				$AttackArea/CollisionShape2D.disabled = false
-				await get_tree().create_timer(0.02).timeout
-				$AttackArea/CollisionShape2D.disabled = true
 		"attack2":
 			if event.is_action_pressed("n_attack"):
 				animstate.travel("attack1")
-				add_child(slash.instantiate())
-				global_position += velocity_static * 5
-				$AttackArea/CollisionShape2D.disabled = false
-				await get_tree().create_timer(0.02).timeout
-				$AttackArea/CollisionShape2D.disabled = true
 
 func damaged(value):
 	animstate.travel("hurt")
@@ -84,16 +69,23 @@ func damaged(value):
 	self.health -= value
 	if self.health <= 0: self.die()
 
+func attack():
+	var tw = create_tween()
+	tw.tween_property(self, "global_position", global_position + velocity_static * 10, 0.1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
+	await get_tree().create_timer(0.05).timeout
+	$AttackArea/CollisionShape2D.disabled = false
+	await get_tree().create_timer(0.05).timeout
+	$AttackArea/CollisionShape2D.disabled = true
+	add_child(slash.instantiate())
+
 func die():
 	queue_free()
 
 func pick(obj):
+	print(Utils.player["inventory"])
 	for inv in Utils.player["inventory"]:
 		if inv[0] == obj:
 			inv[1] += 1
 			return
-	for inv in Utils.player["inventory"]:
-		if inv[0] == 0:
-			inv[0] = obj
-			inv[1] += 1
-			return
+	
+	Utils.player.inventory.append([obj, 1])
