@@ -6,9 +6,11 @@ extends CharacterBody2D
 @export_range(0, 9999) var speed = 1
 
 @onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get("parameters/playback")
+@onready var tween: Tween
 @onready var leap_timer: Timer = Utils.create_timer(self, 0.8, func(): 
-	charge = true
-	$Line2D.visible = true)
+	$LeapSprite.scale = Vector2(0, 1)
+	$LeapSprite.visible = true
+	create_tween().tween_property($LeapSprite, "scale", Vector2(1, 1), 0.25).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT))
 @onready var slash = preload("res://assets/slash.tscn")
 
 var velocity_static: Vector2
@@ -19,7 +21,8 @@ func _physics_process(delta):
 		"normal":
 			velocity = Input.get_vector("n_left", "n_right", "n_up", "n_down")
 			if Utils.android_mode: velocity = $Analog.velocity
-			if charge: velocity = velocity * speed / 3
+			if $LeapSprite.visible:
+				velocity = velocity * speed / 2
 			else: velocity = velocity * speed
 			
 			if velocity: 
@@ -27,13 +30,7 @@ func _physics_process(delta):
 				$AnimationTree.get("parameters/normal/playback").travel("walk")
 			else: $AnimationTree.get("parameters/normal/playback").travel("sit")
 			
-			$Line2D.set_point_position(1, (velocity_static * 200))
-			$KnockArea/CollisionShape2D.disabled = true
-		"leap":
-			velocity = (velocity_static * speed) * 2
-		"dash":
-			velocity = (velocity_static * speed) * 2.5
-			$KnockArea/CollisionShape2D.disabled = false
+			$LeapSprite.rotation = velocity_static.angle()
 		"attack1":
 			velocity = Vector2()
 	move_and_slide()
@@ -46,15 +43,18 @@ func _input(event):
 			
 			if event.is_action_pressed("n_leap"):
 				leap_timer.start()
-				
 			if event.is_action_released("n_leap"):
-				if charge:
-					animstate.travel("dash")
-					charge = false
-					$Line2D.visible = false
+				animstate.travel("leap")
+				if leap_timer.is_stopped() && $LeapSprite.visible:
+					$LeapSprite.visible = false
+					$KnockArea/CollisionShape2D.disabled = false
+					tween = create_tween()
+					tween.tween_property(self, "global_position", global_position + velocity_static * 150, 0.4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+					await tween.finished
+					$KnockArea/CollisionShape2D.disabled = true
 				else:
+					create_tween().tween_property(self, "global_position", global_position + velocity_static * 100, 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 					leap_timer.stop()
-					animstate.travel("leap")
 		
 		"attack1":
 			if event.is_action_pressed("n_attack"):
@@ -70,8 +70,8 @@ func damaged(value):
 	if self.health <= 0: self.die()
 
 func attack():
-	var tw = create_tween()
-	tw.tween_property(self, "global_position", global_position + velocity_static * 10, 0.1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
+	tween = create_tween()
+	tween.tween_property(self, "global_position", global_position + velocity_static * 10, 0.1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
 	await get_tree().create_timer(0.05).timeout
 	$AttackArea/CollisionShape2D.disabled = false
 	add_child(slash.instantiate())

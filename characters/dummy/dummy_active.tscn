@@ -39,7 +39,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_wwx8v"]
 resource_name = "hurt"
-length = 0.1
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -55,7 +55,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_4wo2r"]
 resource_name = "knock"
-length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -129,7 +128,7 @@ states/chase/position = Vector2(525, 100)
 states/hurt/node = SubResource("AnimationNodeAnimation_40ut7")
 states/hurt/position = Vector2(343, 39)
 states/knock/node = SubResource("AnimationNodeAnimation_0r1ta")
-states/knock/position = Vector2(343, 160)
+states/knock/position = Vector2(343, 163)
 states/normal/node = SubResource("AnimationNodeAnimation_7jle6")
 states/normal/position = Vector2(343, 100)
 transitions = ["Start", "normal", SubResource("AnimationNodeStateMachineTransition_ysttm"), "chase", "normal", SubResource("AnimationNodeStateMachineTransition_oc4do"), "normal", "chase", SubResource("AnimationNodeStateMachineTransition_aarng"), "hurt", "chase", SubResource("AnimationNodeStateMachineTransition_wwluo"), "knock", "chase", SubResource("AnimationNodeStateMachineTransition_25qrn"), "normal", "knock", SubResource("AnimationNodeStateMachineTransition_il3qc"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_s2hbl")]
@@ -158,7 +157,7 @@ func detect():
 "
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_u8gw5"]
-radius = 64.0
+radius = 80.0
 
 [node name="DummyActive" type="StaticBody2D"]
 collision_layer = 4

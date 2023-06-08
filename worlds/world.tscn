@@ -57,7 +57,6 @@ position = Vector2(0, -91)
 
 [node name="DummySemiPassive" parent="." instance=ExtResource("5_ntwe8")]
 position = Vector2(152, -91)
-speed = 2
 
 [node name="DummyActive" parent="." instance=ExtResource("6_hi1kg")]
 position = Vector2(-136, -91)
