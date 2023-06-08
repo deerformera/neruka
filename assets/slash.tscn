@@ -1,34 +1,41 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3 uid="uid://pk5ppbida20q"]
 
-[ext_resource type="Texture2D" uid="uid://d3km06nlq5vvl" path="res://assets/textures/slash.png" id="1_hobm5"]
+[ext_resource type="Texture2D" uid="uid://byy86dpfgkvug" path="res://assets/textures/slash.png" id="1_hobm5"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_itw55"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibrfy"]
 atlas = ExtResource("1_hobm5")
 region = Rect2(0, 0, 40, 40)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_hwmgm"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_pr1m3"]
 atlas = ExtResource("1_hobm5")
 region = Rect2(40, 0, 40, 40)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_l0wwt"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_gqslq"]
 atlas = ExtResource("1_hobm5")
 region = Rect2(80, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gbiwf"]
+atlas = ExtResource("1_hobm5")
+region = Rect2(120, 0, 40, 40)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_aksuy"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_itw55")
+"texture": SubResource("AtlasTexture_ibrfy")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_hwmgm")
+"texture": SubResource("AtlasTexture_pr1m3")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_l0wwt")
+"texture": SubResource("AtlasTexture_gqslq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gbiwf")
 }],
 "loop": false,
 "name": &"default",
-"speed": 20.0
+"speed": 40.0
 }]
 
 [sub_resource type="GDScript" id="GDScript_slu4p"]
@@ -36,11 +43,13 @@ script/source = "extends AnimatedSprite2D
 
 func _ready():
 	animation_finished.connect(func(): queue_free())
+	if get_parent().animstate.get_current_node() == \"attack2\": flip_v = true
 	self.rotation = get_parent().velocity_static.angle()
 	self.position += get_parent().velocity_static * 20
 "
 
 [node name="slash" type="AnimatedSprite2D"]
+show_behind_parent = true
 sprite_frames = SubResource("SpriteFrames_aksuy")
 autoplay = "default"
 script = SubResource("GDScript_slu4p")

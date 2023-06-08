@@ -74,15 +74,14 @@ func attack():
 	tw.tween_property(self, "global_position", global_position + velocity_static * 10, 0.1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
 	await get_tree().create_timer(0.05).timeout
 	$AttackArea/CollisionShape2D.disabled = false
+	add_child(slash.instantiate())
 	await get_tree().create_timer(0.05).timeout
 	$AttackArea/CollisionShape2D.disabled = true
-	add_child(slash.instantiate())
 
 func die():
 	queue_free()
 
 func pick(obj):
-	print(Utils.player["inventory"])
 	for inv in Utils.player["inventory"]:
 		if inv[0] == obj:
 			inv[1] += 1
