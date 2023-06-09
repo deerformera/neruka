@@ -12,7 +12,7 @@ func damaged(value):
 
 func knocked(value):
 	animstate.travel("knock")
-	self.global_position += value * 10
+	create_tween().tween_property(self, "global_position", global_position + value * 25, 0.5).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 
 func die():
 	print(self.name, " died")

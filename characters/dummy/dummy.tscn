@@ -7,7 +7,7 @@
 
 [sub_resource type="Animation" id="Animation_corst"]
 resource_name = "hurt"
-length = 0.1
+length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -23,7 +23,6 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_lgk0i"]
 resource_name = "knock"
-length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true

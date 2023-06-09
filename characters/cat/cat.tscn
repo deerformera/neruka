@@ -1282,6 +1282,8 @@ script/source = "extends Area2D
 
 func _ready(): 
 	self.connect(\"body_entered\", func(body): 
+		get_parent().tween.kill()
+		get_parent().get_node(\"KnockArea/CollisionShape2D\").set_deferred(\"disabled\", true)
 		body.knocked(get_parent().velocity_static.normalized()))
 "
 
@@ -1333,7 +1335,7 @@ texture_repeat = 1
 texture = ExtResource("1_y0c4x")
 hframes = 10
 vframes = 40
-frame = 76
+frame = 71
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimationTree")
