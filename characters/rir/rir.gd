@@ -6,24 +6,37 @@ extends CharacterBody2D
 @export_range(0, 9999) var speed = 1
 
 @onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get("parameters/playback")
-@onready var bullets := preload("res://assets/projectiles/flor_bullet.tscn")
 @onready var orbs := preload("res://assets/orb.tscn")
 
-func shoot():
-	add_child(bullets.instantiate())
+var phase: int = 0
+
+func _physics_process(delta):
+	print($AnimationTree.get("parameters/playback").get_current_node())
 
 func damaged(value):
 	animstate.travel("hurt")
 	self.health -= value
-	if self.health <= 0: self.die()
+	match health:
+		15:
+			$HornRSprite.hide()
+		10:
+			phase = 1
+			$AnimationTree.phase_sync()
+			$HornRSprite.show()
+			$HornRSprite.frame = 1
+			$HornLSprite.frame = 1
+		5:
+			$HornLSprite.hide()
+		0:
+			die()
 
 func knocked(value):
 	animstate.travel("knock")
 	create_tween().tween_property(self, "global_position", global_position + value * 25, 0.5).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-
 func die():
+	print(self.name, " died")
 	var orb = orbs.instantiate()
 	orb.global_position = self.global_position
-	orb.id = 1
+	orb.id = 5
 	get_tree().root.get_node("World").add_child(orb)
 	queue_free()

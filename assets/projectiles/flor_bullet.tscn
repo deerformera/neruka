@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="1_a8dcr"]
 
-[sub_resource type="GDScript" id="GDScript_fwcfu"]
+[sub_resource type="GDScript" id="GDScript_npxq0"]
 script/source = "extends Area2D
 
 var dir = Vector2()
@@ -30,8 +30,7 @@ size = Vector2(6, 6)
 [node name="FlorBullet" type="Area2D"]
 collision_layer = 0
 collision_mask = 2
-script = SubResource("GDScript_fwcfu")
-speed = 4
+script = SubResource("GDScript_npxq0")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_8fbwl")

@@ -7,6 +7,7 @@ resource_name = "Orb"
 script/source = "extends Node2D
 
 @onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get(\"parameters/playback\")
+@export_range(1, 100) var id: int
 
 var move: bool = false
 var dir: Vector2 = Vector2()
@@ -24,7 +25,7 @@ func _physics_process(delta):
 			self.global_position += pos.normalized() * 5
 			
 			if pos.length() <= 10:
-				get_tree().get_first_node_in_group(\"cat\").pick(1)
+				get_tree().get_first_node_in_group(\"cat\").pick(id)
 				queue_free()
 
 func drop():

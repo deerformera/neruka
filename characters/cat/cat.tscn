@@ -1263,7 +1263,7 @@ resource_name = "AttackArea"
 script/source = "extends Area2D
 
 func _ready(): self.connect(\"body_entered\", func(body): 
-	body.damaged(1)
+	body.damaged(get_parent().damage)
 	var shake = Vector2(randf(), randf()) * 4
 	get_tree().root.get_camera_2d().offset += shake
 	await get_tree().create_timer(0.025).timeout
@@ -1335,7 +1335,7 @@ texture_repeat = 1
 texture = ExtResource("1_y0c4x")
 hframes = 10
 vframes = 40
-frame = 71
+frame = 76
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimationTree")

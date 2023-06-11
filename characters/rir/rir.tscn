@@ -1,0 +1,147 @@
+[gd_scene load_steps=30 format=3 uid="uid://cnyin2x5b5y56"]
+
+[ext_resource type="Script" path="res://characters/rir/rir.gd" id="1_kbbi0"]
+[ext_resource type="Texture2D" uid="uid://4ewcql8kplg3" path="res://characters/rir/rir-horn-r.png" id="2_br8r2"]
+[ext_resource type="Texture2D" uid="uid://dl8j1bmwt2hkk" path="res://characters/rir/rir.png" id="2_ylheq"]
+[ext_resource type="Texture2D" uid="uid://bckrgq21l64p1" path="res://characters/rir/rir-horn-l.png" id="3_hl8e2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bhgcw"]
+size = Vector2(36, 36)
+
+[sub_resource type="Animation" id="Animation_mu26v"]
+resource_name = "hurt"
+length = 0.4
+
+[sub_resource type="Animation" id="Animation_wrgbc"]
+resource_name = "knock"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_85wq0"]
+_data = {
+"hurt": SubResource("Animation_mu26v"),
+"knock": SubResource("Animation_wrgbc")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ouljr"]
+animation = &"chase0"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_e4nca"]
+animation = &"chase1"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c6v83"]
+animation = &"hurt"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g7yqw"]
+animation = &"knock"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_j25qh"]
+animation = &"phase0"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qe8bj"]
+animation = &"phase1"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q6t5a"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xyclo"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_emhky"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6vhrv"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"1"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gfus2"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"0"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3fvm1"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"1"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bdd1b"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"0"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_n66rn"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8nqti"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cl5np"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wfgbn"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bfieg"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_uuvbe"]
+states/End/position = Vector2(567, 100)
+states/chase0/node = SubResource("AnimationNodeAnimation_ouljr")
+states/chase0/position = Vector2(307, 46)
+states/chase1/node = SubResource("AnimationNodeAnimation_e4nca")
+states/chase1/position = Vector2(455, 46)
+states/hurt/node = SubResource("AnimationNodeAnimation_c6v83")
+states/hurt/position = Vector2(455, -49)
+states/knock/node = SubResource("AnimationNodeAnimation_g7yqw")
+states/knock/position = Vector2(307, -49)
+states/phase0/node = SubResource("AnimationNodeAnimation_j25qh")
+states/phase0/position = Vector2(307, 100)
+states/phase1/node = SubResource("AnimationNodeAnimation_qe8bj")
+states/phase1/position = Vector2(455, 100)
+transitions = ["Start", "phase0", SubResource("AnimationNodeStateMachineTransition_q6t5a"), "phase0", "chase0", SubResource("AnimationNodeStateMachineTransition_xyclo"), "phase1", "chase1", SubResource("AnimationNodeStateMachineTransition_emhky"), "knock", "chase1", SubResource("AnimationNodeStateMachineTransition_6vhrv"), "knock", "chase0", SubResource("AnimationNodeStateMachineTransition_gfus2"), "hurt", "chase1", SubResource("AnimationNodeStateMachineTransition_3fvm1"), "hurt", "chase0", SubResource("AnimationNodeStateMachineTransition_bdd1b"), "chase0", "phase1", SubResource("AnimationNodeStateMachineTransition_n66rn"), "chase0", "knock", SubResource("AnimationNodeStateMachineTransition_8nqti"), "chase0", "hurt", SubResource("AnimationNodeStateMachineTransition_cl5np"), "chase1", "hurt", SubResource("AnimationNodeStateMachineTransition_wfgbn"), "chase1", "knock", SubResource("AnimationNodeStateMachineTransition_bfieg")]
+graph_offset = Vector2(-224, -63)
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_xr66t"]
+
+[sub_resource type="GDScript" id="GDScript_yda37"]
+resource_name = "AnimationTree"
+script/source = "extends AnimationTree
+
+func _ready():
+	phase_sync()
+
+func phase_sync():
+	set(\"parameters/conditions/0\", get_parent().phase == 0)
+	set(\"parameters/conditions/1\", get_parent().phase == 1)
+"
+
+[node name="Rir" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_kbbi0")
+health = 20
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_bhgcw")
+
+[node name="HornRSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_br8r2")
+hframes = 2
+
+[node name="HornLSprite" type="Sprite2D" parent="."]
+texture = ExtResource("3_hl8e2")
+hframes = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(1, 0.878431, 0.117647, 1)
+texture = ExtResource("2_ylheq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_85wq0")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_uuvbe")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_xr66t")
+parameters/conditions/0 = false
+parameters/conditions/1 = false
+script = SubResource("GDScript_yda37")
