@@ -25,15 +25,6 @@ func _ready():
 		velocity = Vector2.ZERO
 		self.health -= value
 		if self.health <= 0: self.die())
-	
-	self.pick.connect(func(obj):
-		for inv in Utils.player["inventory"]:
-			if inv[0] == obj:
-				inv[1] += 1
-				return
-		
-		Utils.player.inventory.append([obj, 1])
-	)
 
 func _physics_process(delta):
 	match animstate.get_current_node():
@@ -59,7 +50,7 @@ func _input(event):
 		"normal":
 			if event.is_action_pressed("n_attack"):
 				if $InteractArea.get_overlapping_bodies():
-					print("ada")
+					$CanvasLayer/MarginContainer/Trade.show()
 				else:
 					animstate.travel("attack1")
 			

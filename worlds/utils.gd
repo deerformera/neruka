@@ -9,23 +9,38 @@ var dummies := {
 	"dummy_semipassive": preload("res://characters/dummy/dummy_semiPassive.tscn")
 }
 
+var debug_summon_creature = func(dummy):
+	var dummy_ins = dummy.instantiate()
+	dummy_ins.global_position = get_tree().get_first_node_in_group("cat").global_position
+	get_tree().root.get_node("World").add_child(dummy_ins)
+
+var debug_add_orb = func():
+	var orb = load("res://assets/orb.tscn").instantiate()
+	orb.id = 1
+	get_tree().get_first_node_in_group("cat").add_child(orb)
+
 @onready var debug_list = [
 	{
 		"name": "Summon active creature",
-		"fn": func(): print("summon!")
+		"fn": debug_summon_creature.bind(dummies.dummy_active)
 	},
 	{
 		"name": "Summon passive creature",
-		"fn": func(): get_tree().root.get_node("World").add_child(dummies.dummy.instantiate())
+		"fn": debug_summon_creature.bind(dummies.dummy_passive)
+	},
+	{
+		"name": "Summon semi-passive creature",
+		"fn": debug_summon_creature.bind(dummies.dummy_semipassive)
 	},
 	{
 		"name": "add orb",
-		"fn": func(): get_tree().get_first_node_in_group("cat").add_child(load("res://assets/orb.tscn").instantiate())
+		"fn": debug_add_orb
 	}
 ]
 
 var player = {
-	"inventory": []
+	"orbs": [[3, 5]],
+	"perks": []
 }
 
 func _ready():
@@ -37,6 +52,22 @@ func _ready():
 
 func _physics_process(delta):
 	$Margin/HBox/VBox.visible = $Margin/HBox/Button.button_pressed
+
+func orb_add(id):
+	for orb in player.orbs:
+		if orb[0] == id:
+			orb[1] += 1
+			return
+	player.orbs.append([id, 1])
+
+func orb_del(id, val) -> bool:
+	for orb in player.orbs:
+		if orb[0] == id:
+			if orb[1] >= val:
+				orb[1] -= val
+				if orb[1] == 0: player.orbs.erase(orb)
+				return true
+	return false
 
 func create_timer(from, waittime: float, method: Callable):
 	var timer = Timer.new()

@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://cixujrvarje76"]
+
+[sub_resource type="GDScript" id="GDScript_cjpa1"]
+script/source = "extends HBoxContainer
+
+var text: String
+var id: int
+
+var buy: Callable = func():
+	Utils.orb_del(1, 2)
+
+func _ready():
+	$Label.text = text
+	$Button.pressed.connect(buy)
+"
+
+[node name="ShopItem" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_cjpa1")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Lorem"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "Buy"
