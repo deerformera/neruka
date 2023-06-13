@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6so8fhcw6te3"]
+
+[ext_resource type="Script" path="res://characters/trader/trader.gd" id="1_sppqj"]
+[ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="1_xxycg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nksdf"]
+
+[node name="Trader" type="StaticBody2D"]
+collision_layer = 8
+collision_mask = 7
+script = ExtResource("1_sppqj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_nksdf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_xxycg")

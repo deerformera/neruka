@@ -1,5 +1,8 @@
 extends CharacterBody2D
 
+signal damaged
+signal pick
+
 @export_category("Properties")
 @export_range(0, 9999) var health = 1
 @export_range(0, 9999) var damage = 1
@@ -15,6 +18,22 @@ extends CharacterBody2D
 
 var velocity_static: Vector2
 var charge = false
+
+func _ready():
+	self.damaged.connect(func(value: int):
+		animstate.travel("hurt")
+		velocity = Vector2.ZERO
+		self.health -= value
+		if self.health <= 0: self.die())
+	
+	self.pick.connect(func(obj):
+		for inv in Utils.player["inventory"]:
+			if inv[0] == obj:
+				inv[1] += 1
+				return
+		
+		Utils.player.inventory.append([obj, 1])
+	)
 
 func _physics_process(delta):
 	match animstate.get_current_node():
@@ -39,7 +58,10 @@ func _input(event):
 	match animstate.get_current_node():
 		"normal":
 			if event.is_action_pressed("n_attack"):
-				animstate.travel("attack1")
+				if $InteractArea.get_overlapping_bodies():
+					print("ada")
+				else:
+					animstate.travel("attack1")
 			
 			if event.is_action_pressed("n_leap"):
 				leap_timer.start()
@@ -63,11 +85,6 @@ func _input(event):
 			if event.is_action_pressed("n_attack"):
 				animstate.travel("attack1")
 
-func damaged(value):
-	animstate.travel("hurt")
-	velocity = Vector2.ZERO
-	self.health -= value
-	if self.health <= 0: self.die()
 
 func attack():
 	tween = create_tween()
@@ -80,11 +97,3 @@ func attack():
 
 func die():
 	queue_free()
-
-func pick(obj):
-	for inv in Utils.player["inventory"]:
-		if inv[0] == obj:
-			inv[1] += 1
-			return
-	
-	Utils.player.inventory.append([obj, 1])

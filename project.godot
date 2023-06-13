@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Neruka"
-run/main_scene="res://worlds/world-boss.tscn"
+run/main_scene="res://worlds/world.tscn"
 config/features=PackedStringArray("4.0", "Mobile")
 config/icon="res://icon.png"
 
@@ -71,6 +71,7 @@ pointing/emulate_touch_from_mouse=true
 2d_physics/layer_1="Things"
 2d_physics/layer_2="Cat"
 2d_physics/layer_3="Creatures"
+2d_physics/layer_4="Interactable"
 
 [rendering]
 

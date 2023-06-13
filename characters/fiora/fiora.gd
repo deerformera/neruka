@@ -1,5 +1,8 @@
 extends CharacterBody2D
 
+signal damaged
+signal knocked
+
 @export_category("Properties")
 @export_range(0, 9999) var health = 1
 @export_range(0, 9999) var damage = 1
@@ -9,13 +12,11 @@ extends CharacterBody2D
 @onready var orb := preload("res://assets/orb.tscn")
 
 func _ready():
+	damaged.connect(func(value: int):
+		self.health -= value
+		if self.health <= 0: self.die())
+	
 	$AnimationTree.animation_started.connect(func(anim):print("anim: ",anim))
-
-func damaged(value):
-	self.health -= value
-	if self.health <= 0: self.die()
-
-func knocked(value): pass
 
 func die():
 	var orb_ins = orb.instantiate()

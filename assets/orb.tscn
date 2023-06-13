@@ -25,7 +25,7 @@ func _physics_process(delta):
 			self.global_position += pos.normalized() * 5
 			
 			if pos.length() <= 10:
-				get_tree().get_first_node_in_group(\"cat\").pick(id)
+				get_tree().get_first_node_in_group(\"cat\").pick.emit(id)
 				queue_free()
 
 func drop():

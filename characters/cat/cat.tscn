@@ -1,4 +1,4 @@
-[gd_scene load_steps=118 format=3 uid="uid://b7mbrqybxoisl"]
+[gd_scene load_steps=120 format=3 uid="uid://b7mbrqybxoisl"]
 
 [ext_resource type="Script" path="res://characters/cat/cat.gd" id="1_in7u4"]
 [ext_resource type="Texture2D" uid="uid://cpymps6ec432t" path="res://characters/cat/cat.png" id="1_y0c4x"]
@@ -1263,7 +1263,7 @@ resource_name = "AttackArea"
 script/source = "extends Area2D
 
 func _ready(): self.connect(\"body_entered\", func(body): 
-	body.damaged(get_parent().damage)
+	body.damaged.emit(get_parent().damage)
 	var shake = Vector2(randf(), randf()) * 4
 	get_tree().root.get_camera_2d().offset += shake
 	await get_tree().create_timer(0.025).timeout
@@ -1283,12 +1283,27 @@ script/source = "extends Area2D
 func _ready(): 
 	self.connect(\"body_entered\", func(body): 
 		get_parent().tween.kill()
-		get_parent().get_node(\"KnockArea/CollisionShape2D\").set_deferred(\"disabled\", true)
-		body.knocked(get_parent().velocity_static.normalized()))
+		$\"../KnockArea/CollisionShape2D\".set_deferred(\"disabled\", true)
+		body.knocked.emit(get_parent().velocity_static.normalized()))
 "
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s7apy"]
 radius = 20.0
+
+[sub_resource type="GDScript" id="GDScript_hshfq"]
+resource_name = "InteractArea"
+script/source = "extends Area2D
+
+func _ready():
+	self.body_entered.connect(func(body):
+		body.interacted.emit())
+
+func _physics_process(delta):
+	self.rotation = get_parent().velocity_static.angle()
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xv3rt"]
+size = Vector2(40, 40)
 
 [sub_resource type="Gradient" id="Gradient_6oaxl"]
 colors = PackedColorArray(1, 1, 1, 0, 0.423529, 1, 1, 1)
@@ -1335,7 +1350,7 @@ texture_repeat = 1
 texture = ExtResource("1_y0c4x")
 hframes = 10
 vframes = 40
-frame = 76
+frame = 75
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimationTree")
@@ -1378,6 +1393,15 @@ script = SubResource("GDScript_ctjsi")
 shape = SubResource("CircleShape2D_s7apy")
 disabled = true
 
+[node name="InteractArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 8
+script = SubResource("GDScript_hshfq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(20, 0)
+shape = SubResource("RectangleShape2D_xv3rt")
+
 [node name="LeapSprite" type="Sprite2D" parent="."]
 visible = false
 texture = SubResource("GradientTexture2D_ik01q")
@@ -1416,4 +1440,19 @@ grow_horizontal = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_8hawt")
 
 [node name="Label" type="Label" parent="CanvasLayer/DebugInventory"]
+layout_mode = 2
+
+[node name="TradeMenu" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 100
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/TradeMenu"]
 layout_mode = 2

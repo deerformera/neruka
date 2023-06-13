@@ -10,8 +10,8 @@ var dir = Vector2()
 
 func _ready():
 	body_entered.connect(func(body):
-		body.damaged(1)
-		monitoring = false
+		body.damaged.emit(1)
+		set_deferred(\"monitoring\", false)
 		)
 
 func _physics_process(delta):
