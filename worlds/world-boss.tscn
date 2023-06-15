@@ -1,8 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://cd6gnmtc0qei7"]
+[gd_scene load_steps=7 format=3 uid="uid://cd6gnmtc0qei7"]
 
 [ext_resource type="TileSet" uid="uid://dg4svapr2okm6" path="res://proto/proto-tile.tres" id="1_0spr6"]
 [ext_resource type="PackedScene" uid="uid://b7mbrqybxoisl" path="res://characters/cat/cat.tscn" id="2_t0fed"]
 [ext_resource type="PackedScene" uid="uid://bit7gomj36yqg" path="res://characters/fiora/fiora.tscn" id="3_n5c3l"]
+[ext_resource type="Texture2D" uid="uid://bvmxub0q1sk22" path="res://proto/proto-circle.png" id="4_fhdar"]
+
+[sub_resource type="GDScript" id="GDScript_y46kk"]
+script/source = "extends Area2D
+
+func _ready():
+	body_entered.connect(func(body):
+		get_tree().change_scene_to_file(\"res://worlds/world.tscn\"))
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a1hed"]
+radius = 70.0
 
 [node name="World" type="Node2D"]
 
@@ -15,3 +27,16 @@ layer_0/tile_data = PackedInt32Array(65549, 131072, 0, 13, 131072, 0, -65523, 13
 health = 9999
 
 [node name="Fiora" parent="." instance=ExtResource("3_n5c3l")]
+
+[node name="Teleport" type="Area2D" parent="."]
+position = Vector2(-454, 0)
+collision_layer = 0
+collision_mask = 2
+script = SubResource("GDScript_y46kk")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Teleport"]
+texture = ExtResource("4_fhdar")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Teleport"]
+shape = SubResource("CircleShape2D_a1hed")

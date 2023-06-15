@@ -18,6 +18,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Utils="*res://worlds/utils.tscn"
+Player="*res://worlds/player.tscn"
 
 [display]
 

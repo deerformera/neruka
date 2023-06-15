@@ -1,0 +1,110 @@
+[gd_scene load_steps=5 format=3 uid="uid://des1n1g7bn2cg"]
+
+[ext_resource type="Script" path="res://worlds/player.gd" id="1_101xg"]
+
+[sub_resource type="GDScript" id="GDScript_piude"]
+resource_name = "Analog"
+script/source = "extends Button
+
+var velocity: Vector2
+
+func _ready():
+	self.visible = Utils.android_mode
+
+func _input(event):
+	if self.button_pressed:
+		if event is InputEventScreenDrag:
+			velocity = ((event.position - self.global_position) - (self.custom_minimum_size / 2)).normalized()
+	else: velocity = Vector2()
+"
+
+[sub_resource type="GDScript" id="GDScript_pp2qt"]
+resource_name = "Inventory"
+script/source = "extends PanelContainer
+
+func _physics_process(delta):
+	$VB/Label0.text = str(Player.orbs)
+	$VB/Label1.text = str(Player.perks)
+"
+
+[sub_resource type="GDScript" id="GDScript_vggsb"]
+resource_name = "Shop"
+script/source = "extends PanelContainer
+
+var items = [0, 1]
+var shop_item = preload(\"res://assets/shop_item.tscn\")
+
+func _ready(): 
+	$VB/Button.pressed.connect(func(): self.hide())
+	for i in items:
+		var item = shop_item.instantiate()
+		item.id = i
+		item.text = str(i)
+		$VB/VB.add_child(item)
+"
+
+[node name="Player" type="CanvasLayer"]
+script = ExtResource("1_101xg")
+
+[node name="M" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="Analog" type="Button" parent="M"]
+custom_minimum_size = Vector2(216, 216)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+mouse_filter = 2
+keep_pressed_outside = true
+script = SubResource("GDScript_piude")
+
+[node name="Inventory" type="PanelContainer" parent="M"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+mouse_filter = 2
+script = SubResource("GDScript_pp2qt")
+
+[node name="VB" type="VBoxContainer" parent="M/Inventory"]
+layout_mode = 2
+
+[node name="Label0" type="Label" parent="M/Inventory/VB"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="Label1" type="Label" parent="M/Inventory/VB"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="Shop" type="PanelContainer" parent="M"]
+visible = false
+layout_mode = 2
+script = SubResource("GDScript_vggsb")
+
+[node name="VB" type="VBoxContainer" parent="M/Shop"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="M/Shop/VB"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 0
+text = "X"
+flat = true
+
+[node name="VB" type="VBoxContainer" parent="M/Shop/VB"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+alignment = 1

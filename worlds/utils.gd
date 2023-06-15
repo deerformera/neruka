@@ -38,11 +38,6 @@ var debug_add_orb = func():
 	}
 ]
 
-var player = {
-	"orbs": [[3, 5]],
-	"perks": []
-}
-
 func _ready():
 	for debug_item in debug_list:
 		var b: Button = Button.new()
@@ -52,22 +47,6 @@ func _ready():
 
 func _physics_process(delta):
 	$Margin/HBox/VBox.visible = $Margin/HBox/Button.button_pressed
-
-func orb_add(id):
-	for orb in player.orbs:
-		if orb[0] == id:
-			orb[1] += 1
-			return
-	player.orbs.append([id, 1])
-
-func orb_del(id, val) -> bool:
-	for orb in player.orbs:
-		if orb[0] == id:
-			if orb[1] >= val:
-				orb[1] -= val
-				if orb[1] == 0: player.orbs.erase(orb)
-				return true
-	return false
 
 func create_timer(from, waittime: float, method: Callable):
 	var timer = Timer.new()

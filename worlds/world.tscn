@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://jclvt32ljvci"]
+[gd_scene load_steps=12 format=3 uid="uid://n8m115wqrcrm"]
 
 [ext_resource type="PackedScene" uid="uid://b7mbrqybxoisl" path="res://characters/cat/cat.tscn" id="1_07w7r"]
 [ext_resource type="TileSet" uid="uid://dg4svapr2okm6" path="res://proto/proto-tile.tres" id="1_xg3mb"]
@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bxqx6alven6qm" path="res://characters/dummy/dummy_active.tscn" id="6_hi1kg"]
 [ext_resource type="PackedScene" uid="uid://d4hiieli7o65a" path="res://characters/flor/flor.tscn" id="7_0jjgk"]
 [ext_resource type="Texture2D" uid="uid://bvmxub0q1sk22" path="res://proto/proto-circle.png" id="8_aoqwp"]
-[ext_resource type="PackedScene" uid="uid://c6so8fhcw6te3" path="res://characters/trader/trader.tscn" id="9_d3gql"]
+[ext_resource type="PackedScene" uid="uid://cm3jcu6fi0eu4" path="res://characters/shop/shop.tscn" id="9_d3gql"]
 
 [sub_resource type="GDScript" id="GDScript_5bryh"]
 resource_name = "Portal"
@@ -62,5 +62,5 @@ texture = ExtResource("8_aoqwp")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Portal"]
 shape = SubResource("CircleShape2D_0cclb")
 
-[node name="Trader" parent="." instance=ExtResource("9_d3gql")]
-position = Vector2(0, 94)
+[node name="Shop" parent="." instance=ExtResource("9_d3gql")]
+position = Vector2(0, 139)

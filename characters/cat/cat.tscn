@@ -1,4 +1,4 @@
-[gd_scene load_steps=120 format=3 uid="uid://b7mbrqybxoisl"]
+[gd_scene load_steps=118 format=3 uid="uid://b7mbrqybxoisl"]
 
 [ext_resource type="Script" path="res://characters/cat/cat.gd" id="1_in7u4"]
 [ext_resource type="Texture2D" uid="uid://cpymps6ec432t" path="res://characters/cat/cat.png" id="1_y0c4x"]
@@ -1313,41 +1313,6 @@ gradient = SubResource("Gradient_6oaxl")
 width = 150
 height = 40
 
-[sub_resource type="GDScript" id="GDScript_sxgiq"]
-resource_name = "Analog"
-script/source = "extends CanvasLayer
-
-var velocity: Vector2
-
-func _ready():
-	$MarginContainer/Analog.visible = Utils.android_mode
-
-func _input(event):
-	if $MarginContainer/Analog.button_pressed:
-		if event is InputEventScreenDrag:
-			velocity = ((event.position - $MarginContainer/Analog.global_position) - ($MarginContainer/Analog.custom_minimum_size / 2)).normalized()
-	else: velocity = Vector2()
-
-func _physics_process(delta):
-	$MarginContainer/Inventory/Label.text = str(Utils.player)
-"
-
-[sub_resource type="GDScript" id="GDScript_67yb8"]
-resource_name = "Trade"
-script/source = "extends PanelContainer
-
-var items = [0, 1]
-var shop_item = preload(\"res://assets/shop_item.tscn\")
-
-func _ready(): 
-	$VB/Button.pressed.connect(func(): self.hide())
-	for i in items:
-		var item = shop_item.instantiate()
-		item.id = i
-		item.text = str(i)
-		$VB/VB.add_child(item)
-"
-
 [node name="Cat" type="CharacterBody2D" groups=["cat"]]
 collision_layer = 2
 collision_mask = 7
@@ -1363,7 +1328,7 @@ texture_repeat = 1
 texture = ExtResource("1_y0c4x")
 hframes = 10
 vframes = 40
-frame = 74
+frame = 72
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimationTree")
@@ -1420,59 +1385,3 @@ visible = false
 texture = SubResource("GradientTexture2D_ik01q")
 centered = false
 offset = Vector2(0, -20)
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-script = SubResource("GDScript_sxgiq")
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_top = 40
-theme_override_constants/margin_right = 40
-theme_override_constants/margin_bottom = 40
-
-[node name="Analog" type="Button" parent="CanvasLayer/MarginContainer"]
-custom_minimum_size = Vector2(216, 216)
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-mouse_filter = 2
-keep_pressed_outside = true
-
-[node name="Inventory" type="PanelContainer" parent="CanvasLayer/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-mouse_filter = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/Inventory"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-
-[node name="Trade" type="PanelContainer" parent="CanvasLayer/MarginContainer"]
-visible = false
-layout_mode = 2
-script = SubResource("GDScript_67yb8")
-
-[node name="VB" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Trade"]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="CanvasLayer/MarginContainer/Trade/VB"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-size_flags_horizontal = 8
-focus_mode = 0
-text = "X"
-flat = true
-
-[node name="VB" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Trade/VB"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-alignment = 1

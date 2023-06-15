@@ -7,7 +7,7 @@ var text: String
 var id: int
 
 var buy: Callable = func():
-	Utils.orb_del(1, 2)
+	Player.buy(1, 2, 1)
 
 func _ready():
 	$Label.text = text

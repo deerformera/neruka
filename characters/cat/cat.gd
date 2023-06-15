@@ -50,7 +50,7 @@ func _input(event):
 		"normal":
 			if event.is_action_pressed("n_attack"):
 				if $InteractArea.get_overlapping_bodies():
-					$CanvasLayer/MarginContainer/Trade.show()
+					Player.get_node("M/Shop").show()
 				else:
 					animstate.travel("attack1")
 			
