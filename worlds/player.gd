@@ -1,16 +1,17 @@
 extends Node
 
-var perks: Array = []
+var perks: Array = [0, 1, 2, 3]
+var perks_equipped: Array = [-1, -1, -1, -1]
 var orbs: Array = []
 
-func orb_add(id):
+func orb_add(id: int):
 	for orb in orbs:
 		if orb[0] == id:
 			orb[1] += 1
 			return
 	orbs.append([id, 1])
 
-func orb_del(id, val) -> bool:
+func orb_del(id: int, val: int) -> bool:
 	for orb in orbs:
 		if orb[0] == id:
 			if orb[1] >= val:
@@ -19,11 +20,16 @@ func orb_del(id, val) -> bool:
 				return true
 	return false
 
-func perk_add(id):
+func perk_add(id: int):
 	if !perks.has(id):
 		perks.append(id)
 
-func buy(orb_id, orb_val, perk_id) -> bool:
+func perk_equip(id):
+	if perks_equipped.has(id):
+		return false
+	perks_equipped[perks_equipped.find(-1)] = id
+
+func buy(orb_id: int, orb_val: int, perk_id: int) -> bool:
 	for orb in orbs:
 		if orb[0] == orb_id:
 			if orb[1] >= orb_val && !perks.has(perk_id):
