@@ -24,7 +24,6 @@ script/source = "extends PanelContainer
 
 func _physics_process(delta):
 	$VB/Label0.text = str(Player.orbs)
-	$VB/Label1.text = str(Player.perks)
 "
 
 [sub_resource type="GDScript" id="GDScript_vhr30"]
@@ -120,11 +119,6 @@ script = SubResource("GDScript_pp2qt")
 layout_mode = 2
 
 [node name="Label0" type="Label" parent="M/Inventory/VB"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-
-[node name="Label1" type="Label" parent="M/Inventory/VB"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0

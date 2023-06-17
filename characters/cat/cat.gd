@@ -26,7 +26,7 @@ func _ready():
 		self.health -= value
 		if self.health <= 0: self.die())
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	match animstate.get_current_node():
 		"normal":
 			velocity = Input.get_vector("n_left", "n_right", "n_up", "n_down")

@@ -1248,7 +1248,7 @@ script/source = "extends AnimationTree
 
 var velocity: Vector2
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	velocity = get_parent().velocity_static
 	self.set(\"parameters/normal/walk/blend_position\", velocity)
 	self.set(\"parameters/normal/sit/blend_position\", velocity)
@@ -1270,7 +1270,7 @@ func _ready(): self.connect(\"body_entered\", func(body):
 	get_tree().root.get_camera_2d().offset -= shake
 	)
 
-func _physics_process(delta): self.rotation = get_parent().velocity_static.angle()
+func _physics_process(_delta): self.rotation = get_parent().velocity_static.angle()
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fors5"]
@@ -1298,7 +1298,7 @@ func _ready():
 	self.body_entered.connect(func(body):
 		body.interacted.emit())
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	self.rotation = get_parent().velocity_static.angle()
 "
 
@@ -1328,7 +1328,7 @@ texture_repeat = 1
 texture = ExtResource("1_y0c4x")
 hframes = 10
 vframes = 40
-frame = 70
+frame = 74
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimationTree")
