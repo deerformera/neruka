@@ -1,7 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://c3jow3sbm6cem"]
+[gd_scene load_steps=25 format=3 uid="uid://c3jow3sbm6cem"]
 
 [ext_resource type="Script" path="res://characters/dummy/dummy_semiPassive.gd" id="1_3bjsk"]
 [ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="2_76vlw"]
+[ext_resource type="PackedScene" uid="uid://b448a7me0sw4i" path="res://assets/indicator.tscn" id="3_phxgm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8sksd"]
 size = Vector2(32, 32)
@@ -144,8 +145,8 @@ script/source = "extends Area2D
 	get_parent().animstate.travel(\"avoid\"))
 
 func _ready():
-	self.body_entered.connect(func(body): detect_timer.start())
-	self.body_exited.connect(func(body): detect_timer.stop())
+	self.body_entered.connect(func(_body): detect_timer.start())
+	self.body_exited.connect(func(_body): detect_timer.stop())
 
 func detect():
 	if self.get_overlapping_bodies().is_empty(): 
@@ -187,3 +188,5 @@ script = SubResource("GDScript_q5qqk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea"]
 shape = SubResource("CircleShape2D_b78uu")
+
+[node name="Indicator" parent="." instance=ExtResource("3_phxgm")]

@@ -2,16 +2,22 @@ extends CharacterBody2D
 
 signal damaged
 signal knocked
+signal health_changed
 
 @export_category("Properties")
-@export_range(0, 9999) var health = 1
 @export_range(0, 9999) var damage = 1
+@export_range(0, 9999) var health = 1 :
+	set(value):
+		health_changed.emit(value)
+		health = value
 
 @onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get("parameters/playback")
 @onready var bullet := preload("res://assets/projectiles/fiora_bullet.tscn")
 @onready var orb := preload("res://assets/orb.tscn")
 
 func _ready():
+	add_child(load("res://assets/indicator_boss.tscn").instantiate())
+	
 	damaged.connect(func(value: int):
 		self.health -= value
 		if self.health <= 0: self.die())

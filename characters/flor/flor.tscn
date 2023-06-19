@@ -1,7 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://d4hiieli7o65a"]
+[gd_scene load_steps=25 format=3 uid="uid://d4hiieli7o65a"]
 
 [ext_resource type="Script" path="res://characters/flor/flor.gd" id="1_2ebwd"]
 [ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="2_i0tao"]
+[ext_resource type="PackedScene" uid="uid://b448a7me0sw4i" path="res://assets/indicator.tscn" id="3_g7akc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_micfy"]
 
@@ -109,8 +110,8 @@ script/source = "extends Area2D
 	get_parent().animstate.travel(\"chase\"))
 
 func _ready():
-	self.body_entered.connect(func(body): detect_timer.start())
-	self.body_exited.connect(func(body): detect_timer.stop())
+	self.body_entered.connect(func(_body): detect_timer.start())
+	self.body_exited.connect(func(_body): detect_timer.stop())
 
 func detect():
 	if self.get_overlapping_bodies().is_empty(): 
@@ -150,3 +151,5 @@ script = SubResource("GDScript_b5k5n")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea"]
 shape = SubResource("CircleShape2D_uy7j8")
+
+[node name="Indicator" parent="." instance=ExtResource("3_g7akc")]

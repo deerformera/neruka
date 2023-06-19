@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkibqcwm6r0we"]
+
+[sub_resource type="GDScript" id="GDScript_71cxi"]
+script/source = "extends CanvasLayer
+
+func _ready():
+	$M/ProgressBar.max_value = get_parent().health
+	$M/ProgressBar.value = get_parent().health
+	get_parent().health_changed.connect(func(val): $M/ProgressBar.value = val)
+"
+
+[node name="IndicatorBoss" type="CanvasLayer"]
+script = SubResource("GDScript_71cxi")
+
+[node name="M" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 100
+
+[node name="ProgressBar" type="ProgressBar" parent="M"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+show_percentage = false
+
+[node name="Label" type="Label" parent="M/ProgressBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Fiora"
+horizontal_alignment = 1
+vertical_alignment = 1

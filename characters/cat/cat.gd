@@ -25,6 +25,11 @@ func _ready():
 		velocity = Vector2.ZERO
 		self.health -= value
 		if self.health <= 0: self.die())
+	
+	var t = Utils.create_timer(self, 1, func(): print(Player.perks_equipped))
+#	var t = Utils.create_timer(self, 1, func(): print("health: ",health, " - ", "speed: ", speed))
+	t.one_shot = false
+#	t.start()
 
 func _physics_process(_delta):
 	match animstate.get_current_node():

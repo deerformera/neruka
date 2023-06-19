@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://des1n1g7bn2cg"]
+[gd_scene load_steps=8 format=3 uid="uid://tnn70k1hd2j8"]
 
 [ext_resource type="Script" path="res://worlds/player.gd" id="1_101xg"]
+[ext_resource type="Texture2D" uid="uid://ctxds414rsmge" path="res://assets/textures/bag.png" id="2_qcvxs"]
 
 [sub_resource type="GDScript" id="GDScript_piude"]
 resource_name = "Analog"
@@ -22,7 +23,7 @@ func _input(event):
 resource_name = "Inventory"
 script/source = "extends PanelContainer
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	$VB/Label0.text = str(Player.orbs)
 "
 
@@ -124,6 +125,7 @@ size_flags_horizontal = 8
 size_flags_vertical = 0
 
 [node name="Menu" type="Control" parent="M"]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 script = SubResource("GDScript_vhr30")
@@ -134,12 +136,14 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -50.0
-offset_bottom = 50.0
+offset_left = -56.0
+offset_bottom = 56.0
 grow_horizontal = 0
 size_flags_horizontal = 10
 size_flags_vertical = 2
 focus_mode = 0
+icon = ExtResource("2_qcvxs")
+flat = true
 
 [node name="PanelContainer" type="PanelContainer" parent="M/Menu"]
 visible = false

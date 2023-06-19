@@ -9,7 +9,7 @@
 script/source = "extends Area2D
 
 func _ready():
-	body_entered.connect(func(body):
+	body_entered.connect(func(_body):
 		get_tree().change_scene_to_file(\"res://worlds/world.tscn\"))
 "
 
@@ -27,8 +27,6 @@ layer_0/tile_data = PackedInt32Array(851993, 589824, 2, 786457, 589824, 2, 72092
 [node name="Cat" parent="." instance=ExtResource("2_t0fed")]
 health = 9999
 
-[node name="Fiora" parent="." instance=ExtResource("3_n5c3l")]
-
 [node name="Teleport" type="Area2D" parent="."]
 position = Vector2(-454, 0)
 collision_layer = 0
@@ -41,3 +39,6 @@ texture = ExtResource("4_fhdar")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Teleport"]
 shape = SubResource("CircleShape2D_a1hed")
+
+[node name="Fiora" parent="." instance=ExtResource("3_n5c3l")]
+health = 10

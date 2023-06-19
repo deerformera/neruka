@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://b448a7me0sw4i"]
+
+[ext_resource type="Texture2D" uid="uid://cnxvnfs3vta0h" path="res://assets/textures/progress_under.png" id="1_tu1eq"]
+[ext_resource type="Texture2D" uid="uid://b4dfughvusa5x" path="res://assets/textures/progress_progress.png" id="2_dfgnm"]
+
+[sub_resource type="GDScript" id="GDScript_5sf01"]
+script/source = "extends Node2D
+
+func _ready():
+	$Bar.max_value = $\"../DetectArea\".detect_timer.wait_time * 10
+
+func _physics_process(_delta):
+	if $\"..\".animstate.get_current_node() == \"normal\":
+		self.visible = !$\"../DetectArea\".detect_timer.is_stopped()
+		$Bar.value = ($\"../DetectArea\".detect_timer.wait_time - $\"../DetectArea\".detect_timer.time_left) * 10
+	else:
+		self.visible = false
+"
+
+[node name="Indicator" type="Node2D"]
+visible = false
+position = Vector2(-24, -24)
+script = SubResource("GDScript_5sf01")
+
+[node name="Bar" type="TextureProgressBar" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+fill_mode = 3
+texture_under = ExtResource("1_tu1eq")
+texture_progress = ExtResource("2_dfgnm")

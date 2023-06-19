@@ -1,7 +1,10 @@
 extends Node
 
 var perks: Array = [0, 1, 2, 3]
-var perks_equipped: Array = [-1, -1, -1, -1]
+var perks_equipped: Array = [-1, -1, -1, -1]:
+	set(new_perks_equipped):
+		print(new_perks_equipped)
+
 var orbs: Array = []
 
 func orb_add(id: int):
@@ -28,6 +31,7 @@ func perk_equip(id):
 	if perks_equipped.has(id):
 		return false
 	perks_equipped[perks_equipped.find(-1)] = id
+	perks_equipped = perks_equipped
 
 func buy(orb_id: int, orb_val: int, perk_id: int) -> bool:
 	for orb in orbs:

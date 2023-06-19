@@ -1,5 +1,8 @@
 extends StaticBody2D
 
+signal damaged
+signal knocked
+
 @export_category("Properties")
 @export_range(0, 9999) var health = 1
 @export_range(0, 9999) var damage = 1
@@ -7,18 +10,23 @@ extends StaticBody2D
 
 @onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get("parameters/playback")
 
-func _physics_process(delta):
+func _ready():
+	self.damaged.connect(func(value: int):
+		animstate.travel("hurt")
+		self.health -= value
+		if self.health <= 0: self.die())
+	
+	self.knocked.connect(func(value: Vector2):
+		animstate.travel("knock")
+		create_tween().tween_property(self, "global_position", global_position + value * 25, 0.5).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT))
+
+func _physics_process(_delta):
 	if animstate.get_current_node() == "":
 		var cat: CharacterBody2D = get_tree().get_first_node_in_group("cat")
 #		self.global_position -= (cat.global_position - self.global_position).normalized() * speed
 
-func damaged(value):
-	animstate.travel("hurt")
-	self.health -= value
-	if self.health <= 0: self.queue_free()
-
-func knocked(value):
-	animstate.travel("knock")
-	self.global_position += value * 10
+func die():
+	print(self.name, " died")
+	queue_free()
 
 #func calm(): animstate.travel("normal")

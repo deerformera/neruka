@@ -1,7 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://bxqx6alven6qm"]
+[gd_scene load_steps=27 format=3 uid="uid://bxqx6alven6qm"]
 
 [ext_resource type="Script" path="res://characters/dummy/dummy_active.gd" id="1_gvb65"]
 [ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="1_j76go"]
+[ext_resource type="PackedScene" uid="uid://b448a7me0sw4i" path="res://assets/indicator.tscn" id="3_slhud"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_iuxgq"]
 size = Vector2(32, 32)
@@ -122,16 +123,21 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s2hbl"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c3mjp"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6unaj"]
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_a7ngy"]
 states/chase/node = SubResource("AnimationNodeAnimation_kn8ci")
 states/chase/position = Vector2(525, 100)
 states/hurt/node = SubResource("AnimationNodeAnimation_40ut7")
-states/hurt/position = Vector2(343, 39)
+states/hurt/position = Vector2(525, 19)
 states/knock/node = SubResource("AnimationNodeAnimation_0r1ta")
-states/knock/position = Vector2(343, 163)
+states/knock/position = Vector2(525, 182)
 states/normal/node = SubResource("AnimationNodeAnimation_7jle6")
 states/normal/position = Vector2(343, 100)
-transitions = ["Start", "normal", SubResource("AnimationNodeStateMachineTransition_ysttm"), "chase", "normal", SubResource("AnimationNodeStateMachineTransition_oc4do"), "normal", "chase", SubResource("AnimationNodeStateMachineTransition_aarng"), "hurt", "chase", SubResource("AnimationNodeStateMachineTransition_wwluo"), "knock", "chase", SubResource("AnimationNodeStateMachineTransition_25qrn"), "normal", "knock", SubResource("AnimationNodeStateMachineTransition_il3qc"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_s2hbl")]
+transitions = ["Start", "normal", SubResource("AnimationNodeStateMachineTransition_ysttm"), "chase", "normal", SubResource("AnimationNodeStateMachineTransition_oc4do"), "normal", "chase", SubResource("AnimationNodeStateMachineTransition_aarng"), "hurt", "chase", SubResource("AnimationNodeStateMachineTransition_wwluo"), "knock", "chase", SubResource("AnimationNodeStateMachineTransition_25qrn"), "normal", "knock", SubResource("AnimationNodeStateMachineTransition_il3qc"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_s2hbl"), "chase", "hurt", SubResource("AnimationNodeStateMachineTransition_c3mjp"), "chase", "knock", SubResource("AnimationNodeStateMachineTransition_6unaj")]
+graph_offset = Vector2(-12, -21)
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_5gv62"]
 
@@ -144,8 +150,8 @@ script/source = "extends Area2D
 	get_parent().animstate.travel(\"chase\"))
 
 func _ready():
-	self.body_entered.connect(func(body): detect_timer.start())
-	self.body_exited.connect(func(body): detect_timer.stop())
+	self.body_entered.connect(func(_body): detect_timer.start())
+	self.body_exited.connect(func(_body): detect_timer.stop())
 
 func detect():
 	if self.get_overlapping_bodies().is_empty(): 
@@ -187,3 +193,5 @@ script = SubResource("GDScript_s72nw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea"]
 shape = SubResource("CircleShape2D_u8gw5")
+
+[node name="Indicator" parent="." instance=ExtResource("3_slhud")]

@@ -39,14 +39,12 @@ var debug_add_orb = func():
 ]
 
 func _ready():
+	$Margin/HBox/Button.toggled.connect(func(button_pressed): $Margin/HBox/VBox.visible = button_pressed)
 	for debug_item in debug_list:
 		var b: Button = Button.new()
 		b.text = debug_item.name
 		b.pressed.connect(debug_item.fn)
 		$Margin/HBox/VBox.add_child(b)
-
-func _physics_process(delta):
-	$Margin/HBox/VBox.visible = $Margin/HBox/Button.button_pressed
 
 func create_timer(from, waittime: float, method: Callable):
 	var timer = Timer.new()
