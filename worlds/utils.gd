@@ -3,7 +3,6 @@ extends CanvasLayer
 var android_mode = 0
 
 var dummies := {
-	"dummy": preload("res://characters/dummy/dummy.tscn"),
 	"dummy_active": preload("res://characters/dummy/dummy_active.tscn"),
 	"dummy_passive": preload("res://characters/dummy/dummy_passive.tscn"),
 	"dummy_semipassive": preload("res://characters/dummy/dummy_semiPassive.tscn")

@@ -54,10 +54,10 @@ func _input(event):
 	match animstate.get_current_node():
 		"normal":
 			if event.is_action_pressed("n_attack"):
-				if $InteractArea.get_overlapping_bodies():
-					Player.get_node("M/Shop").show()
-				else:
+				if $InteractArea.get_overlapping_bodies().is_empty():
 					animstate.travel("attack1")
+				else:
+					$InteractArea.get_overlapping_bodies()[0].activated.emit()
 			
 			if event.is_action_pressed("n_leap"):
 				leap_timer.start()

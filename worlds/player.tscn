@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://tnn70k1hd2j8"]
+[gd_scene load_steps=7 format=3 uid="uid://tnn70k1hd2j8"]
 
 [ext_resource type="Script" path="res://worlds/player.gd" id="1_101xg"]
-[ext_resource type="Texture2D" uid="uid://ctxds414rsmge" path="res://assets/textures/bag.png" id="2_qcvxs"]
 
 [sub_resource type="GDScript" id="GDScript_piude"]
 resource_name = "Analog"
@@ -27,62 +26,66 @@ func _physics_process(_delta):
 	$VB/Label0.text = str(Player.orbs)
 "
 
-[sub_resource type="GDScript" id="GDScript_vhr30"]
-resource_name = "Menu"
-script/source = "extends Control
-
-func _ready():
-	var refresh_perk = func():
-		$PanelContainer/VB/HB/ItemList.clear()
-		for perk in Player.perks:
-			$PanelContainer/VB/HB/ItemList.add_item(str(perk))
-	
-	var refresh_equipment = func():
-		for perk in Player.perks_equipped.size():
-			var btn = $PanelContainer/VB/HB/Equipment.get_node(str(perk))
-			if Player.perks_equipped[perk] == -1: btn.text = \"\"
-			else: 
-				btn.text = str(Player.perks_equipped[perk])
-				btn.button_pressed = true
-	
-	$PanelContainer/VB/Button.pressed.connect(func(): $PanelContainer.hide())
-	$Button.pressed.connect(func(): 
-		refresh_perk.call()
-		refresh_equipment.call()
-		$PanelContainer.show())
-	
-	$PanelContainer/VB/HB/ItemList.item_activated.connect(func(index):
-		Player.perk_equip(int($PanelContainer/VB/HB/ItemList.get_item_text(index)))
-		refresh_equipment.call()
-	)
-	
-	for child in $PanelContainer/VB/HB/Equipment.get_children():
-		child.toggled.connect(func(pressed):
-			if pressed:
-				if child.text == \"\": child.button_pressed = false
-			else:
-				var index = int(String(child.name))
-				Player.perks_equipped[index] = -1
-				refresh_equipment.call()
-			)
-"
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_503hx"]
-
 [sub_resource type="GDScript" id="GDScript_vggsb"]
 resource_name = "Shop"
 script/source = "extends PanelContainer
 
-var items = [0, 1]
 var shop_item = preload(\"res://assets/shop_item.tscn\")
 
 func _ready(): 
 	$VB/Button.pressed.connect(func(): self.hide())
-	for i in items:
-		var item = shop_item.instantiate()
-		item.id = i
-		item.text = str(i)
-		$VB/VB.add_child(item)
+#	for i in items:
+#		var item = shop_item.instantiate()
+#		item.set_item()
+#		$VB/VB.add_child(item)
+"
+
+[sub_resource type="GDScript" id="GDScript_7yfqb"]
+resource_name = "EquipmentButton"
+script/source = "extends CenterContainer
+
+var selected: String = \"\"
+
+func _ready():
+	var sub: Array = get_tree().get_nodes_in_group(\"sub\")
+	
+	$VBoxContainer/HB/Center.button_down.connect(func():
+		sub.map(func(node): 
+			var equipped_id = Player.equipped[node.name.to_lower()]
+			if equipped_id: 
+				node.get_node(\"Label\").text = str(equipped_id)
+			node.show()))
+	$VBoxContainer/HB/Center.button_up.connect(func():
+		if selected:
+			$\"../Equipment\".activate(selected)
+			selected = \"\"
+		sub.map(func(node): node.hide()))
+	
+	sub.map(func(node: Panel):
+		node.hide()
+		node.mouse_entered.connect(func(): selected = node.name.to_lower())
+		node.mouse_exited.connect(func(): selected = \"\")
+		)
+"
+
+[sub_resource type="GDScript" id="GDScript_c2w07"]
+resource_name = "Equipment"
+script/source = "extends MarginContainer
+
+func _ready():
+	$P/VB/HB/Button.pressed.connect(func(): self.hide())
+
+func activate(type: String):
+	$P/VB/M/HB/EquipmentList.get_children().map(func(node): node.queue_free())
+	
+	self.show()
+	$P/VB/HB/Label.text = type
+	Player.equipment[type].map(func(id: int):
+		var item = load(\"res://assets/equipment_item.tscn\")
+		item = item.instantiate()
+		item.set_item(type, id)
+		$P/VB/M/HB/EquipmentList.add_child(item)
+		)
 "
 
 [node name="Player" type="CanvasLayer"]
@@ -124,87 +127,6 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 
-[node name="Menu" type="Control" parent="M"]
-visible = false
-layout_mode = 2
-mouse_filter = 2
-script = SubResource("GDScript_vhr30")
-
-[node name="Button" type="Button" parent="M/Menu"]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -56.0
-offset_bottom = 56.0
-grow_horizontal = 0
-size_flags_horizontal = 10
-size_flags_vertical = 2
-focus_mode = 0
-icon = ExtResource("2_qcvxs")
-flat = true
-
-[node name="PanelContainer" type="PanelContainer" parent="M/Menu"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VB" type="VBoxContainer" parent="M/Menu/PanelContainer"]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="M/Menu/PanelContainer/VB"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-size_flags_horizontal = 8
-focus_mode = 0
-text = "X"
-flat = true
-
-[node name="HB" type="HBoxContainer" parent="M/Menu/PanelContainer/VB"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Equipment" type="VBoxContainer" parent="M/Menu/PanelContainer/VB/HB"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.1
-alignment = 1
-
-[node name="0" type="Button" parent="M/Menu/PanelContainer/VB/HB/Equipment"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-
-[node name="1" type="Button" parent="M/Menu/PanelContainer/VB/HB/Equipment"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-
-[node name="2" type="Button" parent="M/Menu/PanelContainer/VB/HB/Equipment"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-
-[node name="3" type="Button" parent="M/Menu/PanelContainer/VB/HB/Equipment"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-focus_mode = 0
-toggle_mode = true
-
-[node name="ItemList" type="ItemList" parent="M/Menu/PanelContainer/VB/HB"]
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_503hx")
-
 [node name="Shop" type="PanelContainer" parent="M"]
 visible = false
 layout_mode = 2
@@ -227,3 +149,136 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 alignment = 1
+
+[node name="EquipmentButton" type="CenterContainer" parent="M"]
+visible = false
+layout_mode = 2
+script = SubResource("GDScript_7yfqb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="M/EquipmentButton"]
+layout_mode = 2
+
+[node name="Sight" type="Panel" parent="M/EquipmentButton/VBoxContainer" groups=["sub"]]
+custom_minimum_size = Vector2(192, 192)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="M/EquipmentButton/VBoxContainer/Sight"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HB" type="HBoxContainer" parent="M/EquipmentButton/VBoxContainer"]
+layout_mode = 2
+
+[node name="Claw" type="Panel" parent="M/EquipmentButton/VBoxContainer/HB" groups=["sub"]]
+custom_minimum_size = Vector2(192, 192)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Label" type="Label" parent="M/EquipmentButton/VBoxContainer/HB/Claw"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Center" type="Button" parent="M/EquipmentButton/VBoxContainer/HB"]
+custom_minimum_size = Vector2(192, 192)
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+action_mode = 0
+keep_pressed_outside = true
+flat = true
+
+[node name="Consumable" type="Panel" parent="M/EquipmentButton/VBoxContainer/HB" groups=["sub"]]
+custom_minimum_size = Vector2(192, 192)
+layout_mode = 2
+mouse_filter = 1
+
+[node name="Label" type="Label" parent="M/EquipmentButton/VBoxContainer/HB/Consumable"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Ability" type="Panel" parent="M/EquipmentButton/VBoxContainer" groups=["sub"]]
+custom_minimum_size = Vector2(192, 192)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 1
+
+[node name="Label" type="Label" parent="M/EquipmentButton/VBoxContainer/Ability"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Equipment" type="MarginContainer" parent="M"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 192
+theme_override_constants/margin_top = 96
+theme_override_constants/margin_right = 192
+theme_override_constants/margin_bottom = 96
+script = SubResource("GDScript_c2w07")
+
+[node name="P" type="PanelContainer" parent="M/Equipment"]
+layout_mode = 2
+
+[node name="VB" type="VBoxContainer" parent="M/Equipment/P"]
+layout_mode = 2
+
+[node name="HB" type="HBoxContainer" parent="M/Equipment/P/VB"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="M/Equipment/P/VB/HB"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="M/Equipment/P/VB/HB"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 0
+text = "X"
+
+[node name="M" type="MarginContainer" parent="M/Equipment/P/VB"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="HB" type="HBoxContainer" parent="M/Equipment/P/VB/M"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="M/Equipment/P/VB/M/HB"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+
+[node name="EquipmentList" type="VBoxContainer" parent="M/Equipment/P/VB/M/HB"]
+layout_mode = 2
+size_flags_horizontal = 3

@@ -7,4 +7,4 @@ signal activated
 func _ready():
 	interacted.connect(func(): $Tag.show())
 	uninteracted.connect(func(): $Tag.hide())
-	activated.connect(func(): Player.get_node("M/Shop").show())
+	activated.connect(func(): pass)

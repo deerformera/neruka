@@ -7,8 +7,6 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hft17"]
 bg_color = Color(0.25098, 0.25098, 0.25098, 0.607843)
-expand_margin_left = 5.0
-expand_margin_right = 5.0
 
 [node name="Shop" type="StaticBody2D"]
 collision_layer = 8
