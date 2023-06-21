@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://d4hiieli7o65a"]
+[gd_scene load_steps=27 format=3 uid="uid://d4hiieli7o65a"]
 
 [ext_resource type="Script" path="res://characters/flor/flor.gd" id="1_2ebwd"]
 [ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="2_i0tao"]
@@ -38,16 +38,64 @@ tracks/1/keys = {
 "method": &"detect"
 }]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_7odyu"]
 resource_name = "hurt"
 length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_r2dbt"]
 resource_name = "knock"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_wap32"]
 resource_name = "normal"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_a0ta1"]
 _data = {
@@ -88,6 +136,10 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pj04p"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rf8bx"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yo3l3"]
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_w4iuf"]
 states/chase/node = SubResource("AnimationNodeAnimation_qkd7j")
 states/chase/position = Vector2(499, 105)
@@ -97,7 +149,7 @@ states/knock/node = SubResource("AnimationNodeAnimation_762jp")
 states/knock/position = Vector2(293, 32)
 states/normal/node = SubResource("AnimationNodeAnimation_7s03l")
 states/normal/position = Vector2(293, 105)
-transitions = ["Start", "normal", SubResource("AnimationNodeStateMachineTransition_8v00e"), "normal", "knock", SubResource("AnimationNodeStateMachineTransition_0cmfk"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_8bylo"), "knock", "chase", SubResource("AnimationNodeStateMachineTransition_bv1xc"), "hurt", "chase", SubResource("AnimationNodeStateMachineTransition_nu0vc"), "chase", "normal", SubResource("AnimationNodeStateMachineTransition_uec8g"), "normal", "chase", SubResource("AnimationNodeStateMachineTransition_pj04p")]
+transitions = ["Start", "normal", SubResource("AnimationNodeStateMachineTransition_8v00e"), "normal", "knock", SubResource("AnimationNodeStateMachineTransition_0cmfk"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_8bylo"), "knock", "chase", SubResource("AnimationNodeStateMachineTransition_bv1xc"), "hurt", "chase", SubResource("AnimationNodeStateMachineTransition_nu0vc"), "chase", "normal", SubResource("AnimationNodeStateMachineTransition_uec8g"), "normal", "chase", SubResource("AnimationNodeStateMachineTransition_pj04p"), "chase", "knock", SubResource("AnimationNodeStateMachineTransition_rf8bx"), "chase", "hurt", SubResource("AnimationNodeStateMachineTransition_yo3l3")]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_ujyd4"]
 
@@ -122,7 +174,7 @@ func detect():
 [sub_resource type="CircleShape2D" id="CircleShape2D_uy7j8"]
 radius = 200.0
 
-[node name="Flor" type="CharacterBody2D"]
+[node name="Flor" type="StaticBody2D"]
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_2ebwd")

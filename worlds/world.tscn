@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://2dsfu2fjdb87"]
+[gd_scene load_steps=12 format=3 uid="uid://2dsfu2fjdb87"]
 
 [ext_resource type="PackedScene" uid="uid://b7mbrqybxoisl" path="res://characters/cat/cat.tscn" id="1_07w7r"]
 [ext_resource type="TileSet" uid="uid://bnlpxkderjo88" path="res://proto/proto-tile.tres" id="1_u132i"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bxqx6alven6qm" path="res://characters/dummy/dummy_active.tscn" id="6_hi1kg"]
 [ext_resource type="PackedScene" uid="uid://d4hiieli7o65a" path="res://characters/flor/flor.tscn" id="7_0jjgk"]
 [ext_resource type="Texture2D" uid="uid://bvmxub0q1sk22" path="res://proto/proto-circle.png" id="8_aoqwp"]
+[ext_resource type="PackedScene" uid="uid://cm3jcu6fi0eu4" path="res://characters/shop/shop.tscn" id="9_sd277"]
 
 [sub_resource type="GDScript" id="GDScript_5bryh"]
 resource_name = "Portal"
@@ -63,3 +64,6 @@ position = Vector2(-136, -213)
 
 [node name="Dummy" parent="." instance=ExtResource("3_hhoal")]
 position = Vector2(152, -91)
+
+[node name="Shop" parent="." instance=ExtResource("9_sd277")]
+position = Vector2(0, 100)

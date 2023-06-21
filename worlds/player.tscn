@@ -24,6 +24,7 @@ script/source = "extends PanelContainer
 
 func _physics_process(_delta):
 	$VB/Label0.text = str(Player.orbs)
+	$VB/Label1.text = str(Player.equipment)
 "
 
 [sub_resource type="GDScript" id="GDScript_vggsb"]
@@ -31,13 +32,21 @@ resource_name = "Shop"
 script/source = "extends PanelContainer
 
 var shop_item = preload(\"res://assets/shop_item.tscn\")
+var shop_list: Array
 
-func _ready(): 
-	$VB/Button.pressed.connect(func(): self.hide())
-#	for i in items:
-#		var item = shop_item.instantiate()
-#		item.set_item()
-#		$VB/VB.add_child(item)
+func set_item(val):
+	shop_list = val
+	$VB/Button.pressed.connect(func(): 
+		$VB/VB.get_children().map(func(item): 
+			item.queue_free()
+			self.hide()))
+	
+	for list in shop_list:
+		var item = shop_item.instantiate()
+		item.item = list
+		$VB/VB.add_child(item)
+	
+	self.show()
 "
 
 [sub_resource type="GDScript" id="GDScript_7yfqb"]
@@ -108,6 +117,7 @@ custom_minimum_size = Vector2(216, 216)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
+focus_mode = 0
 mouse_filter = 2
 keep_pressed_outside = true
 script = SubResource("GDScript_piude")
@@ -126,6 +136,14 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
+mouse_filter = 1
+
+[node name="Label1" type="Label" parent="M/Inventory/VB"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+mouse_filter = 1
 
 [node name="Shop" type="PanelContainer" parent="M"]
 visible = false
@@ -141,6 +159,7 @@ custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_horizontal = 8
 focus_mode = 0
+mouse_filter = 1
 text = "X"
 flat = true
 
@@ -151,8 +170,8 @@ size_flags_vertical = 0
 alignment = 1
 
 [node name="EquipmentButton" type="CenterContainer" parent="M"]
-visible = false
 layout_mode = 2
+mouse_filter = 2
 script = SubResource("GDScript_7yfqb")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="M/EquipmentButton"]
@@ -162,6 +181,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 1
 
 [node name="Label" type="Label" parent="M/EquipmentButton/VBoxContainer/Sight"]
 layout_mode = 1
@@ -234,6 +254,7 @@ vertical_alignment = 1
 [node name="Equipment" type="MarginContainer" parent="M"]
 visible = false
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 192
 theme_override_constants/margin_top = 96
 theme_override_constants/margin_right = 192
@@ -242,6 +263,7 @@ script = SubResource("GDScript_c2w07")
 
 [node name="P" type="PanelContainer" parent="M/Equipment"]
 layout_mode = 2
+mouse_filter = 1
 
 [node name="VB" type="VBoxContainer" parent="M/Equipment/P"]
 layout_mode = 2
@@ -253,6 +275,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+mouse_filter = 1
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -261,6 +284,7 @@ custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 size_flags_horizontal = 8
 focus_mode = 0
+mouse_filter = 1
 text = "X"
 
 [node name="M" type="MarginContainer" parent="M/Equipment/P/VB"]
@@ -278,6 +302,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
+mouse_filter = 1
 
 [node name="EquipmentList" type="VBoxContainer" parent="M/Equipment/P/VB/M/HB"]
 layout_mode = 2
