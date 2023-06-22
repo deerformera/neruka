@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-var android_mode = 1
+var android_mode = 0
 
 var dummies := {
 	"dummy_active": preload("res://characters/dummy/dummy_active.tscn"),

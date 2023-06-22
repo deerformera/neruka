@@ -1,14 +1,12 @@
 extends Node
 
 var equipment: Dictionary = {
-	"sight": [],
 	"consumable": [],
 	"claw": [],
 	"ability": []
 }
 
 var equipped: Dictionary = {
-	"sight": 0,
 	"consumable": 0,
 	"claw": 0,
 	"ability": 0
