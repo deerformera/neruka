@@ -47,7 +47,6 @@ shape = SubResource("CircleShape2D_0cclb")
 
 [node name="Cat" parent="." instance=ExtResource("1_07w7r")]
 collision_mask = 15
-health = 10
 
 [node name="Flor" parent="." instance=ExtResource("7_0jjgk")]
 position = Vector2(489, 0)

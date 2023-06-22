@@ -9,9 +9,13 @@ signal knocked
 @export_range(0, 9999) var speed = 1
 
 @onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get("parameters/playback")
+@onready var damage_output = preload("res://assets/damage_output.tscn")
 
 func _ready():
 	self.damaged.connect(func(value):
+		var output = damage_output.instantiate()
+		output.get_node("Label").text = str(value)
+		add_child(output)
 		animstate.travel("hurt"))
 	
 	self.knocked.connect(func(value: Vector2):

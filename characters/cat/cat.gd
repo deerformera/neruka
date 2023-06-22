@@ -1,12 +1,11 @@
 extends CharacterBody2D
 
 signal damaged
-signal pick
 
 @export_category("Properties")
-@export_range(0, 9999) var health = 1
+@export_range(0, 9999) var health = 10
 @export_range(0, 9999) var damage = 1
-@export_range(0, 9999) var speed = 1
+@export_range(0, 9999) var speed = 200
 
 @onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get("parameters/playback")
 @onready var tween: Tween
@@ -14,22 +13,18 @@ signal pick
 	$LeapSprite.scale = Vector2(0, 1)
 	$LeapSprite.visible = true
 	create_tween().tween_property($LeapSprite, "scale", Vector2(1, 1), 0.25).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT))
-@onready var slash = preload("res://assets/slash.tscn")
 
 var velocity_static: Vector2
 var charge = false
 
 func _ready():
+	equipment()
+	
 	self.damaged.connect(func(value: int):
 		animstate.travel("hurt")
 		velocity = Vector2.ZERO
 		self.health -= value
 		if self.health <= 0: self.die())
-	
-	var t = Utils.create_timer(self, 1, func(): print(Player.perks_equipped))
-#	var t = Utils.create_timer(self, 1, func(): print("health: ",health, " - ", "speed: ", speed))
-	t.one_shot = false
-#	t.start()
 
 func _physics_process(_delta):
 	match animstate.get_current_node():
@@ -81,15 +76,21 @@ func _input(event):
 			if event.is_action_pressed("n_attack"):
 				animstate.travel("attack1")
 
-
 func attack():
 	tween = create_tween()
 	tween.tween_property(self, "global_position", global_position + velocity_static * 10, 0.1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
 	await get_tree().create_timer(0.05).timeout
 	$AttackArea/CollisionShape2D.disabled = false
-	add_child(slash.instantiate())
+	$SlashSprite.show()
 	await get_tree().create_timer(0.05).timeout
 	$AttackArea/CollisionShape2D.disabled = true
 
 func die():
 	queue_free()
+
+func equipment():
+	$Equipment.get_children().map(func(node): node.queue_free())
+	for type in Player.equipped:
+		if Player.equipped[type] != 0:
+			var eq = load("res://assets/modules/"+type+str(Player.equipped[type])+".gd")
+			$Equipment.add_child(eq.new())

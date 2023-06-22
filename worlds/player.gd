@@ -1,10 +1,10 @@
 extends Node
 
 var equipment: Dictionary = {
-	"sight": [1,2,3,4],
-	"consumable": [1,2,3,4],
-	"claw": [2,3,4],
-	"ability": [1,2,3,4]
+	"sight": [],
+	"consumable": [],
+	"claw": [],
+	"ability": []
 }
 
 var equipped: Dictionary = {
@@ -31,6 +31,10 @@ func orb_del(id: int, val: int) -> bool:
 				if orb[1] == 0: orbs.erase(orb)
 				return true
 	return false
+
+func equip(type: String, id: int):
+	equipped[type] = id
+	get_tree().get_first_node_in_group("cat").equipment()
 
 func buy(item: Dictionary):
 	for orb in orbs:

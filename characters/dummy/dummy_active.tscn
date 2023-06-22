@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bxqx6alven6qm"]
+[gd_scene load_steps=26 format=3 uid="uid://bxqx6alven6qm"]
 
 [ext_resource type="Script" path="res://characters/dummy/dummy_active.gd" id="1_gvb65"]
 [ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="1_j76go"]
@@ -11,31 +11,31 @@ size = Vector2(32, 32)
 resource_name = "chase"
 length = 3.0
 loop_mode = 1
-tracks/0/type = "value"
+tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/path = NodePath("DetectArea")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 0.882353, 0.882353, 1)]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("DetectArea")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(3),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
 "method": &"detect"
 }]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0.882353, 0.882353, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_wwx8v"]
@@ -44,7 +44,7 @@ length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/path = NodePath("Sprite2D:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -59,7 +59,7 @@ resource_name = "knock"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/path = NodePath("Sprite2D:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -74,7 +74,7 @@ resource_name = "normal"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:self_modulate")
+tracks/0/path = NodePath("Sprite2D:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -98,8 +98,8 @@ animation = &"chase"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_40ut7"]
 animation = &"hurt"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0r1ta"]
-animation = &"normal"
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_b3wdq"]
+animation = &"knock"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7jle6"]
 animation = &"normal"
@@ -115,28 +115,26 @@ advance_mode = 2
 switch_mode = 2
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_25qrn"]
-switch_mode = 2
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_il3qc"]
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s2hbl"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c3mjp"]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6unaj"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_i4mwc"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_45et8"]
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_a7ngy"]
 states/chase/node = SubResource("AnimationNodeAnimation_kn8ci")
 states/chase/position = Vector2(525, 100)
 states/hurt/node = SubResource("AnimationNodeAnimation_40ut7")
 states/hurt/position = Vector2(525, 19)
-states/knock/node = SubResource("AnimationNodeAnimation_0r1ta")
-states/knock/position = Vector2(525, 182)
+states/knock/node = SubResource("AnimationNodeAnimation_b3wdq")
+states/knock/position = Vector2(525, 171)
 states/normal/node = SubResource("AnimationNodeAnimation_7jle6")
 states/normal/position = Vector2(343, 100)
-transitions = ["Start", "normal", SubResource("AnimationNodeStateMachineTransition_ysttm"), "chase", "normal", SubResource("AnimationNodeStateMachineTransition_oc4do"), "normal", "chase", SubResource("AnimationNodeStateMachineTransition_aarng"), "hurt", "chase", SubResource("AnimationNodeStateMachineTransition_wwluo"), "knock", "chase", SubResource("AnimationNodeStateMachineTransition_25qrn"), "normal", "knock", SubResource("AnimationNodeStateMachineTransition_il3qc"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_s2hbl"), "chase", "hurt", SubResource("AnimationNodeStateMachineTransition_c3mjp"), "chase", "knock", SubResource("AnimationNodeStateMachineTransition_6unaj")]
+transitions = ["Start", "normal", SubResource("AnimationNodeStateMachineTransition_ysttm"), "chase", "normal", SubResource("AnimationNodeStateMachineTransition_oc4do"), "normal", "chase", SubResource("AnimationNodeStateMachineTransition_aarng"), "hurt", "chase", SubResource("AnimationNodeStateMachineTransition_wwluo"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_s2hbl"), "chase", "hurt", SubResource("AnimationNodeStateMachineTransition_c3mjp"), "knock", "chase", SubResource("AnimationNodeStateMachineTransition_i4mwc"), "chase", "knock", SubResource("AnimationNodeStateMachineTransition_45et8")]
 graph_offset = Vector2(-12, -21)
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_5gv62"]
@@ -172,6 +170,7 @@ speed = 2
 shape = SubResource("RectangleShape2D_iuxgq")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 0.882353, 0.882353, 1)
 self_modulate = Color(1, 0.882353, 0.882353, 1)
 texture = ExtResource("1_j76go")
 

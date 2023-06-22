@@ -4,19 +4,20 @@
 script/source = "extends HBoxContainer
 
 func set_item(type, id):
-	$Label.text = str(id)
-	$Button.pressed.connect(func():
-		Player.equipped[type] = id)
+	$ItemButton.text = str(id)
+	$UseButton.pressed.connect(func():
+		Player.equip(type, id))
 "
 
 [node name="EquipmentItem" type="HBoxContainer"]
 script = SubResource("GDScript_2wy32")
 
-[node name="Label" type="Label" parent="."]
+[node name="ItemButton" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 0
 
-[node name="Button" type="Button" parent="."]
+[node name="UseButton" type="Button" parent="."]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 focus_mode = 0

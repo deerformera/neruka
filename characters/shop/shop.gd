@@ -12,7 +12,7 @@ var shop_list: Array = [
 	},
 	{
 		"type": "sight",
-		"id": 2,
+		"id": 1,
 		"price": [1, 2]
 	},
 	{

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://tnn70k1hd2j8"]
+[gd_scene load_steps=8 format=3 uid="uid://tnn70k1hd2j8"]
 
 [ext_resource type="Script" path="res://worlds/player.gd" id="1_101xg"]
 
@@ -25,28 +25,6 @@ script/source = "extends PanelContainer
 func _physics_process(_delta):
 	$VB/Label0.text = str(Player.orbs)
 	$VB/Label1.text = str(Player.equipment)
-"
-
-[sub_resource type="GDScript" id="GDScript_vggsb"]
-resource_name = "Shop"
-script/source = "extends PanelContainer
-
-var shop_item = preload(\"res://assets/shop_item.tscn\")
-var shop_list: Array
-
-func set_item(val):
-	shop_list = val
-	$VB/Button.pressed.connect(func(): 
-		$VB/VB.get_children().map(func(item): 
-			item.queue_free()
-			self.hide()))
-	
-	for list in shop_list:
-		var item = shop_item.instantiate()
-		item.item = list
-		$VB/VB.add_child(item)
-	
-	self.show()
 "
 
 [sub_resource type="GDScript" id="GDScript_7yfqb"]
@@ -77,6 +55,28 @@ func _ready():
 		)
 "
 
+[sub_resource type="GDScript" id="GDScript_vggsb"]
+resource_name = "Shop"
+script/source = "extends PanelContainer
+
+var shop_item = preload(\"res://assets/shop_item.tscn\")
+var shop_list: Array
+
+func set_item(val):
+	shop_list = val
+	$VB/Button.pressed.connect(func(): 
+		$VB/VB.get_children().map(func(item): 
+			item.queue_free()
+			self.hide()))
+	
+	for list in shop_list:
+		var item = shop_item.instantiate()
+		item.item = list
+		$VB/VB.add_child(item)
+	
+	self.show()
+"
+
 [sub_resource type="GDScript" id="GDScript_c2w07"]
 resource_name = "Equipment"
 script/source = "extends MarginContainer
@@ -93,9 +93,16 @@ func activate(type: String):
 		var item = load(\"res://assets/equipment_item.tscn\")
 		item = item.instantiate()
 		item.set_item(type, id)
-		$P/VB/M/HB/EquipmentList.add_child(item)
+		item.get_node(\"ItemButton\").pressed.connect(func():
+			var data = JSON.parse_string(FileAccess.open(\"res://assets/modules/\"+type+\".json\", FileAccess.READ).get_as_text())
+			$P/VB/M/HB/Label.text = data[str(id)]
+			
 		)
+		$P/VB/M/HB/EquipmentList.add_child(item))
 "
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cen4y"]
+bg_color = Color(0, 0, 0, 0.223529)
 
 [node name="Player" type="CanvasLayer"]
 script = ExtResource("1_101xg")
@@ -144,30 +151,6 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 mouse_filter = 1
-
-[node name="Shop" type="PanelContainer" parent="M"]
-visible = false
-layout_mode = 2
-mouse_filter = 2
-script = SubResource("GDScript_vggsb")
-
-[node name="VB" type="VBoxContainer" parent="M/Shop"]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="M/Shop/VB"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-size_flags_horizontal = 8
-focus_mode = 0
-mouse_filter = 1
-text = "X"
-flat = true
-
-[node name="VB" type="VBoxContainer" parent="M/Shop/VB"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-alignment = 1
 
 [node name="EquipmentButton" type="CenterContainer" parent="M"]
 layout_mode = 2
@@ -251,6 +234,30 @@ grow_vertical = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Shop" type="PanelContainer" parent="M"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+script = SubResource("GDScript_vggsb")
+
+[node name="VB" type="VBoxContainer" parent="M/Shop"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="M/Shop/VB"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 0
+mouse_filter = 1
+text = "X"
+flat = true
+
+[node name="VB" type="VBoxContainer" parent="M/Shop/VB"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+alignment = 1
+
 [node name="Equipment" type="MarginContainer" parent="M"]
 visible = false
 layout_mode = 2
@@ -303,6 +310,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 mouse_filter = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_cen4y")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="EquipmentList" type="VBoxContainer" parent="M/Equipment/P/VB/M/HB"]
 layout_mode = 2

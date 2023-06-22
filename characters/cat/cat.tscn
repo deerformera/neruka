@@ -1,9 +1,67 @@
-[gd_scene load_steps=118 format=3 uid="uid://b7mbrqybxoisl"]
+[gd_scene load_steps=125 format=3 uid="uid://b7mbrqybxoisl"]
 
 [ext_resource type="Script" path="res://characters/cat/cat.gd" id="1_in7u4"]
 [ext_resource type="Texture2D" uid="uid://cpymps6ec432t" path="res://characters/cat/cat.png" id="1_y0c4x"]
+[ext_resource type="Texture2D" uid="uid://byy86dpfgkvug" path="res://assets/textures/slash.png" id="3_71yno"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pkkab"]
+
+[sub_resource type="Gradient" id="Gradient_6oaxl"]
+colors = PackedColorArray(1, 1, 1, 0, 0.423529, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ik01q"]
+gradient = SubResource("Gradient_6oaxl")
+width = 150
+height = 40
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ibrfy"]
+atlas = ExtResource("3_71yno")
+region = Rect2(0, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pr1m3"]
+atlas = ExtResource("3_71yno")
+region = Rect2(40, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gqslq"]
+atlas = ExtResource("3_71yno")
+region = Rect2(80, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gbiwf"]
+atlas = ExtResource("3_71yno")
+region = Rect2(120, 0, 40, 40)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_aksuy"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ibrfy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pr1m3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gqslq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gbiwf")
+}],
+"loop": false,
+"name": &"default",
+"speed": 40.0
+}]
+
+[sub_resource type="GDScript" id="GDScript_slu4p"]
+script/source = "extends AnimatedSprite2D
+
+func _ready():
+	animation_finished.connect(func(): hide())
+	draw.connect(func():
+		self.rotation = get_parent().velocity_static.angle()
+		self.flip_v = false
+		self.play()
+		if get_parent().animstate.get_current_node() == \"attack2\": 
+			flip_v = true)
+"
 
 [sub_resource type="Animation" id="Animation_helbl"]
 resource_name = "attack1_down"
@@ -1305,22 +1363,16 @@ func _physics_process(_delta):
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xv3rt"]
 size = Vector2(40, 40)
 
-[sub_resource type="Gradient" id="Gradient_6oaxl"]
-colors = PackedColorArray(1, 1, 1, 0, 0.423529, 1, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_ik01q"]
-gradient = SubResource("Gradient_6oaxl")
-width = 150
-height = 40
-
 [node name="Cat" type="CharacterBody2D" groups=["cat"]]
 collision_layer = 2
 collision_mask = 7
 script = ExtResource("1_in7u4")
-speed = 200
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_pkkab")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -1328,7 +1380,20 @@ texture_repeat = 1
 texture = ExtResource("1_y0c4x")
 hframes = 10
 vframes = 40
-frame = 76
+frame = 72
+
+[node name="LeapSprite" type="Sprite2D" parent="."]
+visible = false
+texture = SubResource("GradientTexture2D_ik01q")
+centered = false
+offset = Vector2(0, -20)
+
+[node name="SlashSprite" type="AnimatedSprite2D" parent="."]
+show_behind_parent = true
+sprite_frames = SubResource("SpriteFrames_aksuy")
+autoplay = "default"
+offset = Vector2(20, 0)
+script = SubResource("GDScript_slu4p")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../AnimationTree")
@@ -1348,9 +1413,6 @@ parameters/normal/playback = SubResource("AnimationNodeStateMachinePlayback_lwjg
 parameters/normal/sit/blend_position = Vector2(-0.00559551, 0.0655022)
 parameters/normal/walk/blend_position = Vector2(-0.840128, 0.781659)
 script = SubResource("GDScript_5ud76")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
 
 [node name="AttackArea" type="Area2D" parent="."]
 collision_layer = 0
@@ -1380,8 +1442,4 @@ script = SubResource("GDScript_hshfq")
 position = Vector2(20, 0)
 shape = SubResource("RectangleShape2D_xv3rt")
 
-[node name="LeapSprite" type="Sprite2D" parent="."]
-visible = false
-texture = SubResource("GradientTexture2D_ik01q")
-centered = false
-offset = Vector2(0, -20)
+[node name="Equipment" type="Node" parent="."]
