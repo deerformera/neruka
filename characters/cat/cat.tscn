@@ -54,6 +54,7 @@ animations = [{
 script/source = "extends AnimatedSprite2D
 
 func _ready():
+	hide()
 	animation_finished.connect(func(): hide())
 	draw.connect(func():
 		self.rotation = get_parent().velocity_static.angle()
@@ -1380,7 +1381,7 @@ texture_repeat = 1
 texture = ExtResource("1_y0c4x")
 hframes = 10
 vframes = 40
-frame = 72
+frame = 73
 
 [node name="LeapSprite" type="Sprite2D" parent="."]
 visible = false
@@ -1391,7 +1392,6 @@ offset = Vector2(0, -20)
 [node name="SlashSprite" type="AnimatedSprite2D" parent="."]
 show_behind_parent = true
 sprite_frames = SubResource("SpriteFrames_aksuy")
-autoplay = "default"
 offset = Vector2(20, 0)
 script = SubResource("GDScript_slu4p")
 

@@ -30,7 +30,7 @@ func _physics_process(_delta):
 	match animstate.get_current_node():
 		"normal":
 			velocity = Input.get_vector("n_left", "n_right", "n_up", "n_down")
-			if Utils.android_mode: velocity = $Analog.velocity
+			if Utils.android_mode: velocity = Player.get_node("Mobile").velocity
 			if $LeapSprite.visible:
 				velocity = velocity * speed / 2
 			else: velocity = velocity * speed
@@ -68,7 +68,6 @@ func _input(event):
 				else:
 					create_tween().tween_property(self, "global_position", global_position + velocity_static * 100, 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 					leap_timer.stop()
-		
 		"attack1":
 			if event.is_action_pressed("n_attack"):
 				animstate.travel("attack2")

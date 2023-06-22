@@ -1,22 +1,51 @@
-[gd_scene load_steps=8 format=3 uid="uid://tnn70k1hd2j8"]
+[gd_scene load_steps=14 format=3 uid="uid://tnn70k1hd2j8"]
 
 [ext_resource type="Script" path="res://worlds/player.gd" id="1_101xg"]
 
-[sub_resource type="GDScript" id="GDScript_piude"]
-resource_name = "Analog"
-script/source = "extends Button
+[sub_resource type="GDScript" id="GDScript_eqt7l"]
+resource_name = "Mobile"
+script/source = "extends MarginContainer
 
 var velocity: Vector2
 
 func _ready():
 	self.visible = Utils.android_mode
+	
+	$Control.get_children().map(func(child): child.get_child(0).pressed.connect(func(): pass))
 
 func _input(event):
-	if self.button_pressed:
+	if $Analog.button_pressed:
 		if event is InputEventScreenDrag:
-			velocity = ((event.position - self.global_position) - (self.custom_minimum_size / 2)).normalized()
+			velocity = ((event.position - $Analog.global_position) - ($Analog.custom_minimum_size / 2)).normalized()
 	else: velocity = Vector2()
 "
+
+[sub_resource type="Gradient" id="Gradient_w2crf"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0vdr4"]
+gradient = SubResource("Gradient_w2crf")
+width = 96
+height = 96
+
+[sub_resource type="Gradient" id="Gradient_axl8f"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rugu2"]
+gradient = SubResource("Gradient_axl8f")
+width = 96
+height = 96
+
+[sub_resource type="Gradient" id="Gradient_ew411"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yjpln"]
+gradient = SubResource("Gradient_ew411")
+width = 200
+height = 192
 
 [sub_resource type="GDScript" id="GDScript_pp2qt"]
 resource_name = "Inventory"
@@ -55,28 +84,6 @@ func _ready():
 		)
 "
 
-[sub_resource type="GDScript" id="GDScript_vggsb"]
-resource_name = "Shop"
-script/source = "extends PanelContainer
-
-var shop_item = preload(\"res://assets/shop_item.tscn\")
-var shop_list: Array
-
-func set_item(val):
-	shop_list = val
-	$VB/Button.pressed.connect(func(): 
-		$VB/VB.get_children().map(func(item): 
-			item.queue_free()
-			self.hide()))
-	
-	for list in shop_list:
-		var item = shop_item.instantiate()
-		item.item = list
-		$VB/VB.add_child(item)
-	
-	self.show()
-"
-
 [sub_resource type="GDScript" id="GDScript_c2w07"]
 resource_name = "Equipment"
 script/source = "extends MarginContainer
@@ -104,69 +111,144 @@ func activate(type: String):
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cen4y"]
 bg_color = Color(0, 0, 0, 0.223529)
 
+[sub_resource type="GDScript" id="GDScript_8vcoy"]
+resource_name = "Shop"
+script/source = "extends MarginContainer
+
+var shop_item = preload(\"res://assets/shop_item.tscn\")
+var shop_list: Array
+
+func set_item(val):
+	shop_list = val
+	$P/VB/Button.pressed.connect(func(): 
+		$P/VB/VB.get_children().map(func(item): 
+			item.queue_free()
+			self.hide()))
+	
+	for list in shop_list:
+		var item = shop_item.instantiate()
+		item.item = list
+		$P/VB/VB.add_child(item)
+	
+	self.show()
+"
+
 [node name="Player" type="CanvasLayer"]
 script = ExtResource("1_101xg")
 
-[node name="M" type="MarginContainer" parent="."]
+[node name="Mobile" type="MarginContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_top = 40
-theme_override_constants/margin_right = 40
-theme_override_constants/margin_bottom = 40
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+script = SubResource("GDScript_eqt7l")
 
-[node name="Analog" type="Button" parent="M"]
-custom_minimum_size = Vector2(216, 216)
+[node name="Analog" type="Button" parent="Mobile"]
+custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 focus_mode = 0
-mouse_filter = 2
 keep_pressed_outside = true
-script = SubResource("GDScript_piude")
 
-[node name="Inventory" type="PanelContainer" parent="M"]
+[node name="Control" type="Control" parent="Mobile"]
+custom_minimum_size = Vector2(200, 296)
 layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 2
+
+[node name="ClawButton" type="Panel" parent="Mobile/Control"]
+visible = false
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 1
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Mobile/Control/ClawButton"]
+texture_normal = SubResource("GradientTexture2D_0vdr4")
+action = "n_attack"
+
+[node name="ConsumeButton" type="Panel" parent="Mobile/Control"]
+visible = false
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -8.0
+offset_bottom = 8.0
+grow_horizontal = 0
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Mobile/Control/ConsumeButton"]
+texture_normal = SubResource("GradientTexture2D_rugu2")
+action = "n_leap"
+
+[node name="AttackButton" type="Panel" parent="Mobile/Control"]
+custom_minimum_size = Vector2(192, 192)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Mobile/Control/AttackButton"]
+texture_normal = SubResource("GradientTexture2D_yjpln")
+action = "n_attack"
+
+[node name="Inventory" type="PanelContainer" parent="."]
+offset_left = 1259.0
+offset_top = 677.0
+offset_right = 1260.0
+offset_bottom = 700.0
 size_flags_horizontal = 8
 size_flags_vertical = 8
 mouse_filter = 2
 script = SubResource("GDScript_pp2qt")
 
-[node name="VB" type="VBoxContainer" parent="M/Inventory"]
+[node name="VB" type="VBoxContainer" parent="Inventory"]
 layout_mode = 2
 
-[node name="Label0" type="Label" parent="M/Inventory/VB"]
+[node name="Label0" type="Label" parent="Inventory/VB"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 mouse_filter = 1
 
-[node name="Label1" type="Label" parent="M/Inventory/VB"]
+[node name="Label1" type="Label" parent="Inventory/VB"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 mouse_filter = 1
 
-[node name="EquipmentButton" type="CenterContainer" parent="M"]
-layout_mode = 2
+[node name="EquipmentButton" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 script = SubResource("GDScript_7yfqb")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="M/EquipmentButton"]
+[node name="VBoxContainer" type="VBoxContainer" parent="EquipmentButton"]
 layout_mode = 2
 
-[node name="Sight" type="Panel" parent="M/EquipmentButton/VBoxContainer" groups=["sub"]]
+[node name="Sight" type="Panel" parent="EquipmentButton/VBoxContainer" groups=["sub"]]
 custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="M/EquipmentButton/VBoxContainer/Sight"]
+[node name="Label" type="Label" parent="EquipmentButton/VBoxContainer/Sight"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -176,15 +258,15 @@ grow_vertical = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HB" type="HBoxContainer" parent="M/EquipmentButton/VBoxContainer"]
+[node name="HB" type="HBoxContainer" parent="EquipmentButton/VBoxContainer"]
 layout_mode = 2
 
-[node name="Claw" type="Panel" parent="M/EquipmentButton/VBoxContainer/HB" groups=["sub"]]
+[node name="Claw" type="Panel" parent="EquipmentButton/VBoxContainer/HB" groups=["sub"]]
 custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="M/EquipmentButton/VBoxContainer/HB/Claw"]
+[node name="Label" type="Label" parent="EquipmentButton/VBoxContainer/HB/Claw"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -194,7 +276,7 @@ grow_vertical = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Center" type="Button" parent="M/EquipmentButton/VBoxContainer/HB"]
+[node name="Center" type="Button" parent="EquipmentButton/VBoxContainer/HB"]
 custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
 focus_mode = 0
@@ -203,12 +285,12 @@ action_mode = 0
 keep_pressed_outside = true
 flat = true
 
-[node name="Consumable" type="Panel" parent="M/EquipmentButton/VBoxContainer/HB" groups=["sub"]]
+[node name="Consumable" type="Panel" parent="EquipmentButton/VBoxContainer/HB" groups=["sub"]]
 custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="M/EquipmentButton/VBoxContainer/HB/Consumable"]
+[node name="Label" type="Label" parent="EquipmentButton/VBoxContainer/HB/Consumable"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -218,13 +300,13 @@ grow_vertical = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Ability" type="Panel" parent="M/EquipmentButton/VBoxContainer" groups=["sub"]]
+[node name="Ability" type="Panel" parent="EquipmentButton/VBoxContainer" groups=["sub"]]
 custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 1
 
-[node name="Label" type="Label" parent="M/EquipmentButton/VBoxContainer/Ability"]
+[node name="Label" type="Label" parent="EquipmentButton/VBoxContainer/Ability"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -234,33 +316,13 @@ grow_vertical = 2
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Shop" type="PanelContainer" parent="M"]
+[node name="Equipment" type="MarginContainer" parent="."]
 visible = false
-layout_mode = 2
-mouse_filter = 2
-script = SubResource("GDScript_vggsb")
-
-[node name="VB" type="VBoxContainer" parent="M/Shop"]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="M/Shop/VB"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-size_flags_horizontal = 8
-focus_mode = 0
-mouse_filter = 1
-text = "X"
-flat = true
-
-[node name="VB" type="VBoxContainer" parent="M/Shop/VB"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-alignment = 1
-
-[node name="Equipment" type="MarginContainer" parent="M"]
-visible = false
-layout_mode = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 192
 theme_override_constants/margin_top = 96
@@ -268,17 +330,17 @@ theme_override_constants/margin_right = 192
 theme_override_constants/margin_bottom = 96
 script = SubResource("GDScript_c2w07")
 
-[node name="P" type="PanelContainer" parent="M/Equipment"]
+[node name="P" type="PanelContainer" parent="Equipment"]
 layout_mode = 2
 mouse_filter = 1
 
-[node name="VB" type="VBoxContainer" parent="M/Equipment/P"]
+[node name="VB" type="VBoxContainer" parent="Equipment/P"]
 layout_mode = 2
 
-[node name="HB" type="HBoxContainer" parent="M/Equipment/P/VB"]
+[node name="HB" type="HBoxContainer" parent="Equipment/P/VB"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="M/Equipment/P/VB/HB"]
+[node name="Label" type="Label" parent="Equipment/P/VB/HB"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -286,7 +348,7 @@ mouse_filter = 1
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="M/Equipment/P/VB/HB"]
+[node name="Button" type="Button" parent="Equipment/P/VB/HB"]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -294,7 +356,7 @@ focus_mode = 0
 mouse_filter = 1
 text = "X"
 
-[node name="M" type="MarginContainer" parent="M/Equipment/P/VB"]
+[node name="M" type="MarginContainer" parent="Equipment/P/VB"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 24
@@ -302,10 +364,10 @@ theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
 
-[node name="HB" type="HBoxContainer" parent="M/Equipment/P/VB/M"]
+[node name="HB" type="HBoxContainer" parent="Equipment/P/VB/M"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="M/Equipment/P/VB/M/HB"]
+[node name="Label" type="Label" parent="Equipment/P/VB/M/HB"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -314,6 +376,41 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_cen4y")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="EquipmentList" type="VBoxContainer" parent="M/Equipment/P/VB/M/HB"]
+[node name="EquipmentList" type="VBoxContainer" parent="Equipment/P/VB/M/HB"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Shop" type="MarginContainer" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 192
+theme_override_constants/margin_top = 96
+theme_override_constants/margin_right = 192
+theme_override_constants/margin_bottom = 96
+script = SubResource("GDScript_8vcoy")
+
+[node name="P" type="PanelContainer" parent="Shop"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VB" type="VBoxContainer" parent="Shop/P"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Shop/P/VB"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 0
+mouse_filter = 1
+text = "X"
+flat = true
+
+[node name="VB" type="VBoxContainer" parent="Shop/P/VB"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+alignment = 1

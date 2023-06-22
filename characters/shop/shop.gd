@@ -25,4 +25,4 @@ var shop_list: Array = [
 func _ready():
 	interacted.connect(func(): $Tag.show())
 	uninteracted.connect(func(): $Tag.hide())
-	activated.connect(func(): Player.get_node("M/Shop").set_item(shop_list))
+	activated.connect(func(): Player.get_node("Shop").set_item(shop_list))
