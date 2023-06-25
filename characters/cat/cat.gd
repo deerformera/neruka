@@ -2,11 +2,6 @@ extends CharacterBody2D
 
 signal damaged
 
-@export_category("Properties")
-@export_range(0, 9999) var health = 10
-@export_range(0, 9999) var damage = 1
-@export_range(0, 9999) var speed = 200
-
 @onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get("parameters/playback")
 @onready var tween: Tween
 @onready var leap_timer: Timer = Utils.create_timer(self, 0.8, func(): 
@@ -14,17 +9,17 @@ signal damaged
 	$LeapSprite.visible = true
 	create_tween().tween_property($LeapSprite, "scale", Vector2(1, 1), 0.25).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT))
 
-var velocity_static: Vector2
+var velocity_static: Vector2 = Vector2(0, 1)
 var charge = false
+var spin_slash = preload("res://assets/spin_slash.tscn")
 
 func _ready():
 	equipment()
-	
 	self.damaged.connect(func(value: int):
 		animstate.travel("hurt")
 		velocity = Vector2.ZERO
-		self.health -= value
-		if self.health <= 0: self.die())
+		Player.health -= value
+		if Player.health <= 0: self.die())
 
 func _physics_process(_delta):
 	match animstate.get_current_node():
@@ -32,8 +27,8 @@ func _physics_process(_delta):
 			velocity = Input.get_vector("n_left", "n_right", "n_up", "n_down")
 			if Utils.android_mode: velocity = Player.get_node("Mobile").velocity
 			if $LeapSprite.visible:
-				velocity = velocity * speed / 2
-			else: velocity = velocity * speed
+				velocity = velocity * Player.speed / 2
+			else: velocity = velocity * Player.speed
 			
 			if velocity: 
 				velocity_static = velocity.normalized()
@@ -49,11 +44,9 @@ func _input(event):
 	match animstate.get_current_node():
 		"normal":
 			if event.is_action_pressed("n_attack"):
-				if $InteractArea.get_overlapping_bodies().is_empty():
-					animstate.travel("attack1")
-				else:
+				if !$InteractArea.get_overlapping_bodies().is_empty():
 					$InteractArea.get_overlapping_bodies()[0].activated.emit()
-			
+				
 			if event.is_action_pressed("n_leap"):
 				leap_timer.start()
 			if event.is_action_released("n_leap"):
@@ -66,23 +59,22 @@ func _input(event):
 					await tween.finished
 					$KnockArea/CollisionShape2D.disabled = true
 				else:
-					create_tween().tween_property(self, "global_position", global_position + velocity_static * 100, 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+					create_tween().tween_property(self, "global_position", global_position + velocity_static * 150, 0.4).set_trans(Tween.TRANS_LINEAR)
 					leap_timer.stop()
-		"attack1":
-			if event.is_action_pressed("n_attack"):
-				animstate.travel("attack2")
-		"attack2":
-			if event.is_action_pressed("n_attack"):
-				animstate.travel("attack1")
 
 func attack():
 	tween = create_tween()
 	tween.tween_property(self, "global_position", global_position + velocity_static * 10, 0.1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
-	await get_tree().create_timer(0.05).timeout
-	$AttackArea/CollisionShape2D.disabled = false
 	$SlashSprite.show()
 	await get_tree().create_timer(0.05).timeout
+	$AttackArea/CollisionShape2D.disabled = false
+	await get_tree().create_timer(0.05).timeout
 	$AttackArea/CollisionShape2D.disabled = true
+
+func attack_spin():
+	tween = create_tween()
+	tween.tween_property(self, "global_position", global_position + velocity_static * 10, 0.1).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
+	add_child(spin_slash.instantiate())
 
 func die():
 	queue_free()
@@ -90,6 +82,5 @@ func die():
 func equipment():
 	$Equipment.get_children().map(func(node): node.queue_free())
 	for type in Player.equipped:
-		if Player.equipped[type] != 0:
-			var eq = load("res://assets/modules/"+type+str(Player.equipped[type])+".gd")
-			$Equipment.add_child(eq.new())
+		var eq = load("res://assets/modules/"+type+str(Player.equipped[type])+".gd")
+		$Equipment.add_child(eq.new())

@@ -4,9 +4,10 @@ signal damaged
 signal knocked
 
 @export_category("Properties")
-@export_range(0, 9999) var health = 1
-@export_range(0, 9999) var damage = 1
+@export_range(0, 99999) var damage = 1
+@export_range(0, 99999) var health_base: int = 10
 
+@onready var health: int = health_base
 @onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get("parameters/playback")
 @onready var bullets := preload("res://assets/projectiles/flor_bullet.tscn")
 @onready var orbs := preload("res://assets/orb.tscn")

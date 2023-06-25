@@ -1,51 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://tnn70k1hd2j8"]
+[gd_scene load_steps=15 format=3 uid="uid://tnn70k1hd2j8"]
 
 [ext_resource type="Script" path="res://worlds/player.gd" id="1_101xg"]
-
-[sub_resource type="GDScript" id="GDScript_eqt7l"]
-resource_name = "Mobile"
-script/source = "extends MarginContainer
-
-var velocity: Vector2
-
-func _ready():
-	self.visible = Utils.android_mode
-	
-	$Control.get_children().map(func(child): child.get_child(0).pressed.connect(func(): pass))
-
-func _input(event):
-	if $Analog.button_pressed:
-		if event is InputEventScreenDrag:
-			velocity = ((event.position - $Analog.global_position) - ($Analog.custom_minimum_size / 2)).normalized()
-	else: velocity = Vector2()
-"
-
-[sub_resource type="Gradient" id="Gradient_w2crf"]
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0, 0, 0, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_0vdr4"]
-gradient = SubResource("Gradient_w2crf")
-width = 96
-height = 96
-
-[sub_resource type="Gradient" id="Gradient_axl8f"]
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0, 0, 0, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_rugu2"]
-gradient = SubResource("Gradient_axl8f")
-width = 96
-height = 96
-
-[sub_resource type="Gradient" id="Gradient_ew411"]
-offsets = PackedFloat32Array(0)
-colors = PackedColorArray(0, 0, 0, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_yjpln"]
-gradient = SubResource("Gradient_ew411")
-width = 200
-height = 192
 
 [sub_resource type="GDScript" id="GDScript_pp2qt"]
 resource_name = "Inventory"
@@ -72,6 +27,8 @@ func _ready():
 	$G/Center.button_down.connect(func():
 		$G.get_children().map(func(child):
 			if child.name != \"Center\":
+				if Player.equipped[child.name.to_lower()]:
+					child.get_node(\"Label\").text = str(Player.equipped[child.name.to_lower()])
 				child.show()))
 	
 	$G/Center.button_up.connect(func():
@@ -83,6 +40,47 @@ func _ready():
 				child.hide()))
 "
 
+[sub_resource type="GDScript" id="GDScript_oi86l"]
+resource_name = "HUD"
+script/source = "extends MarginContainer
+
+func _ready():
+	Player.health_base_changed.connect(func():
+		$ProgressBar.max_value = Player.health_base)
+	Player.health_changed.connect(func():
+		$ProgressBar/Label.text = str(Player.health)
+		$ProgressBar.value = Player.health)
+"
+
+[sub_resource type="GDScript" id="GDScript_eqt7l"]
+resource_name = "Mobile"
+script/source = "extends MarginContainer
+
+var velocity: Vector2
+
+func _ready():
+	self.visible = Utils.android_mode
+	$Control.get_children().map(func(child): child.get_child(0).pressed.connect(func(): pass))
+
+func _input(event):
+	if $Analog.button_pressed:
+		if event is InputEventScreenDrag:
+			velocity = ((event.position - $Analog.global_position) - ($Analog.custom_minimum_size / 2)).normalized()
+	else: velocity = Vector2()
+"
+
+[sub_resource type="MeshTexture" id="MeshTexture_7t4wq"]
+image_size = Vector2(48, 48)
+
+[sub_resource type="MeshTexture" id="MeshTexture_wknc3"]
+image_size = Vector2(192, 192)
+
+[sub_resource type="MeshTexture" id="MeshTexture_6hfly"]
+image_size = Vector2(96, 96)
+
+[sub_resource type="MeshTexture" id="MeshTexture_vtqgb"]
+image_size = Vector2(96, 96)
+
 [sub_resource type="GDScript" id="GDScript_c2w07"]
 resource_name = "Equipment"
 script/source = "extends MarginContainer
@@ -92,8 +90,6 @@ func _ready():
 
 func activate(type: String):
 	$P/VB/M/HB/EquipmentList.get_children().map(func(node): node.queue_free())
-	
-	self.show()
 	$P/VB/HB/Label.text = type
 	Player.equipment[type].map(func(id: int):
 		var item = load(\"res://assets/equipment_item.tscn\")
@@ -101,10 +97,9 @@ func activate(type: String):
 		item.set_item(type, id)
 		item.get_node(\"ItemButton\").pressed.connect(func():
 			var data = JSON.parse_string(FileAccess.open(\"res://assets/modules/\"+type+\".json\", FileAccess.READ).get_as_text())
-			$P/VB/M/HB/Label.text = data[str(id)]
-			
-		)
+			$P/VB/M/HB/Label.text = data[str(id)][\"desc\"])
 		$P/VB/M/HB/EquipmentList.add_child(item))
+	self.show()
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cen4y"]
@@ -132,76 +127,52 @@ func set_item(val):
 	self.show()
 "
 
+[sub_resource type="GDScript" id="GDScript_tqwb5"]
+resource_name = "LevelUp"
+script/source = "extends MarginContainer
+
+var level: Dictionary = {
+	\"health\": 0,
+	\"damage\": 0,
+	\"leap\": 0,
+	\"sense\": 0
+}
+
+var checkpoint
+
+func _ready():
+	$P/VB/Button.pressed.connect(func():
+		self.hide())
+	for lev in level:
+		var node = $P/VB/M/VB.get_node(lev.capitalize())
+		node.get_node(\"Button\").pressed.connect(func():
+			level[lev] += 1
+			node.get_node(\"Label\").text = lev + \" - level: \" + str(level[lev])
+			match lev:
+				\"health\":
+					Player.health_base = 100 + (level[lev] * 10)
+				\"damage\":
+					Player.damage = 1 + level[lev]
+				\"leap\":
+					pass
+				\"sense\":
+					pass
+			)
+		node.get_node(\"Label\").text = lev + \" - level: \" + str(level[lev])
+	
+	self.hidden.connect(func():
+		checkpoint.get_node(\"Sprite2D\").frame = 0
+		Engine.time_scale = 1.0)
+
+func activate(body):
+	checkpoint = body
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f3436"]
+bg_color = Color(0, 0, 0, 0.294118)
+
 [node name="Player" type="CanvasLayer"]
 script = ExtResource("1_101xg")
-
-[node name="Mobile" type="MarginContainer" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 100
-theme_override_constants/margin_top = 100
-theme_override_constants/margin_right = 100
-theme_override_constants/margin_bottom = 100
-script = SubResource("GDScript_eqt7l")
-
-[node name="Analog" type="Button" parent="Mobile"]
-custom_minimum_size = Vector2(192, 192)
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-focus_mode = 0
-keep_pressed_outside = true
-
-[node name="Control" type="Control" parent="Mobile"]
-custom_minimum_size = Vector2(200, 296)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 8
-mouse_filter = 2
-
-[node name="ClawButton" type="Panel" parent="Mobile/Control"]
-visible = false
-custom_minimum_size = Vector2(96, 96)
-layout_mode = 1
-offset_right = 8.0
-offset_bottom = 8.0
-
-[node name="TouchScreenButton" type="TouchScreenButton" parent="Mobile/Control/ClawButton"]
-texture_normal = SubResource("GradientTexture2D_0vdr4")
-action = "n_attack"
-
-[node name="ConsumeButton" type="Panel" parent="Mobile/Control"]
-visible = false
-custom_minimum_size = Vector2(96, 96)
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -8.0
-offset_bottom = 8.0
-grow_horizontal = 0
-
-[node name="TouchScreenButton" type="TouchScreenButton" parent="Mobile/Control/ConsumeButton"]
-texture_normal = SubResource("GradientTexture2D_rugu2")
-action = "n_leap"
-
-[node name="AttackButton" type="Panel" parent="Mobile/Control"]
-custom_minimum_size = Vector2(192, 192)
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -8.0
-grow_horizontal = 2
-grow_vertical = 0
-
-[node name="TouchScreenButton" type="TouchScreenButton" parent="Mobile/Control/AttackButton"]
-texture_normal = SubResource("GradientTexture2D_yjpln")
-action = "n_attack"
 
 [node name="Inventory" type="PanelContainer" parent="."]
 anchors_preset = 3
@@ -261,6 +232,16 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 
+[node name="Label" type="Label" parent="EquipmentButton/G/Claw"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Center" type="Button" parent="EquipmentButton/G"]
 custom_minimum_size = Vector2(72, 72)
 layout_mode = 2
@@ -275,11 +256,160 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 
+[node name="Label" type="Label" parent="EquipmentButton/G/Ability"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Consumable" type="Panel" parent="EquipmentButton/G"]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+
+[node name="Label" type="Label" parent="EquipmentButton/G/Consumable"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HUD" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+script = SubResource("GDScript_oi86l")
+
+[node name="ProgressBar" type="ProgressBar" parent="HUD"]
+self_modulate = Color(1, 0.00999999, 0.00999999, 1)
+custom_minimum_size = Vector2(288, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+show_percentage = false
+
+[node name="Label" type="Label" parent="HUD/ProgressBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Mobile" type="MarginContainer" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 50
+script = SubResource("GDScript_eqt7l")
+
+[node name="Analog" type="Button" parent="Mobile"]
+custom_minimum_size = Vector2(192, 192)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+focus_mode = 0
+keep_pressed_outside = true
+
+[node name="Control" type="Control" parent="Mobile"]
+custom_minimum_size = Vector2(344, 292)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 2
+
+[node name="ConsumeButton" type="Panel" parent="Mobile/Control"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -48.0
+offset_top = -120.0
+offset_bottom = -72.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Mobile/Control/ConsumeButton"]
+texture_normal = SubResource("MeshTexture_7t4wq")
+action = "n_consume"
+
+[node name="AttackButton" type="Panel" parent="Mobile/Control"]
+custom_minimum_size = Vector2(192, 192)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -72.0
+offset_top = -192.0
+offset_right = 120.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Mobile/Control/AttackButton"]
+texture_normal = SubResource("MeshTexture_wknc3")
+action = "n_attack"
+
+[node name="DashButton" type="Panel" parent="Mobile/Control"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -48.0
+offset_right = 96.0
+offset_bottom = 48.0
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Mobile/Control/DashButton"]
+texture_normal = SubResource("MeshTexture_6hfly")
+action = "n_leap"
+
+[node name="AbilityButton" type="Panel" parent="Mobile/Control"]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -72.0
+offset_right = 24.0
+offset_bottom = 96.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Mobile/Control/AbilityButton"]
+texture_normal = SubResource("MeshTexture_vtqgb")
+action = "n_ability"
 
 [node name="Equipment" type="MarginContainer" parent="."]
 visible = false
@@ -379,3 +509,112 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 alignment = 1
+
+[node name="LevelUp" type="MarginContainer" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 192
+theme_override_constants/margin_top = 96
+theme_override_constants/margin_right = 192
+theme_override_constants/margin_bottom = 96
+script = SubResource("GDScript_tqwb5")
+
+[node name="P" type="PanelContainer" parent="LevelUp"]
+layout_mode = 2
+
+[node name="VB" type="VBoxContainer" parent="LevelUp/P"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="LevelUp/P/VB"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 0
+text = "X"
+flat = true
+
+[node name="M" type="MarginContainer" parent="LevelUp/P/VB"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VB" type="VBoxContainer" parent="LevelUp/P/VB/M"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Health" type="HBoxContainer" parent="LevelUp/P/VB/M/VB"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LevelUp/P/VB/M/VB/Health"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_f3436")
+text = "Health"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="LevelUp/P/VB/M/VB/Health"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+focus_mode = 0
+
+[node name="Damage" type="HBoxContainer" parent="LevelUp/P/VB/M/VB"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LevelUp/P/VB/M/VB/Damage"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_f3436")
+text = "Damage"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="LevelUp/P/VB/M/VB/Damage"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+focus_mode = 0
+
+[node name="Leap" type="HBoxContainer" parent="LevelUp/P/VB/M/VB"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LevelUp/P/VB/M/VB/Leap"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_f3436")
+text = "Damage"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="LevelUp/P/VB/M/VB/Leap"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+focus_mode = 0
+
+[node name="Sense" type="HBoxContainer" parent="LevelUp/P/VB/M/VB"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LevelUp/P/VB/M/VB/Sense"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_f3436")
+text = "Damage"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="LevelUp/P/VB/M/VB/Sense"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+focus_mode = 0

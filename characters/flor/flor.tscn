@@ -1,8 +1,9 @@
-[gd_scene load_steps=27 format=3 uid="uid://d4hiieli7o65a"]
+[gd_scene load_steps=28 format=3 uid="uid://d4hiieli7o65a"]
 
 [ext_resource type="Script" path="res://characters/flor/flor.gd" id="1_2ebwd"]
 [ext_resource type="Texture2D" uid="uid://dt73yq11l877i" path="res://proto/proto-sprite.png" id="2_i0tao"]
 [ext_resource type="PackedScene" uid="uid://b448a7me0sw4i" path="res://assets/indicator.tscn" id="3_g7akc"]
+[ext_resource type="PackedScene" uid="uid://7gxly7fa81vg" path="res://assets/bar.tscn" id="4_ofmg1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_micfy"]
 
@@ -205,3 +206,6 @@ script = SubResource("GDScript_b5k5n")
 shape = SubResource("CircleShape2D_uy7j8")
 
 [node name="Indicator" parent="." instance=ExtResource("3_g7akc")]
+visible = false
+
+[node name="Bar" parent="." instance=ExtResource("4_ofmg1")]

@@ -1,0 +1,94 @@
+[gd_scene load_steps=13 format=3 uid="uid://bva67o0y2cd8w"]
+
+[ext_resource type="Texture2D" uid="uid://i2aeoosui812" path="res://assets/textures/spin_slash.png" id="1_pjmna"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ta6qr"]
+atlas = ExtResource("1_pjmna")
+region = Rect2(0, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t7jcu"]
+atlas = ExtResource("1_pjmna")
+region = Rect2(96, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ug2e2"]
+atlas = ExtResource("1_pjmna")
+region = Rect2(192, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ccitd"]
+atlas = ExtResource("1_pjmna")
+region = Rect2(288, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i3ixq"]
+atlas = ExtResource("1_pjmna")
+region = Rect2(384, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rh83n"]
+atlas = ExtResource("1_pjmna")
+region = Rect2(480, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_futyw"]
+atlas = ExtResource("1_pjmna")
+region = Rect2(576, 0, 96, 96)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qynsg"]
+atlas = ExtResource("1_pjmna")
+region = Rect2(672, 0, 96, 96)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1fjx2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ta6qr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t7jcu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ug2e2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ccitd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i3ixq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rh83n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_futyw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qynsg")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[sub_resource type="GDScript" id="GDScript_emjq4"]
+script/source = "extends AnimatedSprite2D
+
+func _ready():
+	self.animation_finished.connect(func(): queue_free())
+	$Area2D.body_entered.connect(func(body):
+		body.damaged.emit(Player.damage + 1))
+	$Area2D/CollisionShape2D.disabled = false
+	await get_tree().create_timer(0.1).timeout
+	$Area2D/CollisionShape2D.disabled = true
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aetxf"]
+size = Vector2(96, 96)
+
+[node name="spin_slash" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_1fjx2")
+autoplay = "default"
+script = SubResource("GDScript_emjq4")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_aetxf")

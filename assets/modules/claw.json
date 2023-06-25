@@ -1,4 +1,14 @@
 {
-	"1": "Increase damage",
-	"2": "Increase size"
+	"1": {
+		"name": "",
+		"desc": "Increase damage"
+	},
+	"2": {
+		"name": "",
+		"desc": "Increase size"
+	},
+	"3": {
+		"name": "",
+		"desc": ""
+	}
 }

@@ -1,9 +1,12 @@
 extends Node
 
+signal health_base_changed
+signal health_changed
+
 var equipment: Dictionary = {
 	"consumable": [],
 	"claw": [],
-	"ability": []
+	"ability": [2]
 }
 
 var equipped: Dictionary = {
@@ -13,6 +16,23 @@ var equipped: Dictionary = {
 }
 
 var orbs: Array = []
+
+var health_base: int = 100:
+	set(val):
+		health_base = val
+		health_base_changed.emit()
+
+var damage = 1
+var speed = 200
+
+@onready var health: int = health_base :
+	set(val):
+		health = val
+		health_changed.emit()
+
+func _ready():
+	health_changed.emit()
+	health_base_changed.emit()
 
 func orb_add(id: int):
 	for orb in orbs:

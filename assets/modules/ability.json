@@ -1,4 +1,6 @@
 {
-	"1": "Increase sight",
-	"2": ""
+	"1": {
+		"name": "",
+		"desc": "Increase sight"
+	}
 }

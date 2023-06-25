@@ -18,7 +18,6 @@ func _physics_process(_delta):
 "
 
 [node name="Indicator" type="Node2D"]
-visible = false
 position = Vector2(-24, -24)
 script = SubResource("GDScript_5sf01")
 

@@ -4,10 +4,11 @@ signal damaged
 signal knocked
 
 @export_category("Properties")
-@export_range(0, 9999) var health = 1
-@export_range(0, 9999) var damage = 1
-@export_range(0, 9999) var speed = 1
+@export_range(0, 99999) var health_base = 1
+@export_range(0, 99999) var damage = 1
+@export_range(0, 99999) var speed = 1
 
+@onready var health = health_base
 @onready var animstate: AnimationNodeStateMachinePlayback = $AnimationTree.get("parameters/playback")
 
 func _ready():
