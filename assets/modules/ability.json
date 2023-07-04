@@ -2,5 +2,9 @@
 	"1": {
 		"name": "",
 		"desc": "Increase sight"
+	},
+	"2": {
+		"name": "projectile slash",
+		"desc": "long distance slash"
 	}
 }

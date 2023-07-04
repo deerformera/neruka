@@ -43,12 +43,15 @@ func _ready():
 		var b: Button = Button.new()
 		b.text = debug_item.name
 		b.pressed.connect(debug_item.fn)
+		b.focus_mode = Control.FOCUS_NONE
 		$Margin/HBox/VBox.add_child(b)
 
-func create_timer(from, waittime: float, method: Callable):
+func create_timer(from, waittime: float, method: Callable, one_shot: bool = true, autostart: bool = false):
 	var timer = Timer.new()
-	timer.one_shot = true
+	timer.autostart = autostart
+	timer.one_shot = one_shot
 	timer.wait_time = waittime
-	timer.timeout.connect(method)
+	if method:
+		timer.timeout.connect(method)
 	from.add_child(timer)
 	return timer

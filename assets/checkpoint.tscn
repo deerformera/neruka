@@ -7,16 +7,12 @@ script/source = "extends Area2D
 
 func _ready():
 	self.body_entered.connect(func(body):
-		Player.get_node(\"LevelUp\").show()
-		body.global_position = self.global_position
-		Player.get_node(\"LevelUp\").activate(self)
-		Engine.time_scale = 0
-		$Sprite2D.frame = 1
-		)
+		Player.get_panel(\"LevelUp\").show()
+		body.global_position = self.global_position)
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o41ui"]
-size = Vector2(12, 12)
+size = Vector2(16, 16)
 
 [node name="Checkpoint" type="Area2D"]
 z_index = 1

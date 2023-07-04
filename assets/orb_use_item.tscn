@@ -1,0 +1,64 @@
+[gd_scene load_steps=2 format=3 uid="uid://3myx2arii0wu"]
+
+[sub_resource type="GDScript" id="GDScript_j8xr6"]
+script/source = "extends HBoxContainer
+
+var id: int = 0
+var value: int = 0:
+	set(val):
+		value = val
+		$Panel/Label.text = str(value)
+		$P/Label.text = str(id)
+		if val == 0: $IncrementButton.disabled = true
+		else: $IncrementButton.disabled = false
+
+func init(orb):
+	id = orb[0]
+	value = orb[1]
+"
+
+[node name="OrbUseItem" type="HBoxContainer"]
+offset_right = 152.0
+offset_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+script = SubResource("GDScript_j8xr6")
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="P" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="P"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "null"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DecrementButton" type="Button" parent="."]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+focus_mode = 0
+text = "-"
+
+[node name="IncrementButton" type="Button" parent="."]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+focus_mode = 0
+text = "+"

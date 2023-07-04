@@ -1,29 +1,38 @@
-extends Node
+extends CanvasLayer
 
 signal health_base_changed
 signal health_changed
+signal level_changed
 
 var equipment: Dictionary = {
 	"consumable": [],
 	"claw": [],
 	"ability": [2]
 }
-
 var equipped: Dictionary = {
 	"consumable": 0,
 	"claw": 0,
 	"ability": 0
 }
-
 var orbs: Array = []
+var level: Dictionary = {
+	"health": 0,
+	"damage": 0,
+	"leap": 0,
+	"sense": 0
+}
 
+var damage: int = 1
+var speed: int = 200
+var sense: int = 0
 var health_base: int = 100:
 	set(val):
 		health_base = val
 		health_base_changed.emit()
-
-var damage = 1
-var speed = 200
+var leap_charge_base: int = 0 :
+	set(val):
+		leap_charge_base = val
+		get_tree().get_first_node_in_group("cat").leap_cooldown.start()
 
 @onready var health: int = health_base :
 	set(val):
@@ -34,7 +43,28 @@ func _ready():
 	health_changed.emit()
 	health_base_changed.emit()
 
-func orb_add(id: int):
+func get_panel(panel: String): 
+	$Panel.show()
+	$Panel/P/VB/HB/PanelLabel.text = panel
+	$Panel/P/VB/MainMargin.get_children().map(func(child): child.hide())
+	return $Panel/P/VB/MainMargin.get_node(panel)
+
+func get_level() -> int:
+	var total: int = 0
+	for val in level.values():
+		total += val
+	return total
+
+func up_level(type: String):
+	level[type] += 1
+	match type:
+		"health": health_base = 100 + (level["health"] * 10)
+		"damage": damage = 1 + level["damage"]
+		"leap": leap_charge_base = 0 + level["leap"]
+	
+	level_changed.emit()
+
+func orb_add(id: int) -> void:
 	for orb in orbs:
 		if orb[0] == id:
 			orb[1] += 1
@@ -63,3 +93,4 @@ func buy(item: Dictionary):
 				if orb[1] == 0: orbs.erase(orb)
 				return true
 	return false
+
