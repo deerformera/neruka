@@ -2,6 +2,7 @@ extends CanvasLayer
 
 signal health_base_changed
 signal health_changed
+signal leap_charge_base_changed
 signal level_changed
 
 var equipment: Dictionary = {
@@ -14,7 +15,7 @@ var equipped: Dictionary = {
 	"claw": 0,
 	"ability": 0
 }
-var orbs: Array = []
+var orbs: Array = [[1,5], [3,5], [2,5]]
 var level: Dictionary = {
 	"health": 0,
 	"damage": 0,
@@ -32,7 +33,7 @@ var health_base: int = 100:
 var leap_charge_base: int = 0 :
 	set(val):
 		leap_charge_base = val
-		get_tree().get_first_node_in_group("cat").leap_cooldown.start()
+		leap_charge_base_changed.emit()
 
 @onready var health: int = health_base :
 	set(val):
@@ -42,6 +43,7 @@ var leap_charge_base: int = 0 :
 func _ready():
 	health_changed.emit()
 	health_base_changed.emit()
+	sync_level()
 
 func get_panel(panel: String): 
 	$Panel.show()
@@ -57,12 +59,13 @@ func get_level() -> int:
 
 func up_level(type: String):
 	level[type] += 1
-	match type:
-		"health": health_base = 100 + (level["health"] * 10)
-		"damage": damage = 1 + level["damage"]
-		"leap": leap_charge_base = 0 + level["leap"]
-	
+	sync_level()
 	level_changed.emit()
+
+func sync_level():
+	health_base = 100 + (level["health"] * 10)
+	damage = 1 + level["damage"]
+	leap_charge_base = 0 + level["leap"]
 
 func orb_add(id: int) -> void:
 	for orb in orbs:

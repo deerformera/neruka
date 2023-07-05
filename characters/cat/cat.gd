@@ -27,6 +27,8 @@ func _ready():
 		velocity = Vector2.ZERO
 		Player.health -= value
 		if Player.health <= 0: self.die())
+	
+	Player.leap_charge_base_changed.connect(func(): leap_cooldown.start())
 
 func _physics_process(_delta):
 	match animstate.get_current_node():

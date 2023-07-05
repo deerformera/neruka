@@ -182,6 +182,7 @@ func _ready():
 			orbs_used.clear()
 			$OrbsList/UsedLabel.text = \"\"
 			$OrbsList/HB/ProgressBar.value = 0
+			$OrbsList/VB.get_children().map(func(child): child.queue_free())
 		
 		if tab == 1:
 			$OrbsList/HB/ProgressBar.max_value = 5 + (Player.level[selected.to_lower()] * 5)
@@ -201,7 +202,6 @@ func _ready():
 						$OrbsList/UsedLabel.text = str(orbs_used)
 						$OrbsList/HB/ProgressBar.value -= 1
 				)
-				
 				$OrbsList/VB.add_child(orb_item_ins))
 		)
 
@@ -466,6 +466,7 @@ texture_normal = SubResource("MeshTexture_vtqgb")
 action = "n_ability"
 
 [node name="Panel" type="MarginContainer" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
