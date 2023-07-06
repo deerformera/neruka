@@ -13,7 +13,7 @@ func init(type, id):
 offset_right = 532.0
 offset_bottom = 48.0
 size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_vertical = 0
 script = SubResource("GDScript_2wy32")
 
 [node name="ItemButton" type="Button" parent="."]

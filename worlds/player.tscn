@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://tnn70k1hd2j8"]
+[gd_scene load_steps=19 format=3 uid="uid://tnn70k1hd2j8"]
 
 [ext_resource type="Script" path="res://worlds/player.gd" id="1_101xg"]
 
@@ -6,7 +6,11 @@
 resource_name = "HUD"
 script/source = "extends MarginContainer
 
+var ability_timer: Timer = null
+
 func _ready():
+	Player.consumable_value_changed.connect(func(value):
+		$Desktop/HB/Consumable/CooldownLabel.text = str(value))
 	Player.health_base_changed.connect(func():
 		$TopNav/ProgressBar.max_value = Player.health_base)
 	Player.health_changed.connect(func():
@@ -15,6 +19,14 @@ func _ready():
 	
 	$TopNav/MenuButton.pressed.connect(func(): pass)
 	$TopNav/BagButton.pressed.connect(func(): Player.get_panel(\"Bag\").show())
+	
+	Player.leap_charge_changed.connect(func():
+		$Desktop/HB/Leap/CooldownLabel.text = str(Player.leap_charge))
+
+func _physics_process(_delta):
+	if ability_timer: $Desktop/HB/Ability/CooldownLabel.text = str(snapped(ability_timer.time_left, 0.1))
+
+func set_ability_timer(timer): ability_timer = timer
 "
 
 [sub_resource type="GDScript" id="GDScript_wswhb"]
@@ -72,6 +84,17 @@ image_size = Vector2(96, 96)
 [sub_resource type="MeshTexture" id="MeshTexture_vtqgb"]
 image_size = Vector2(96, 96)
 
+[sub_resource type="GDScript" id="GDScript_lfree"]
+resource_name = "Desktop"
+script/source = "extends MarginContainer
+
+func _ready():
+	self.visible = !Utils.android_mode
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5xf4r"]
+bg_color = Color(0, 0, 0, 0.392157)
+
 [sub_resource type="GDScript" id="GDScript_jkif6"]
 resource_name = "Panel"
 script/source = "extends MarginContainer
@@ -88,12 +111,19 @@ script/source = "extends HBoxContainer
 
 func init(type: String):
 	self.show()
-	Player.equipment[type].map(func(id: int):
+	Player.equipment[type].map(func(eq):
 		var item = equipment_item.instantiate()
-		item.init(type, id)
-		item.get_node(\"ItemButton\").pressed.connect(func():
-			var data = JSON.parse_string(FileAccess.open(\"res://assets/modules/\"+type+\".json\", FileAccess.READ).get_as_text())
-			$Label.text = data[str(id)][\"desc\"])
+		if type != \"consumable\":
+			item.init(type, eq)
+			item.get_node(\"ItemButton\").pressed.connect(func():
+				var data = JSON.parse_string(FileAccess.open(\"res://assets/modules/\"+type+\".json\", FileAccess.READ).get_as_text())
+				$Label.text = data[str(eq)][\"desc\"])
+		else: 
+			item.init(type, eq[0])
+			item.get_node(\"ItemButton\").pressed.connect(func():
+				var data = JSON.parse_string(FileAccess.open(\"res://assets/modules/\"+type+\".json\", FileAccess.READ).get_as_text())
+				$Label.text = data[str(eq[0])][\"desc\"] + \"\\nvalue: \" + str(eq[1]))
+			
 		$EquipmentList.add_child(item))
 
 func _ready():
@@ -138,6 +168,9 @@ func _ready():
 			add_child(orb_item_ins)
 		)
 	)
+	
+	hidden.connect(func():
+		get_children().map(func(child): child.queue_free()))
 "
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r4m8c"]
@@ -366,13 +399,9 @@ grow_horizontal = 0
 focus_mode = 0
 text = "Bag"
 
-[node name="Mobile" type="MarginContainer" parent="."]
+[node name="Mobile" type="MarginContainer" parent="HUD"]
 visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 100
 theme_override_constants/margin_top = 50
@@ -380,7 +409,7 @@ theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 50
 script = SubResource("GDScript_eqt7l")
 
-[node name="Analog" type="Button" parent="Mobile"]
+[node name="Analog" type="Button" parent="HUD/Mobile"]
 custom_minimum_size = Vector2(192, 192)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -388,14 +417,14 @@ size_flags_vertical = 8
 focus_mode = 0
 keep_pressed_outside = true
 
-[node name="Control" type="Control" parent="Mobile"]
+[node name="Control" type="Control" parent="HUD/Mobile"]
 custom_minimum_size = Vector2(344, 292)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 mouse_filter = 2
 
-[node name="ConsumeButton" type="Panel" parent="Mobile/Control"]
+[node name="ConsumeButton" type="Panel" parent="HUD/Mobile/Control"]
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 1
 anchors_preset = 3
@@ -410,11 +439,11 @@ grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="Mobile/Control/ConsumeButton"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="HUD/Mobile/Control/ConsumeButton"]
 texture_normal = SubResource("MeshTexture_7t4wq")
 action = "n_consume"
 
-[node name="AttackButton" type="Panel" parent="Mobile/Control"]
+[node name="AttackButton" type="Panel" parent="HUD/Mobile/Control"]
 custom_minimum_size = Vector2(192, 192)
 layout_mode = 1
 anchors_preset = 7
@@ -429,11 +458,11 @@ grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="Mobile/Control/AttackButton"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="HUD/Mobile/Control/AttackButton"]
 texture_normal = SubResource("MeshTexture_wknc3")
 action = "n_attack"
 
-[node name="DashButton" type="Panel" parent="Mobile/Control"]
+[node name="DashButton" type="Panel" parent="HUD/Mobile/Control"]
 custom_minimum_size = Vector2(96, 96)
 layout_mode = 1
 anchors_preset = 4
@@ -445,11 +474,11 @@ offset_bottom = 48.0
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="Mobile/Control/DashButton"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="HUD/Mobile/Control/DashButton"]
 texture_normal = SubResource("MeshTexture_6hfly")
 action = "n_leap"
 
-[node name="AbilityButton" type="Panel" parent="Mobile/Control"]
+[node name="AbilityButton" type="Panel" parent="HUD/Mobile/Control"]
 custom_minimum_size = Vector2(96, 96)
 layout_mode = 1
 anchors_preset = 5
@@ -461,9 +490,106 @@ offset_bottom = 96.0
 grow_horizontal = 2
 mouse_filter = 2
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="Mobile/Control/AbilityButton"]
+[node name="TouchScreenButton" type="TouchScreenButton" parent="HUD/Mobile/Control/AbilityButton"]
 texture_normal = SubResource("MeshTexture_vtqgb")
 action = "n_ability"
+
+[node name="Desktop" type="MarginContainer" parent="HUD"]
+layout_mode = 2
+mouse_filter = 2
+script = SubResource("GDScript_lfree")
+
+[node name="HB" type="HBoxContainer" parent="HUD/Desktop"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 2
+
+[node name="Ability" type="PanelContainer" parent="HUD/Desktop/HB"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5xf4r")
+
+[node name="Label" type="Label" parent="HUD/Desktop/HB/Ability"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Ability"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CooldownLabel" type="Label" parent="HUD/Desktop/HB/Ability"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.588235)
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="KeymapLabel" type="Label" parent="HUD/Desktop/HB/Ability"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.588235)
+text = "R"
+
+[node name="Leap" type="PanelContainer" parent="HUD/Desktop/HB"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5xf4r")
+
+[node name="Label" type="Label" parent="HUD/Desktop/HB/Leap"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Leap"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CooldownLabel" type="Label" parent="HUD/Desktop/HB/Leap"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.588235)
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="KeymapLabel" type="Label" parent="HUD/Desktop/HB/Leap"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.588235)
+text = "Shift"
+
+[node name="Consumable" type="PanelContainer" parent="HUD/Desktop/HB"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5xf4r")
+
+[node name="Label" type="Label" parent="HUD/Desktop/HB/Consumable"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Potion"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CooldownLabel" type="Label" parent="HUD/Desktop/HB/Consumable"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.588235)
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="KeymapLabel" type="Label" parent="HUD/Desktop/HB/Consumable"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.588235)
+text = "Q"
 
 [node name="Panel" type="MarginContainer" parent="."]
 visible = false

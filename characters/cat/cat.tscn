@@ -1697,7 +1697,7 @@ texture_repeat = 1
 texture = ExtResource("1_y0c4x")
 hframes = 10
 vframes = 48
-frame = 74
+frame = 75
 
 [node name="LeapSprite" type="Sprite2D" parent="."]
 visible = false

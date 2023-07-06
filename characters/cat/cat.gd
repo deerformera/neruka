@@ -8,19 +8,11 @@ signal damaged
 	$LeapSprite.scale = Vector2(0, 1)
 	$LeapSprite.visible = true
 	create_tween().tween_property($LeapSprite, "scale", Vector2(1, 1), 0.25).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT))
-@onready var leap_cooldown: Timer = Utils.create_timer(self, 2, func(): leap_charge += 1)
-
-var leap_charge = 0 : 
-	set(val):
-		leap_charge = val
-		if val < Player.leap_charge_base :
-			leap_cooldown.start()
 
 var velocity_static: Vector2 = Vector2(0, 1)
 var spin_slash = preload("res://assets/spin_slash.tscn")
 
 func _ready():
-	leap_charge = leap_charge
 	equipment()
 	self.damaged.connect(func(value: int):
 		animstate.travel("hurt")
@@ -28,7 +20,6 @@ func _ready():
 		Player.health -= value
 		if Player.health <= 0: self.die())
 	
-	Player.leap_charge_base_changed.connect(func(): leap_cooldown.start())
 
 func _physics_process(_delta):
 	match animstate.get_current_node():
@@ -56,12 +47,12 @@ func _input(event):
 				if !$InteractArea.get_overlapping_bodies().is_empty():
 					$InteractArea.get_overlapping_bodies()[0].activated.emit()
 			
-			if Player.level.leap >= 1 && leap_charge:
+			if Player.leap_charge:
 				if event.is_action_pressed("n_leap"):
 					leap_timer.start()
 				if event.is_action_released("n_leap"):
 					animstate.travel("leap")
-					leap_charge -= 1
+					Player.leap_charge -= 1
 					if leap_timer.is_stopped() && $LeapSprite.visible:
 						$LeapSprite.visible = false
 						$KnockArea/CollisionShape2D.disabled = false
@@ -93,5 +84,5 @@ func die():
 func equipment():
 	$Equipment.get_children().map(func(node): node.queue_free())
 	for type in Player.equipped:
-		var eq = load("res://assets/modules/"+type+str(Player.equipped[type])+".gd")
-		$Equipment.add_child(eq.new())
+		var eq = load("res://assets/modules/"+type+str(Player.equipped[type])+".gd").new()
+		$Equipment.add_child(eq)

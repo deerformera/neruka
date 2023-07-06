@@ -1,10 +1,10 @@
 {
 	"1": {
-		"name": "",
-		"desc": ""
+		"name": "small pot",
+		"desc": "heal 10 points"
 	},
 	"2": {
-		"name": "",
-		"desc": ""
+		"name": "ultra pot",
+		"desc": "heal 100 points"
 	}
 }

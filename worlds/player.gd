@@ -2,13 +2,14 @@ extends CanvasLayer
 
 signal health_base_changed
 signal health_changed
-signal leap_charge_base_changed
 signal level_changed
+signal leap_charge_changed
+signal consumable_value_changed
 
 var equipment: Dictionary = {
-	"consumable": [],
+	"consumable": [[1, 5], [2, 5]],
 	"claw": [],
-	"ability": [2]
+	"ability": [1]
 }
 var equipped: Dictionary = {
 	"consumable": 0,
@@ -25,7 +26,6 @@ var level: Dictionary = {
 
 var damage: int = 1
 var speed: int = 200
-var sense: int = 0
 var health_base: int = 100:
 	set(val):
 		health_base = val
@@ -33,11 +33,20 @@ var health_base: int = 100:
 var leap_charge_base: int = 0 :
 	set(val):
 		leap_charge_base = val
-		leap_charge_base_changed.emit()
+		leap_cooldown.start()
 
+@onready var leap_charge: int = 0 :
+	set(val):
+		if val <= leap_charge_base:
+			leap_charge = val
+			leap_cooldown.start()
+			leap_charge_changed.emit()
+
+@onready var leap_cooldown: Timer = Utils.create_timer(self, 2, func(): leap_charge += 1)
 @onready var health: int = health_base :
 	set(val):
 		health = val
+		if health > health_base: health = health_base
 		health_changed.emit()
 
 func _ready():
@@ -67,6 +76,7 @@ func sync_level():
 	damage = 1 + level["damage"]
 	leap_charge_base = 0 + level["leap"]
 
+
 func orb_add(id: int) -> void:
 	for orb in orbs:
 		if orb[0] == id:
@@ -90,10 +100,17 @@ func equip(type: String, id: int):
 func buy(item: Dictionary):
 	for orb in orbs:
 		if orb[0] == item.price[0] && orb[1] >= item.price[1]:
+			if item.type == "consumable":
+				for consume in equipment["consumable"]:
+					if consume[0] == item.id:
+						consume[1] += 1
+						return true
+				
+				equipment["consumable"].append([item.id, 1])
+			
 			if !equipment[item.type].has(item.id):
 				equipment[item.type].append(item.id)
 				orb[1] -= item.price[1]
 				if orb[1] == 0: orbs.erase(orb)
 				return true
 	return false
-

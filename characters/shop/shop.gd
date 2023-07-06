@@ -11,11 +11,6 @@ var shop_list: Array = [
 		"price": [1, 1]
 	},
 	{
-		"type": "ability",
-		"id": 2,
-		"price": [1, 1]
-	},
-	{
 		"type": "claw",
 		"id": 1,
 		"price": [1, 1]
@@ -29,6 +24,11 @@ var shop_list: Array = [
 		"type": "claw",
 		"id": 3,
 		"price": [1, 1]
+	},
+	{
+		"type": "consumable",
+		"id": 1,
+		"price": [2, 1]
 	}
 ]
 
