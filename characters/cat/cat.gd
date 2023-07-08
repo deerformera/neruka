@@ -38,6 +38,8 @@ func _physics_process(_delta):
 			$LeapSprite.rotation = velocity_static.angle()
 		"attack1":
 			velocity = Vector2()
+		"consume":
+			velocity = Vector2()
 	move_and_slide()
 
 func _input(event):

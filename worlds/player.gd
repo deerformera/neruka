@@ -39,8 +39,9 @@ var leap_charge_base: int = 0 :
 	set(val):
 		if val <= leap_charge_base:
 			leap_charge = val
-			leap_cooldown.start()
 			leap_charge_changed.emit()
+			if val < leap_charge_base:
+				leap_cooldown.start()
 
 @onready var leap_cooldown: Timer = Utils.create_timer(self, 2, func(): leap_charge += 1)
 @onready var health: int = health_base :

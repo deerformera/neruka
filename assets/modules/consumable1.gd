@@ -12,6 +12,8 @@ func _ready():
 	Player.equipment["consumable"].map(func(eq): if eq[0] == id: value = eq[1])
 
 func _input(event):
-	if event.is_action_pressed("n_consume"):
+	if event.is_action_pressed("n_consume") && $"../..".animstate.get_current_node() != "consume":
 		value -= 1
 		Player.health += 10
+		$"../..".animstate.travel("consume")
+		$"../../HealParticles".restart()

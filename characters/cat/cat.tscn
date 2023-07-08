@@ -1,4 +1,4 @@
-[gd_scene load_steps=146 format=3 uid="uid://b7mbrqybxoisl"]
+[gd_scene load_steps=162 format=3 uid="uid://b7mbrqybxoisl"]
 
 [ext_resource type="Script" path="res://characters/cat/cat.gd" id="1_in7u4"]
 [ext_resource type="Texture2D" uid="uid://cpymps6ec432t" path="res://characters/cat/cat.png" id="1_y0c4x"]
@@ -6,6 +6,28 @@
 [ext_resource type="AudioStream" uid="uid://dav8wfrbsm4eb" path="res://assets/audio/slash.wav" id="4_nei0t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pkkab"]
+
+[sub_resource type="Shader" id="Shader_d2fis"]
+code = "shader_type canvas_item;
+
+uniform vec4 color: source_color;
+uniform bool active;
+
+void fragment() {
+	if (active){
+		vec4 tex = texture(TEXTURE, UV);
+		float gs = (COLOR.r + COLOR.g + COLOR.b) / 3.0;
+		tex.rgb = vec3(gs);
+		tex *= color;
+		COLOR = tex;
+	}
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jh5rf"]
+shader = SubResource("Shader_d2fis")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/active = false
 
 [sub_resource type="Gradient" id="Gradient_6oaxl"]
 colors = PackedColorArray(1, 1, 1, 0, 0.423529, 1, 1, 1)
@@ -1220,8 +1242,28 @@ tracks/0/keys = {
 "values": [30, 31, 32, 33, 34, 35, 36, 37]
 }
 
+[sub_resource type="Animation" id="Animation_tk0t4"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_cxcxq"]
+resource_name = "consume_up"
+length = 0.5
+
+[sub_resource type="Animation" id="Animation_62emo"]
+resource_name = "consume_down"
+length = 0.5
+
+[sub_resource type="Animation" id="Animation_8gorn"]
+resource_name = "consume_left"
+length = 0.5
+
+[sub_resource type="Animation" id="Animation_4dix0"]
+resource_name = "consume_right"
+length = 0.5
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rcvpb"]
 _data = {
+"RESET": SubResource("Animation_tk0t4"),
 "attack1_down": SubResource("Animation_helbl"),
 "attack1_down_left": SubResource("Animation_8b5vp"),
 "attack1_down_right": SubResource("Animation_ie0jl"),
@@ -1246,6 +1288,10 @@ _data = {
 "attack3_up": SubResource("Animation_b2f2p"),
 "attack3_up_left": SubResource("Animation_wxo3w"),
 "attack3_up_right": SubResource("Animation_aora5"),
+"consume_down": SubResource("Animation_62emo"),
+"consume_left": SubResource("Animation_8gorn"),
+"consume_right": SubResource("Animation_4dix0"),
+"consume_up": SubResource("Animation_cxcxq"),
 "hurt": SubResource("Animation_1k1ws"),
 "leap_down": SubResource("Animation_i23ln"),
 "leap_down_left": SubResource("Animation_nlt3p"),
@@ -1400,6 +1446,29 @@ blend_point_6/node = SubResource("AnimationNodeAnimation_tgymd")
 blend_point_6/pos = Vector2(-1, -1)
 blend_point_7/node = SubResource("AnimationNodeAnimation_n18o0")
 blend_point_7/pos = Vector2(1, -1)
+blend_mode = 1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5dw36"]
+animation = &"consume_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_601qn"]
+animation = &"consume_down"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jdtv5"]
+animation = &"consume_right"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4rmgd"]
+animation = &"consume_up"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_d0wdf"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_5dw36")
+blend_point_0/pos = Vector2(-1, 0)
+blend_point_1/node = SubResource("AnimationNodeAnimation_601qn")
+blend_point_1/pos = Vector2(0, 1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_jdtv5")
+blend_point_2/pos = Vector2(1, 0)
+blend_point_3/node = SubResource("AnimationNodeAnimation_4rmgd")
+blend_point_3/pos = Vector2(0, -1)
 blend_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_am2xy"]
@@ -1591,7 +1660,14 @@ switch_mode = 2
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d6j56"]
 switch_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ixtnt"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cjwjv"]
+switch_mode = 2
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_og80s"]
+states/End/position = Vector2(899, 100)
 states/Start/position = Vector2(427, 100)
 states/attack1/node = SubResource("AnimationNodeBlendSpace2D_xytd7")
 states/attack1/position = Vector2(722, 182)
@@ -1599,14 +1675,16 @@ states/attack2/node = SubResource("AnimationNodeBlendSpace2D_mv1ht")
 states/attack2/position = Vector2(427, 182)
 states/attack_spin/node = SubResource("AnimationNodeBlendSpace2D_qwslv")
 states/attack_spin/position = Vector2(488, 269)
+states/consume/node = SubResource("AnimationNodeBlendSpace2D_d0wdf")
+states/consume/position = Vector2(722, 269)
 states/hurt/node = SubResource("AnimationNodeAnimation_am2xy")
 states/hurt/position = Vector2(575, 22)
 states/leap/node = SubResource("AnimationNodeBlendSpace2D_442be")
 states/leap/position = Vector2(722, 100)
 states/normal/node = SubResource("AnimationNodeStateMachine_h84i2")
 states/normal/position = Vector2(575, 100)
-transitions = ["Start", "normal", SubResource("AnimationNodeStateMachineTransition_xuyc0"), "normal", "attack1", SubResource("AnimationNodeStateMachineTransition_lkj8s"), "attack1", "normal", SubResource("AnimationNodeStateMachineTransition_5xfki"), "attack2", "normal", SubResource("AnimationNodeStateMachineTransition_bx76s"), "attack1", "attack2", SubResource("AnimationNodeStateMachineTransition_8c0us"), "hurt", "normal", SubResource("AnimationNodeStateMachineTransition_hi241"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_w1pqa"), "leap", "normal", SubResource("AnimationNodeStateMachineTransition_rdmvj"), "normal", "leap", SubResource("AnimationNodeStateMachineTransition_27l3e"), "attack_spin", "normal", SubResource("AnimationNodeStateMachineTransition_4f4gv"), "attack2", "attack_spin", SubResource("AnimationNodeStateMachineTransition_5k5ei"), "attack_spin", "attack1", SubResource("AnimationNodeStateMachineTransition_dl076"), "attack2", "attack1", SubResource("AnimationNodeStateMachineTransition_d6j56")]
-graph_offset = Vector2(14, 81)
+transitions = ["Start", "normal", SubResource("AnimationNodeStateMachineTransition_xuyc0"), "normal", "attack1", SubResource("AnimationNodeStateMachineTransition_lkj8s"), "attack1", "normal", SubResource("AnimationNodeStateMachineTransition_5xfki"), "attack2", "normal", SubResource("AnimationNodeStateMachineTransition_bx76s"), "attack1", "attack2", SubResource("AnimationNodeStateMachineTransition_8c0us"), "hurt", "normal", SubResource("AnimationNodeStateMachineTransition_hi241"), "normal", "hurt", SubResource("AnimationNodeStateMachineTransition_w1pqa"), "leap", "normal", SubResource("AnimationNodeStateMachineTransition_rdmvj"), "normal", "leap", SubResource("AnimationNodeStateMachineTransition_27l3e"), "attack_spin", "normal", SubResource("AnimationNodeStateMachineTransition_4f4gv"), "attack2", "attack_spin", SubResource("AnimationNodeStateMachineTransition_5k5ei"), "attack_spin", "attack1", SubResource("AnimationNodeStateMachineTransition_dl076"), "attack2", "attack1", SubResource("AnimationNodeStateMachineTransition_d6j56"), "normal", "consume", SubResource("AnimationNodeStateMachineTransition_ixtnt"), "consume", "normal", SubResource("AnimationNodeStateMachineTransition_cjwjv")]
+graph_offset = Vector2(-5, 64)
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_va3sn"]
 
@@ -1680,6 +1758,13 @@ func _physics_process(_delta):
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xv3rt"]
 size = Vector2(40, 40)
 
+[sub_resource type="Gradient" id="Gradient_ckg8g"]
+offsets = PackedFloat32Array(0, 0.509934, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_g0pn6"]
+colors = PackedColorArray(1, 1, 0, 1, 0.747, 1, 0.34, 1)
+
 [node name="Cat" type="CharacterBody2D" groups=["cat"]]
 collision_layer = 2
 collision_mask = 7
@@ -1694,10 +1779,11 @@ zoom = Vector2(2, 2)
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 texture_repeat = 1
+material = SubResource("ShaderMaterial_jh5rf")
 texture = ExtResource("1_y0c4x")
 hframes = 10
 vframes = 48
-frame = 75
+frame = 76
 
 [node name="LeapSprite" type="Sprite2D" parent="."]
 visible = false
@@ -1726,6 +1812,7 @@ parameters/playback = SubResource("AnimationNodeStateMachinePlayback_va3sn")
 parameters/attack1/blend_position = Vector2(0, 0)
 parameters/attack2/blend_position = Vector2(0, 0)
 parameters/attack_spin/blend_position = Vector2(-0.740402, -0.676856)
+parameters/consume/blend_position = Vector2(0, 0)
 parameters/leap/blend_position = Vector2(0.760263, 0.816594)
 parameters/normal/playback = SubResource("AnimationNodeStateMachinePlayback_lwjg0")
 parameters/normal/sit/blend_position = Vector2(0, 0.877729)
@@ -1764,3 +1851,21 @@ position = Vector2(20, 0)
 shape = SubResource("RectangleShape2D_xv3rt")
 
 [node name="Equipment" type="Node" parent="."]
+
+[node name="HealParticles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 32
+lifetime = 0.25
+one_shot = true
+explosiveness = 1.0
+emission_shape = 1
+emission_sphere_radius = 6.47
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 100.0
+scale_amount_min = 1.5
+scale_amount_max = 1.5
+color_ramp = SubResource("Gradient_ckg8g")
+color_initial_ramp = SubResource("Gradient_g0pn6")

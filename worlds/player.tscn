@@ -21,10 +21,12 @@ func _ready():
 	$TopNav/BagButton.pressed.connect(func(): Player.get_panel(\"Bag\").show())
 	
 	Player.leap_charge_changed.connect(func():
-		$Desktop/HB/Leap/CooldownLabel.text = str(Player.leap_charge))
+		$Desktop/HB/Leap/ValueLabel.text = str(Player.leap_charge))
 
 func _physics_process(_delta):
 	if ability_timer: $Desktop/HB/Ability/CooldownLabel.text = str(snapped(ability_timer.time_left, 0.1))
+	if Player.leap_charge_base:
+		$Desktop/HB/Leap/CooldownLabel.text = str(snapped(Player.leap_cooldown.time_left, 0.1))
 
 func set_ability_timer(timer): ability_timer = timer
 "
@@ -515,6 +517,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_5xf4r")
 [node name="Label" type="Label" parent="HUD/Desktop/HB/Ability"]
 layout_mode = 2
 size_flags_vertical = 1
+theme_override_font_sizes/font_size = 18
 text = "Ability"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -522,7 +525,8 @@ vertical_alignment = 1
 [node name="CooldownLabel" type="Label" parent="HUD/Desktop/HB/Ability"]
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_colors/font_color = Color(1, 1, 1, 0.588235)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
 text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2
@@ -530,7 +534,8 @@ vertical_alignment = 2
 [node name="KeymapLabel" type="Label" parent="HUD/Desktop/HB/Ability"]
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_colors/font_color = Color(1, 1, 1, 0.588235)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
 text = "R"
 
 [node name="Leap" type="PanelContainer" parent="HUD/Desktop/HB"]
@@ -544,6 +549,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_5xf4r")
 [node name="Label" type="Label" parent="HUD/Desktop/HB/Leap"]
 layout_mode = 2
 size_flags_vertical = 1
+theme_override_font_sizes/font_size = 18
 text = "Leap"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -551,7 +557,16 @@ vertical_alignment = 1
 [node name="CooldownLabel" type="Label" parent="HUD/Desktop/HB/Leap"]
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_colors/font_color = Color(1, 1, 1, 0.588235)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "0"
+vertical_alignment = 2
+
+[node name="ValueLabel" type="Label" parent="HUD/Desktop/HB/Leap"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
 text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2
@@ -559,7 +574,8 @@ vertical_alignment = 2
 [node name="KeymapLabel" type="Label" parent="HUD/Desktop/HB/Leap"]
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_colors/font_color = Color(1, 1, 1, 0.588235)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
 text = "Shift"
 
 [node name="Consumable" type="PanelContainer" parent="HUD/Desktop/HB"]
@@ -573,6 +589,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_5xf4r")
 [node name="Label" type="Label" parent="HUD/Desktop/HB/Consumable"]
 layout_mode = 2
 size_flags_vertical = 1
+theme_override_font_sizes/font_size = 18
 text = "Potion"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -580,7 +597,8 @@ vertical_alignment = 1
 [node name="CooldownLabel" type="Label" parent="HUD/Desktop/HB/Consumable"]
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_colors/font_color = Color(1, 1, 1, 0.588235)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
 text = "0"
 horizontal_alignment = 2
 vertical_alignment = 2
@@ -588,7 +606,8 @@ vertical_alignment = 2
 [node name="KeymapLabel" type="Label" parent="HUD/Desktop/HB/Consumable"]
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_colors/font_color = Color(1, 1, 1, 0.588235)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
 text = "Q"
 
 [node name="Panel" type="MarginContainer" parent="."]
