@@ -27,7 +27,7 @@ func _ready():
 func die():
 	var orb_ins = orb.instantiate()
 	orb_ins.global_position = self.global_position
-	orb_ins.id = 5
+	orb_ins.id = 10
 	get_tree().root.get_node("World").add_child(orb_ins)
 	queue_free()
 

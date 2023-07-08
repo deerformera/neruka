@@ -4,6 +4,8 @@ signal interacted
 signal uninteracted
 signal activated
 
+@onready var orb_data = JSON.parse_string(FileAccess.open("res://assets/orb.json", FileAccess.READ).get_as_text())
+
 var shop_list: Array = [
 	{
 		"type": "ability",

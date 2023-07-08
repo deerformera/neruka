@@ -142,12 +142,20 @@ resource_name = "Shop"
 script/source = "extends VBoxContainer
 
 var shop_item = preload(\"res://assets/shop_item.tscn\")
+@onready var orb_data = JSON.parse_string(FileAccess.open(\"res://assets/orb.json\", FileAccess.READ).get_as_text())
 
 func init(shop_list: Array):
 	self.show()
 	shop_list.map(func(item):
+		var price_data = []
+		for price in item.price:
+			if !price_data.has(price):
+				price_data.append(orb_data[str(price)])
+		
+		print(price_data)
+		
 		var shop_item_ins = shop_item.instantiate()
-		shop_item_ins.init(item)
+		shop_item_ins.init(item, price_data)
 		self.add_child(shop_item_ins)
 		)
 
