@@ -98,20 +98,44 @@ func equip(type: String, id: int):
 	equipped[type] = id
 	get_tree().get_first_node_in_group("cat").equipment()
 
-func buy(item: Dictionary):
-	for orb in orbs:
-		if orb[0] == item.price[0] && orb[1] >= item.price[1]:
-			if item.type == "consumable":
-				for consume in equipment["consumable"]:
-					if consume[0] == item.id:
-						consume[1] += 1
-						return true
-				
-				equipment["consumable"].append([item.id, 1])
-			
-			if !equipment[item.type].has(item.id):
-				equipment[item.type].append(item.id)
-				orb[1] -= item.price[1]
-				if orb[1] == 0: orbs.erase(orb)
-				return true
-	return false
+func buy(shop_item: Dictionary):
+	var orb_arr: Array = []
+	for price in shop_item.price:
+		for orb in orbs:
+			if orb[0] == price[0] && orb[1] >= price[1]:
+				orb_arr.append(orb)
+	if shop_item.price.size() == orb_arr.size():
+		var subtract = func():
+			for orb in orbs:
+				for price in shop_item.price:
+					if orb[0] == price[0]:
+						orb[1] -= price[1]
+						if orb[1] == 0: orbs.erase(orb)
+		if shop_item.type == "consumable":
+			subtract.call()
+			for consume in equipment["consumable"]:
+				if consume[0] == shop_item.id:
+					consume[1] += 1
+					return
+			equipment["consumable"].append([shop_item.id, 1])
+		if !equipment[shop_item.type].has(shop_item.id):
+			subtract.call()
+			equipment[shop_item.type].append(shop_item.id)
+
+#	for orb in orbs:
+#		for item in shop_item.price:
+#			if orb[0] == item.price[0] && orb[1] >= item.price[1]:
+#				if item.type == "consumable":
+#					for consume in equipment["consumable"]:
+#						if consume[0] == item.id:
+#							consume[1] += 1
+#							return true
+#
+#					equipment["consumable"].append([item.id, 1])
+#
+#				if !equipment[item.type].has(item.id):
+#					equipment[item.type].append(item.id)
+#					orb[1] -= item.price[1]
+#					if orb[1] == 0: orbs.erase(orb)
+#					return true
+#	return false

@@ -497,6 +497,7 @@ texture_normal = SubResource("MeshTexture_vtqgb")
 action = "n_ability"
 
 [node name="Desktop" type="MarginContainer" parent="HUD"]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 script = SubResource("GDScript_lfree")

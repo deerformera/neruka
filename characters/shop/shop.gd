@@ -8,27 +8,27 @@ var shop_list: Array = [
 	{
 		"type": "ability",
 		"id": 1,
-		"price": [1, 1]
+		"price": [[1, 1]]
 	},
 	{
 		"type": "claw",
 		"id": 1,
-		"price": [1, 1]
+		"price": [[1, 1], [2, 1]]
 	},
 	{
 		"type": "claw",
 		"id": 2,
-		"price": [1, 1]
+		"price": [[1, 1]]
 	},
 	{
 		"type": "claw",
 		"id": 3,
-		"price": [1, 1]
+		"price": [[1, 1]]
 	},
 	{
 		"type": "consumable",
 		"id": 1,
-		"price": [2, 1]
+		"price": [[2, 1]]
 	}
 ]
 
