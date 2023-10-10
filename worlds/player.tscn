@@ -1,0 +1,1014 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://default.tres" type="Theme" id=2]
+
+[sub_resource type="GDScript" id=18]
+script/source = "extends CanvasLayer
+
+signal health_base_changed
+signal health_changed
+signal level_changed
+signal dash_charge_changed
+signal consumable_value_changed
+
+class NTimer:
+	extends Timer
+	func _init(body, waittime: float, method: String, oneshot = true, start = false):
+		self.wait_time = waittime
+		self.one_shot = oneshot
+		self.autostart = start
+		self.connect(\"timeout\", body, method)
+		body.add_child(self)
+
+var equipment: Dictionary = {
+	\"consumable\": [[1, 5], [2, 5]],
+	\"claw\": [],
+	\"ability\": [1]
+}
+var equipped: Dictionary = {
+	\"consumable\": 0,
+	\"claw\": 0,
+	\"ability\": 0
+}
+var orbs: Array = [[1,5], [3,5], [2,5]]
+var level: Dictionary = {
+	\"health\": 0,
+	\"damage\": 0,
+	\"dash\": 0,
+	\"sense\": 0
+}
+
+var android_mode = 0
+var damage: int = 1
+var speed: int = 200
+var health_base: int = 100 setget _set_health_base
+var dash_charge_base: int = 0 setget _set_dash_charge_base
+onready var dash_charge: int = 0 setget _set_dash_charge
+onready var health: int = health_base setget _set_health
+
+onready var dash_cooldown: Timer = self.NTimer.new(self, 2, \"_dash_cooldown_timeout\")
+
+# -- Signal Method --
+func _dash_cooldown_timeout(): _set_dash_charge(dash_charge + 1)
+
+# -- Setter Getter Method --
+func _set_dash_charge_base(val):
+	dash_charge_base = val
+	dash_cooldown.start()
+
+func _set_dash_charge(val):
+	if val <= dash_charge_base:
+		dash_charge = val
+		emit_signal(\"dash_charge_changed\")
+		if val < dash_charge_base:
+			dash_cooldown.start()
+
+func _set_health(val):
+	print(\"y\")
+	health = val
+	if health > health_base: health = health_base
+	emit_signal(\"health_changed\")
+
+func _set_health_base(val):
+	health_base = val
+	emit_signal(\"health_base_changed\")
+
+# -- Main --
+func _ready():
+	emit_signal(\"health_changed\")
+	emit_signal(\"health_base_changed\")
+	sync_level()
+
+func get_panel(panel: String):
+	for child in $Panel/P/VB/Main.get_children(): child.hide()
+	$Panel.show()
+	$Panel/P/VB/Top/Label.text = panel.capitalize()
+	return $Panel/P/VB/Main.get_node(panel)
+
+func get_level() -> int:
+	var total: int = 0
+	for val in level.values():
+		total += val
+	return total
+
+func get_dict(path: String) -> Dictionary:
+	var file = File.new()
+	file.open(path, File.READ)
+	var data = JSON.parse(file.get_as_text()).result
+	file.close()
+	return data
+
+func up_level(type: String):
+	level[type] += 1
+	sync_level()
+	emit_signal(\"level_changed\")
+
+func sync_level():
+	_set_health_base(100 + (level[\"health\"] * 10))
+	_set_dash_charge_base(0 + level[\"dash\"])
+	damage = 1 + level[\"damage\"]
+
+func orb_add(id: int) -> void:
+	for orb in orbs:
+		if orb[0] == id:
+			orb[1] += 1
+			return
+	orbs.append([id, 1])
+
+func orb_del(id: int, val: int) -> bool:
+	for orb in orbs:
+		if orb[0] == id:
+			if orb[1] >= val:
+				orb[1] -= val
+				if orb[1] == 0: orbs.erase(orb)
+				return true
+	return false
+
+func equip(type: String, id: int):
+	equipped[type] = id
+	get_tree().get_nodes_in_group(\"cat\")[0].equipment()
+
+func buy(shop_item: Dictionary):
+	var orb_arr: Array = []
+	for price in shop_item.price:
+		for orb in orbs:
+			if orb[0] == price[0] && orb[1] >= price[1]:
+				orb_arr.append(orb)
+	if shop_item.price.size() == orb_arr.size():
+		if shop_item.type == \"consumable\":
+			for orb in orbs:
+				for price in shop_item.price:
+					if orb[0] == price[0]:
+						orb[1] -= price[1]
+						if orb[1] == 0: orbs.erase(orb)
+			for consume in equipment[\"consumable\"]:
+				if consume[0] == shop_item.id:
+					consume[1] += 1
+					return
+			equipment[\"consumable\"].append([shop_item.id, 1])
+		if !equipment[shop_item.type].has(shop_item.id):
+			for orb in orbs:
+				for price in shop_item.price:
+					if orb[0] == price[0]:
+						orb[1] -= price[1]
+						if orb[1] == 0: orbs.erase(orb)
+			equipment[shop_item.type].append(shop_item.id)
+"
+
+[sub_resource type="GDScript" id=2]
+resource_name = "HUD"
+script/source = "extends MarginContainer
+
+var ability_timer: Timer = null
+
+# -- Signal Method --
+func _consumable_value_changed(val): 
+	$Desktop/HB/ConsumePanel/ValueLabel.text = str(val)
+	$Mobile/Control/ConsumePanel/Label.text = str(val)
+
+func _health_base_changed(): $TopNav/HealthBar.max_value = Player.health_base
+
+func _dash_charge_changed(): 
+	$Mobile/Control/DashPanel/ValueLabel.text = str(Player.dash_charge)
+	$Desktop/HB/DashPanel/ValueLabel.text = str(Player.dash_charge)
+
+func _health_changed():
+	$TopNav/HealthBar/Label.text = str(Player.health)
+	$TopNav/HealthBar.value = Player.health
+
+func _bag_button_pressed(): Player.get_panel(\"Bag\").init()
+
+func _ready():
+	Player.connect(\"consumable_value_changed\", self, \"_consumable_value_changed\")
+	Player.connect(\"health_base_changed\", self, \"_health_base_changed\")
+	Player.connect(\"health_changed\", self, \"_health_changed\")
+	Player.connect(\"dash_charge_changed\", self, \"_dash_charge_changed\")
+	$TopNav/BagButton.connect(\"pressed\", self, \"_bag_button_pressed\")
+
+func _physics_process(_delta):
+	if ability_timer: 
+		$Desktop/HB/AbilityPanel/CooldownLabel.text = str(stepify(ability_timer.time_left, 0.1))
+		$Mobile/Control/AbilityPanel/Label.text = str(stepify(ability_timer.time_left, 0.1))
+	
+	if Player.dash_charge_base:
+		$Mobile/Control/DashPanel/CooldownLabel.text = str(stepify(Player.dash_cooldown.time_left, 0.1))
+		$Desktop/HB/DashPanel/CooldownLabel.text = str(stepify(Player.dash_cooldown.time_left, 0.1))
+
+func set_ability_timer(timer): ability_timer = timer
+"
+
+[sub_resource type="GDScript" id=3]
+resource_name = "EquipmentButton"
+script/source = "extends VBoxContainer
+
+var selected: String = \"\"
+
+# -- Signal Method --
+func _center_button_down():
+	for child in $HB.get_children():
+		if Player.equipped[child.name.to_lower()]:
+			child.get_node(\"Label\").text = str(Player.equipped[child.name.to_lower()])
+		child.show()
+
+func _center_button_up():
+	if selected:
+		Player.get_panel(\"Equipment\").init(selected)
+		selected = \"\"
+	for child in $HB.get_children(): child.hide()
+
+# -- Main --
+func _ready():
+	for child in $HB.get_children(): child.hide()
+	$Center.connect(\"button_down\", self, \"_center_button_down\")
+	$Center.connect(\"button_up\", self, \"_center_button_up\")
+
+func _input(event):
+	if event is InputEventScreenDrag:
+		selected = \"\"
+		for child in $HB.get_children():
+			if child.get_node(\"TSB\").is_pressed():
+				selected = child.name.to_lower()
+
+"
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 32, 32 )
+
+[sub_resource type="GDScript" id=15]
+resource_name = "Mobile"
+script/source = "extends MarginContainer
+
+var velocity: Vector2
+var analog_index
+
+func _ready():
+	self.visible = Player.android_mode
+
+func _input(event):
+	if $Analog.pressed:
+		if event is InputEventScreenDrag:
+			velocity = ((event.position - $Analog.rect_global_position) - ($Analog.rect_min_size / 2)).normalized()
+	else: velocity = Vector2()
+"
+
+[sub_resource type="RectangleShape2D" id=12]
+extents = Vector2( 96, 96 )
+
+[sub_resource type="RectangleShape2D" id=13]
+extents = Vector2( 24, 24 )
+
+[sub_resource type="RectangleShape2D" id=14]
+extents = Vector2( 48, 48 )
+
+[sub_resource type="GDScript" id=16]
+resource_name = "Desktop"
+script/source = "extends MarginContainer
+
+func _ready():
+	self.visible = !Player.android_mode
+"
+
+[sub_resource type="GDScript" id=6]
+resource_name = "Panel"
+script/source = "extends MarginContainer
+
+func _ready(): $P/VB/Top/Button.connect(\"pressed\", self, \"_hidden\")
+func _hidden(): self.visible = false
+"
+
+[sub_resource type="GDScript" id=8]
+resource_name = "Equipment"
+script/source = "extends HBoxContainer
+
+var equipment_item = preload(\"res://assets/scenes/equipment_item.tscn\")
+var data: Dictionary
+
+func _item_button_pressed(eq, consumable: bool):
+	if consumable: $Label.text = data[str(eq[0])][\"desc\"] + \"\\nvalue: \" + str(eq[1])
+	else: $Label.text = data[str(eq)][\"desc\"]
+
+func _hidden():
+	$Label.text = \"\"
+	for child in $S/VB.get_children(): child.queue_free()
+
+func _ready(): self.connect(\"hide\", self, \"_hidden\")
+
+func init(type: String):
+	self.show()
+	data = Player.get_dict(\"res://assets/modules/\"+type+\".json\")
+	for eq in Player.equipment[type]:
+		var item = equipment_item.instance()
+		if type != \"consumable\":
+			item.init(type, eq)
+			item.get_node(\"ItemButton\").connect(\"pressed\", self, \"_item_button_pressed\", [eq, false])
+		else: 
+			item.init(type, eq[0])
+			item.get_node(\"ItemButton\").connect(\"pressed\", self, \"_item_button_pressed\", [eq, true])
+		$S/VB.add_child(item)
+
+"
+
+[sub_resource type="StyleBoxFlat" id=17]
+bg_color = Color( 0, 0, 0, 0.12549 )
+
+[sub_resource type="GDScript" id=7]
+resource_name = "Bag"
+script/source = "extends Control
+
+var item = preload(\"res://assets/scenes/orb_item.tscn\")
+onready var data: Dictionary = Player.get_dict(\"res://assets/orb.json\")
+
+func _hidden(): for child in $VB.get_children(): child.queue_free()
+func _ready(): self.connect(\"hide\", self, \"_hidden\")
+
+func init():
+	self.show()
+	for orb in Player.orbs:
+		var item_ins = item.instance()
+		item_ins.init(orb, data[str(orb[0])])
+		$VB.add_child(item_ins)
+"
+
+[sub_resource type="GDScript" id=9]
+resource_name = "Shop"
+script/source = "extends ScrollContainer
+
+var shop_item = preload(\"res://assets/scenes/shop_item.tscn\")
+onready var data = Player.get_dict(\"res://assets/orb.json\")
+
+func init(shop_list: Array):
+	self.show()
+	
+	for item in shop_list:
+		var item_data = []
+		for price in item.price:
+			item_data.append([data[str(price[0])].name, price[1]])
+		var shop_item_ins = shop_item.instance()
+		shop_item_ins.init(item, item_data)
+		$VB.add_child(shop_item_ins)
+
+func _hidden(): for child in $VB.get_children(): child.queue_free()
+func _ready(): self.connect(\"hide\", self, \"_hidden\")
+"
+
+[sub_resource type="GDScript" id=10]
+resource_name = "Upgrade"
+script/source = "extends TabContainer
+
+onready var orb_data = Player.get_dict(\"res://assets/orb.json\")
+var orb_item = preload(\"res://assets/scenes/orb_use_item.tscn\")
+var orb_used: Array
+var selected: String
+
+func _back_button_pressed(): self.current_tab = 0
+func _child_button_pressed(child):
+	selected = child.name
+	$\"../../Top/Label\".text = child.name+\" - Level: \"+ str(Player.level[child.name.to_lower()])
+	self.current_tab = 1
+func _up_button_pressed():
+	for orb in orb_used:
+		Player.orb_del(orb, 1)
+	Player.up_level(selected.to_lower())
+	self.current_tab = 0
+
+func _tab_selected(tab):
+	if tab == 0:
+		$\"../../Top/Label\".text = \"Upgrade\"
+		for child in $OrbList/S/VB.get_children(): child.queue_free()
+		orb_used.clear()
+		selected = \"\"
+	elif tab == 1:
+		$OrbList/HB/ProgressBar.value = 0
+		$OrbList/HB/ProgressBar.max_value = (Player.level[selected.to_lower()] + 1) * 5
+		$OrbList/HB/UpButton.disabled = true
+		for orb in Player.orbs:
+			var orb_item_ins = orb_item.instance()
+			orb_item_ins.init(orb, orb_data[str(orb[0])])
+			orb_item_ins.get_node(\"DecrementButton\").connect(\"pressed\", self, \"_decrement\", [orb_item_ins])
+			orb_item_ins.get_node(\"IncrementButton\").connect(\"pressed\", self, \"_increment\", [orb_item_ins])
+			$OrbList/S/VB.add_child(orb_item_ins)
+
+func _increment(node):
+	if $OrbList/HB/ProgressBar.value < $OrbList/HB/ProgressBar.max_value:
+		node.value -= 1
+		orb_used.append(node.id)
+		sync_progress()
+
+func _decrement(node):
+	if orb_used.has(node.id):
+		node.value += 1
+		orb_used.erase(node.id)
+		sync_progress()
+
+func _level_changed():
+	for child in $StatList.get_children():
+		child.get_node(\"Label\").text = child.name + \" - Level: \" + str(Player.level[child.name.to_lower()])
+
+func sync_progress():
+	$OrbList/HB/ProgressBar.value = 0
+	for orb in orb_used:
+		if orb_data[str(orb)].type == \"small\":
+			$OrbList/HB/ProgressBar.value += 1
+		elif orb_data[str(orb)].type == \"big\":
+			$OrbList/HB/ProgressBar.value += 2
+	if $OrbList/HB/ProgressBar.value >= $OrbList/HB/ProgressBar.max_value: $OrbList/HB/UpButton.disabled = false
+	else: $OrbList/HB/UpButton.disabled = true
+
+func _ready():
+	self.connect(\"tab_selected\", self, \"_tab_selected\")
+	Player.connect(\"level_changed\", self, \"_level_changed\")
+	$OrbList/HB/BackButton.connect(\"pressed\", self, \"_back_button_pressed\")
+	$OrbList/HB/UpButton.connect(\"pressed\", self, \"_up_button_pressed\")
+	for child in $StatList.get_children():
+		child.get_node(\"Button\").connect(\"pressed\", self, \"_child_button_pressed\", [child])
+
+func init(): 
+	self.current_tab = 0
+	for child in $StatList.get_children():
+		child.get_node(\"Label\").text = child.name + \" - Level: \" + str(Player.level[child.name.to_lower()])
+"
+
+[node name="Player" type="CanvasLayer"]
+script = SubResource( 18 )
+
+[node name="HUD" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+theme = ExtResource( 2 )
+custom_constants/margin_right = 24
+custom_constants/margin_top = 24
+custom_constants/margin_left = 24
+custom_constants/margin_bottom = 24
+script = SubResource( 2 )
+
+[node name="TopNav" type="Control" parent="HUD"]
+margin_left = 24.0
+margin_top = 24.0
+margin_right = 1256.0
+margin_bottom = 696.0
+mouse_filter = 1
+
+[node name="HealthBar" type="ProgressBar" parent="HUD/TopNav"]
+margin_right = 4.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 320, 32 )
+mouse_filter = 1
+percent_visible = false
+
+[node name="Label" type="Label" parent="HUD/TopNav/HealthBar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+align = 1
+valign = 1
+
+[node name="MenuButton" type="Button" parent="HUD/TopNav"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -6.0
+margin_right = 6.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 64, 64 )
+focus_mode = 0
+mouse_filter = 1
+text = "Menu"
+
+[node name="EquipmentButton" type="VBoxContainer" parent="HUD/TopNav"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -200.0
+margin_bottom = 132.0
+script = SubResource( 3 )
+
+[node name="Center" type="Button" parent="HUD/TopNav/EquipmentButton"]
+margin_left = 68.0
+margin_right = 132.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+focus_mode = 0
+mouse_filter = 1
+size_flags_horizontal = 4
+size_flags_vertical = 0
+keep_pressed_outside = true
+text = "Eqs"
+
+[node name="HB" type="HBoxContainer" parent="HUD/TopNav/EquipmentButton"]
+margin_top = 68.0
+margin_right = 200.0
+margin_bottom = 132.0
+
+[node name="Claw" type="Panel" parent="HUD/TopNav/EquipmentButton/HB"]
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="HUD/TopNav/EquipmentButton/HB/Claw"]
+margin_left = 7.0
+margin_top = 17.0
+margin_right = 41.0
+margin_bottom = 31.0
+mouse_filter = 1
+align = 1
+valign = 1
+
+[node name="TSB" type="TouchScreenButton" parent="HUD/TopNav/EquipmentButton/HB/Claw"]
+shape = SubResource( 5 )
+passby_press = true
+
+[node name="Ability" type="Panel" parent="HUD/TopNav/EquipmentButton/HB"]
+margin_left = 68.0
+margin_right = 132.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="HUD/TopNav/EquipmentButton/HB/Ability"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+align = 1
+valign = 1
+
+[node name="TSB" type="TouchScreenButton" parent="HUD/TopNav/EquipmentButton/HB/Ability"]
+shape = SubResource( 5 )
+passby_press = true
+
+[node name="Consumable" type="Panel" parent="HUD/TopNav/EquipmentButton/HB"]
+margin_left = 136.0
+margin_right = 200.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="HUD/TopNav/EquipmentButton/HB/Consumable"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+align = 1
+valign = 1
+
+[node name="TSB" type="TouchScreenButton" parent="HUD/TopNav/EquipmentButton/HB/Consumable"]
+shape = SubResource( 5 )
+passby_press = true
+
+[node name="BagButton" type="Button" parent="HUD/TopNav"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+focus_mode = 0
+mouse_filter = 1
+text = "Bag"
+
+[node name="Mobile" type="MarginContainer" parent="HUD"]
+visible = false
+modulate = Color( 1, 1, 1, 0.607843 )
+margin_left = 24.0
+margin_top = 24.0
+margin_right = 1256.0
+margin_bottom = 696.0
+mouse_filter = 2
+custom_constants/margin_right = 100
+custom_constants/margin_top = 50
+custom_constants/margin_left = 100
+custom_constants/margin_bottom = 50
+script = SubResource( 15 )
+
+[node name="Analog" type="Button" parent="HUD/Mobile"]
+margin_left = 100.0
+margin_top = 422.0
+margin_right = 300.0
+margin_bottom = 622.0
+rect_min_size = Vector2( 200, 200 )
+focus_mode = 0
+mouse_filter = 1
+size_flags_horizontal = 0
+size_flags_vertical = 8
+action_mode = 0
+enabled_focus_mode = 0
+keep_pressed_outside = true
+
+[node name="Control" type="Control" parent="HUD/Mobile"]
+margin_left = 788.0
+margin_top = 330.0
+margin_right = 1132.0
+margin_bottom = 622.0
+rect_min_size = Vector2( 344, 292 )
+mouse_filter = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="AttackPanel" type="Panel" parent="HUD/Mobile/Control"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -72.0
+margin_top = -192.0
+margin_right = 120.0
+rect_min_size = Vector2( 192, 192 )
+mouse_filter = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="TSB" type="TouchScreenButton" parent="HUD/Mobile/Control/AttackPanel"]
+shape = SubResource( 12 )
+action = "n_attack"
+
+[node name="ConsumePanel" type="Panel" parent="HUD/Mobile/Control"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -48.0
+margin_top = -112.0
+margin_bottom = -64.0
+rect_min_size = Vector2( 48, 48 )
+mouse_filter = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="TSB" type="TouchScreenButton" parent="HUD/Mobile/Control/ConsumePanel"]
+shape = SubResource( 13 )
+action = "n_consume"
+
+[node name="Label" type="Label" parent="HUD/Mobile/Control/ConsumePanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0"
+align = 1
+valign = 1
+
+[node name="AbilityPanel" type="Panel" parent="HUD/Mobile/Control"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -72.0
+margin_right = 24.0001
+margin_bottom = 96.0
+rect_min_size = Vector2( 64, 64 )
+mouse_filter = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="TSB" type="TouchScreenButton" parent="HUD/Mobile/Control/AbilityPanel"]
+shape = SubResource( 14 )
+action = "n_ability"
+
+[node name="Label" type="Label" parent="HUD/Mobile/Control/AbilityPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0"
+align = 1
+valign = 1
+
+[node name="DashPanel" type="Panel" parent="HUD/Mobile/Control"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -46.0
+margin_right = 96.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 96, 96 )
+mouse_filter = 1
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="TSB" type="TouchScreenButton" parent="HUD/Mobile/Control/DashPanel"]
+shape = SubResource( 14 )
+action = "n_dash"
+
+[node name="ValueLabel" type="Label" parent="HUD/Mobile/Control/DashPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0"
+
+[node name="CooldownLabel" type="Label" parent="HUD/Mobile/Control/DashPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0"
+align = 2
+valign = 2
+
+[node name="Desktop" type="MarginContainer" parent="HUD"]
+margin_left = 24.0
+margin_top = 24.0
+margin_right = 1256.0
+margin_bottom = 696.0
+mouse_filter = 2
+script = SubResource( 16 )
+
+[node name="HB" type="HBoxContainer" parent="HUD/Desktop"]
+margin_left = 936.0
+margin_top = 576.0
+margin_right = 1232.0
+margin_bottom = 672.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="DashPanel" type="Panel" parent="HUD/Desktop/HB"]
+margin_right = 96.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 96, 96 )
+
+[node name="Label" type="Label" parent="HUD/Desktop/HB/DashPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Dash"
+align = 1
+valign = 1
+
+[node name="CooldownLabel" type="Label" parent="HUD/Desktop/HB/DashPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+align = 2
+valign = 2
+
+[node name="ValueLabel" type="Label" parent="HUD/Desktop/HB/DashPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+
+[node name="ConsumePanel" type="Panel" parent="HUD/Desktop/HB"]
+margin_left = 100.0
+margin_right = 196.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 96, 96 )
+
+[node name="Label" type="Label" parent="HUD/Desktop/HB/ConsumePanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Consume"
+align = 1
+valign = 1
+
+[node name="ValueLabel" type="Label" parent="HUD/Desktop/HB/ConsumePanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+
+[node name="AbilityPanel" type="Panel" parent="HUD/Desktop/HB"]
+margin_left = 200.0
+margin_right = 296.0
+margin_bottom = 96.0
+rect_min_size = Vector2( 96, 96 )
+
+[node name="Label" type="Label" parent="HUD/Desktop/HB/AbilityPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Ability"
+align = 1
+valign = 1
+
+[node name="CooldownLabel" type="Label" parent="HUD/Desktop/HB/AbilityPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+align = 2
+valign = 2
+
+[node name="Panel" type="MarginContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+custom_constants/margin_right = 200
+custom_constants/margin_top = 100
+custom_constants/margin_left = 200
+custom_constants/margin_bottom = 100
+script = SubResource( 6 )
+
+[node name="P" type="PanelContainer" parent="Panel"]
+margin_left = 200.0
+margin_top = 100.0
+margin_right = 1080.0
+margin_bottom = 620.0
+
+[node name="VB" type="VBoxContainer" parent="Panel/P"]
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 879.0
+margin_bottom = 519.0
+
+[node name="Top" type="HBoxContainer" parent="Panel/P/VB"]
+margin_right = 878.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+
+[node name="Label" type="Label" parent="Panel/P/VB/Top"]
+margin_right = 810.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+align = 1
+valign = 1
+
+[node name="Button" type="Button" parent="Panel/P/VB/Top"]
+margin_left = 814.0
+margin_right = 878.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 0 )
+text = "X"
+
+[node name="Main" type="MarginContainer" parent="Panel/P/VB"]
+margin_top = 68.0
+margin_right = 878.0
+margin_bottom = 518.0
+size_flags_vertical = 3
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+
+[node name="Equipment" type="HBoxContainer" parent="Panel/P/VB/Main"]
+visible = false
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 858.0
+margin_bottom = 430.0
+script = SubResource( 8 )
+
+[node name="Label" type="Label" parent="Panel/P/VB/Main/Equipment"]
+margin_right = 417.0
+margin_bottom = 410.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/normal = SubResource( 17 )
+text = "null"
+align = 1
+valign = 1
+
+[node name="S" type="ScrollContainer" parent="Panel/P/VB/Main/Equipment"]
+margin_left = 421.0
+margin_right = 838.0
+margin_bottom = 410.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="VB" type="VBoxContainer" parent="Panel/P/VB/Main/Equipment/S"]
+margin_right = 417.0
+margin_bottom = 410.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Bag" type="ScrollContainer" parent="Panel/P/VB/Main"]
+visible = false
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 858.0
+margin_bottom = 430.0
+scroll_horizontal_enabled = false
+script = SubResource( 7 )
+
+[node name="VB" type="VBoxContainer" parent="Panel/P/VB/Main/Bag"]
+margin_right = 838.0
+size_flags_horizontal = 3
+
+[node name="Shop" type="ScrollContainer" parent="Panel/P/VB/Main"]
+visible = false
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 858.0
+margin_bottom = 430.0
+scroll_horizontal_enabled = false
+script = SubResource( 9 )
+
+[node name="VB" type="VBoxContainer" parent="Panel/P/VB/Main/Shop"]
+margin_right = 838.0
+margin_bottom = 410.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Upgrade" type="TabContainer" parent="Panel/P/VB/Main"]
+visible = false
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 858.0
+margin_bottom = 430.0
+tabs_visible = false
+script = SubResource( 10 )
+
+[node name="StatList" type="VBoxContainer" parent="Panel/P/VB/Main/Upgrade"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 1.0
+margin_right = -1.0
+margin_bottom = -1.0
+
+[node name="Health" type="HBoxContainer" parent="Panel/P/VB/Main/Upgrade/StatList"]
+margin_right = 836.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+
+[node name="Label" type="Label" parent="Panel/P/VB/Main/Upgrade/StatList/Health"]
+margin_right = 768.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Health"
+align = 1
+valign = 1
+
+[node name="Button" type="Button" parent="Panel/P/VB/Main/Upgrade/StatList/Health"]
+margin_left = 772.0
+margin_right = 836.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 0 )
+
+[node name="Dash" type="HBoxContainer" parent="Panel/P/VB/Main/Upgrade/StatList"]
+margin_top = 68.0
+margin_right = 836.0
+margin_bottom = 132.0
+rect_min_size = Vector2( 0, 64 )
+
+[node name="Label" type="Label" parent="Panel/P/VB/Main/Upgrade/StatList/Dash"]
+margin_right = 768.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Dash"
+align = 1
+valign = 1
+
+[node name="Button" type="Button" parent="Panel/P/VB/Main/Upgrade/StatList/Dash"]
+margin_left = 772.0
+margin_right = 836.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 0 )
+
+[node name="Damage" type="HBoxContainer" parent="Panel/P/VB/Main/Upgrade/StatList"]
+margin_top = 136.0
+margin_right = 836.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 0, 64 )
+
+[node name="Label" type="Label" parent="Panel/P/VB/Main/Upgrade/StatList/Damage"]
+margin_right = 768.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Damage"
+align = 1
+valign = 1
+
+[node name="Button" type="Button" parent="Panel/P/VB/Main/Upgrade/StatList/Damage"]
+margin_left = 772.0
+margin_right = 836.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 0 )
+
+[node name="OrbList" type="VBoxContainer" parent="Panel/P/VB/Main/Upgrade"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 1.0
+margin_right = -1.0
+margin_bottom = -1.0
+
+[node name="HB" type="HBoxContainer" parent="Panel/P/VB/Main/Upgrade/OrbList"]
+margin_right = 836.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 0, 48 )
+
+[node name="BackButton" type="Button" parent="Panel/P/VB/Main/Upgrade/OrbList/HB"]
+margin_right = 48.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 48, 0 )
+text = "<"
+
+[node name="ProgressBar" type="ProgressBar" parent="Panel/P/VB/Main/Upgrade/OrbList/HB"]
+margin_left = 52.0
+margin_right = 784.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="UpButton" type="Button" parent="Panel/P/VB/Main/Upgrade/OrbList/HB"]
+margin_left = 788.0
+margin_right = 836.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 48, 0 )
+disabled = true
+text = "Up"
+
+[node name="S" type="ScrollContainer" parent="Panel/P/VB/Main/Upgrade/OrbList"]
+margin_top = 52.0
+margin_right = 836.0
+margin_bottom = 424.0
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="VB" type="VBoxContainer" parent="Panel/P/VB/Main/Upgrade/OrbList/S"]
+margin_right = 836.0
+margin_bottom = 372.0
+size_flags_horizontal = 3
+size_flags_vertical = 3

@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://assets/textures/slash.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=141]
+resource_name = "slash"
+script/source = "extends Area2D
+
+func finished(): queue_free()
+
+func _ready():
+    $AnimatedSprite.connect(\"animation_finished\", self, \"finished\")
+    $AnimatedSprite.play()
+    if get_parent().animstate.get_current_node() == \"attack2\": $AnimatedSprite.flip_v = true
+    self.rotation = get_parent().velocity_static.angle()
+    self.position += get_parent().velocity_static * 20
+    
+    self.connect(\"body_entered\", self, \"entered\")
+
+func entered(body: Character):
+    body.emit_signal(\"damaged\", get_parent().damage)
+    get_parent().strike()
+"
+
+[sub_resource type="RectangleShape2D" id=140]
+extents = Vector2( 16, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 40, 40 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 40, 0, 40, 40 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 80, 0, 40, 40 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 1 )
+region = Rect2( 120, 0, 40, 40 )
+
+[sub_resource type="SpriteFrames" id=139]
+animations = [ {
+"frames": [ SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
+"loop": false,
+"name": "default",
+"speed": 40.0
+} ]
+
+[node name="Slash" type="Area2D"]
+show_behind_parent = true
+collision_layer = 0
+collision_mask = 4
+script = SubResource( 141 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 140 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+show_behind_parent = true
+frames = SubResource( 139 )
