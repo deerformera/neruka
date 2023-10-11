@@ -8,10 +8,10 @@ var abilities: Array
 var level = {
     "vigor": 0,
     "strength": 0,
-    "mind": 3
+    "mind": 2
 }
 
-var slots = []
+var slots = [0,1,2]
 
 func _ready():
     var f = File.new()
@@ -21,8 +21,6 @@ func _ready():
     f.close()
     
     slots.resize(level.mind + 1)
-    
-    get_abilities()
 
 func get_base():
     var base = {}
@@ -33,7 +31,6 @@ func get_base():
 
 func get_enemy(id: int) -> Dictionary:
     if id > enemies.size() - 1: return {}
-    
     var enemy = self.enemies[id]
     var dict = { "name": enemy[0], "desc": enemy[1] }
     return dict
@@ -47,5 +44,5 @@ func get_ability(id: int) -> Dictionary:
 func get_abilities() -> Array:
     var arr = []
     for slot in slots:
-        if slot: arr.append(slot)
+        if slot != null: arr.append(load("res://assets/abilities/" + str(slot) + ".tscn"))
     return arr

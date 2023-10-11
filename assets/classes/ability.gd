@@ -1,26 +1,39 @@
 extends Node2D
 class_name Ability
 
-onready var cat := owner
+signal cast
+
+onready var cat := $"../.."
 
 export var cooldown: float = 1.0
 export var passive = false
+export(float, 0.1, 50) var passive_duration
 
-var cooldownTimer: Timer = Timer.new()
+var duration_timer: Timer
+var cooldown_timer: Timer = Timer.new()
 
 func _ready():
-    cat.connect("cast", self, "cast")
-    if passive: cat.connect("attack", self, "attack")
+    cat.connect("attack", self, "attack")
+    self.connect("cast", self, "cast")
     
-    cooldownTimer.wait_time = cooldown
-    cooldownTimer.one_shot = true
-    add_child(cooldownTimer)
+    if passive:
+        duration_timer = Timer.new()
+        duration_timer.wait_time = passive_duration
+        duration_timer.one_shot = true
+        duration_timer.connect("timeout", self, "passive")
+        add_child(duration_timer)
+    
+    cooldown_timer.wait_time = cooldown
+    cooldown_timer.one_shot = true
+    add_child(cooldown_timer)
 
-func cast(): 
-    if cooldownTimer.is_stopped():
-        cooldownTimer.start()
+func cast():
+    if cooldown_timer.is_stopped():
+        cooldown_timer.start()
         ability()
+        
+        if passive: duration_timer.start()
 
+func passive(): pass
 func ability(): pass
-
 func attack(): pass

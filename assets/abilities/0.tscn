@@ -4,4 +4,4 @@
 
 [node name="0" type="Node2D"]
 script = ExtResource( 1 )
-passive = true
+cooldown = 2.0

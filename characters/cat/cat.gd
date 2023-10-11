@@ -3,7 +3,8 @@ extends Character
 const SPEED = 200
 
 signal attack
-signal cast
+
+var android = false
 
 var velocity: Vector2
 var velocity_static: Vector2
@@ -22,7 +23,7 @@ func _physics_process(delta):
     animnode = animstate.get_current_node()
     
     if animnode == "normal":
-        velocity = Input.get_vector("n_left", "n_right", "n_up", "n_down")
+        if !android: velocity = Input.get_vector("n_left", "n_right", "n_up", "n_down")
         if velocity:
             velocity_static = velocity.normalized()
             $AnimationTree.get("parameters/normal/playback").travel("walk")
@@ -39,9 +40,6 @@ func _input(event):
         else:
             if animnode == "normal" or animnode == "attack2": animstate.travel("attack1")
             if animnode == "attack1": animstate.travel("attack2")
-    
-    if event.is_action_pressed("n_cast") && animnode == "normal":
-        emit_signal("cast")
 
 func attack():
     emit_signal("attack")
@@ -53,6 +51,7 @@ func attack():
 func strike():
     var rng = RandomNumberGenerator.new()
     rng.randomize()
-    $Camera2D.offset = Vector2(rng.randf() * 5, rng.randf() * 5)
+    var vec = Vector2(randf(), randf()).normalized()
+    $Camera2D.offset = vec * 5
     yield(get_tree().create_timer(0.05), "timeout")
     $Camera2D.offset = Vector2()

@@ -1,10 +1,11 @@
-[gd_scene load_steps=135 format=2]
+[gd_scene load_steps=136 format=2]
 
 [ext_resource path="res://characters/cat/cat.png" type="Texture" id=1]
 [ext_resource path="res://characters/cat/cat.gd" type="Script" id=2]
 [ext_resource path="res://characters/cat/interact.gd" type="Script" id=3]
 [ext_resource path="res://characters/cat/animtree.gd" type="Script" id=4]
-[ext_resource path="res://assets/abilities/0.tscn" type="PackedScene" id=5]
+[ext_resource path="res://characters/cat/abilities.gd" type="Script" id=5]
+[ext_resource path="res://characters/cat/HUD.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -1531,4 +1532,7 @@ script = ExtResource( 3 )
 position = Vector2( 16, 0 )
 shape = SubResource( 153 )
 
-[node name="0" parent="." instance=ExtResource( 5 )]
+[node name="Abilities" type="Node2D" parent="."]
+script = ExtResource( 5 )
+
+[node name="HUD" parent="." instance=ExtResource( 6 )]
