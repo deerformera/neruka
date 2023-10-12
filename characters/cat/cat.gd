@@ -28,9 +28,14 @@ func _physics_process(delta):
             velocity_static = velocity.normalized()
             $AnimationTree.get("parameters/normal/playback").travel("walk")
         else: $AnimationTree.get("parameters/normal/playback").travel("idle")
-        
+    
+    elif animnode == "dash":
+        velocity = velocity_static * 1.6
+    
     else:
         velocity = Vector2()
+    
+    
     
     move_and_slide(velocity * SPEED)
 
