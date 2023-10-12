@@ -27,7 +27,7 @@ func _physics_process(delta):
         if velocity:
             velocity_static = velocity.normalized()
             $AnimationTree.get("parameters/normal/playback").travel("walk")
-        else: $AnimationTree.get("parameters/normal/playback").travel("sit")
+        else: $AnimationTree.get("parameters/normal/playback").travel("idle")
         
     else:
         velocity = Vector2()
@@ -55,3 +55,11 @@ func strike():
     $Camera2D.offset = vec * 5
     yield(get_tree().create_timer(0.05), "timeout")
     $Camera2D.offset = Vector2()
+
+func damaged(damage: int):
+    self.health -= damage
+    if self.health <= 0: print("die")
+
+func heal(val: int):
+    var base = Utils.get_base()
+    self.health = clamp(self.health + val, 0, base.health)

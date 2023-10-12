@@ -1,8 +1,7 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://characters/fiora/fiora.png" type="Texture" id=1]
 [ext_resource path="res://characters/fiora/fiora.gd" type="Script" id=2]
-[ext_resource path="res://assets/scenes/fiora_bullet.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/scenes/healthbar.tscn" type="PackedScene" id=4]
 
 [sub_resource type="RectangleShape2D" id=8]
@@ -148,7 +147,6 @@ collision_mask = 7
 script = ExtResource( 2 )
 health = 10
 healthbar = ExtResource( 4 )
-bullet = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 8 )

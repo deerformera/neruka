@@ -7,11 +7,11 @@ var abilities: Array
 
 var level = {
     "vigor": 0,
-    "strength": 0,
+    "strength": 5,
     "mind": 2
 }
 
-var slots = [0,1,2]
+var slots = [0,1]
 
 func _ready():
     var f = File.new()
