@@ -5,7 +5,6 @@ signal level_changed
 signal abilities_changed
 
 var enemies: Array
-var abilities: Array
 
 var level := {
     "vigor": 0,
@@ -14,18 +13,20 @@ var level := {
 }
 
 var orbs: int = 100
-var slots: Array
 
-var knowledges := []
+var abilities_data: Array
+var abilities: Array
+var current_abilities: Array
+var knowledges: Array = [1,2,0]
 
 func _ready():
     var f = File.new()
     f.open("res://assets/data.json", File.READ)
     enemies = parse_json(f.get_as_text())["enemies"]
-    abilities = parse_json(f.get_as_text())["abilities"]
+    abilities_data = parse_json(f.get_as_text())["abilities"]
     f.close()
     
-    slots.resize(level.mind + 1)
+    current_abilities.resize(level.mind + 1)
 
 func get_base():
     var base = {}
@@ -40,26 +41,44 @@ func get_enemy(id: int) -> Dictionary:
     var dict = { "name": enemy[0], "desc": enemy[1] }
     return dict
 
-func get_ability(id: int) -> Dictionary:
-    if id > abilities.size() - 1: return {}
-    var ability = self.abilities[id]
-    var dict = { "name": ability[0], "desc": ability[1] }
-    return dict
-
-func get_abilities() -> Array:
-    var arr = []
-    for slot in slots:
-        if slot != null: arr.append(load("res://assets/abilities/" + str(slot) + ".tscn"))
-    return arr
-
+# ___Ability System___
 func add_orb():
     orbs += 1
 
+func set_ability(slots: Array):
+    self.current_abilities = slots
+    emit_signal("abilities_changed")
+
+func get_ability(id: int) -> Dictionary:
+    if id > abilities_data.size() - 1: return {}
+    var ability = self.abilities_data[id]
+    var dict = { "name": ability[0], "desc": ability[1] }
+    return dict
+
+func get_abilities_nodes() -> Array:
+    var arr = []
+    for slot in current_abilities:
+        if slot != null: arr.append(load("res://assets/abilities/" + str(slot) + ".tscn"))
+    return arr
+
+func get_abilities() -> Array:
+    var arr = []
+    for ability in abilities:
+        arr.append(get_ability(ability))
+    return arr
+
 func learn(id: int):
+    if !abilities.has(id): 
+        print("You forged ", get_ability(id).name)
+        abilities.append(id)
+
+func identify(id: int):
     if !knowledges.has(id): 
         knowledges.append(id)
         print("You learn ", get_enemy(id).name, ", ", get_enemy(id).desc)
+# ___End of Ability System___
 
+# ___Level System___
 func set_levels(val: Dictionary):
     orbs -= get_levels_requirement(val)
     for i in val:
@@ -87,3 +106,5 @@ func get_level_requirement(type: String, val: int) -> int:
         total -= i * 2
     
     return total
+# ___End of Level System___
+

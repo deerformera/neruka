@@ -10,8 +10,7 @@ func _ready():
     
     items()
 
-func close():
-    self.queue_free()
+func close(): self.queue_free()
 
 func items():
     set_required()

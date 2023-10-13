@@ -1,12 +1,18 @@
 extends Node2D
 
 func _ready():
-    var abilities = Utils.get_abilities()
+    Utils.connect("abilities_changed", self, "abilities_changed")
+    abilities_changed()
+
+func abilities_changed():
+    for i in get_children(): i.queue_free()
+    
+    var abilities = Utils.get_abilities_nodes()
     for i in abilities.size():
         add_child(abilities[i].instance())
 
 func _input(event):
-    for i in Utils.get_abilities().size():
+    for i in Utils.current_abilities.size():
         if event.is_action_pressed("n_ability"+str(i)):
             get_child(i).emit_signal("cast")
 

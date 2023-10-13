@@ -19,7 +19,7 @@ func damaged(damage: int):
         die()
 
 func die():
-    Utils.learn(id)
+    Utils.identify(id)
     get_parent().call_deferred("add_child", create_orb())
     queue_free()
 
