@@ -1,6 +1,8 @@
 extends Node
 
-onready var cat: Character = get_tree().get_nodes_in_group("cat")[0]
+#onready var cat: Character = get_tree().get_nodes_in_group("cat")[0]
+signal level_changed
+signal abilities_changed
 
 var enemies: Array
 var abilities: Array
@@ -11,7 +13,7 @@ var level := {
     "mind": 0
 }
 
-var orbs: int
+var orbs: int = 100
 var slots: Array
 
 var knowledges := []
@@ -29,7 +31,7 @@ func get_base():
     var base = {}
     base.health = 100 + (level.vigor * 10)
     base.damage = 1
-    if level.strength: base.damage = level.strength * 5
+    if level.strength > 0: base.damage = level.strength * 5
     return base
 
 func get_enemy(id: int) -> Dictionary:
@@ -58,10 +60,30 @@ func learn(id: int):
         knowledges.append(id)
         print("You learn ", get_enemy(id).name, ", ", get_enemy(id).desc)
 
-func set_level(type: String, val: int):
-    level[type] += val
+func set_levels(val: Dictionary):
+    orbs -= get_levels_requirement(val)
+    for i in val:
+        level[i] += val[i]
+    emit_signal("level_changed")
 
 func get_levels() -> int:
     var total = 0
     for i in level.values(): total += i
+    return total
+
+func get_levels_requirement(val: Dictionary) -> int:
+    var total: int = 0
+    for i in val:
+        total += get_level_requirement(i, val[i])
+    
+    return total
+
+func get_level_requirement(type: String, val: int) -> int:
+    var total: int = 0
+    
+    for i in range(val + level[type] + 1):
+        total += i * 2
+    for i in range(level[type] + 1):
+        total -= i * 2
+    
     return total

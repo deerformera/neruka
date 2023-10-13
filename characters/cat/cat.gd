@@ -5,7 +5,7 @@ signal attack
 var android = false
 
 var velocity: Vector2
-var velocity_static: Vector2
+var velocity_static = Vector2(1, 0)
 
 var animnode: String
 
@@ -13,6 +13,10 @@ var slash_base = load("res://assets/scenes/slash.tscn")
 var slash = null
 
 func _ready():
+    Utils.connect("level_changed", self, "level_changed")
+    level_changed()
+
+func level_changed():
     var base = Utils.get_base()
     self.health = base.health
     self.damage = base.damage
