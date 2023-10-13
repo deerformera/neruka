@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://proto/proto-tile.png" type="Texture" id=1]
 [ext_resource path="res://characters/cat/cat.tscn" type="PackedScene" id=2]
 [ext_resource path="res://characters/dummies/dummy.tscn" type="PackedScene" id=3]
+[ext_resource path="res://characters/flor/flor.tscn" type="PackedScene" id=4]
 
 [sub_resource type="TileSet" id=1]
 0/name = "proto-tile.png 0"
@@ -41,3 +42,6 @@ tile_data = PoolIntArray( -4784223, 0, 8, -4784222, 0, 10, -4784221, 0, 10, -478
 
 [node name="Dummy" parent="." instance=ExtResource( 3 )]
 position = Vector2( 0, -149 )
+
+[node name="Flor" parent="." instance=ExtResource( 4 )]
+position = Vector2( 280, 60 )

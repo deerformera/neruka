@@ -4,9 +4,11 @@
 [ext_resource path="res://assets/scenes/orb.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 4, 4 )
+extents = Vector2( 8, 8 )
 
 [node name="Orbs" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

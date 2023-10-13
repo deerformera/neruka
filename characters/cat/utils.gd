@@ -5,13 +5,16 @@ onready var cat: Character = get_tree().get_nodes_in_group("cat")[0]
 var enemies: Array
 var abilities: Array
 
-var level = {
+var level := {
     "vigor": 0,
     "strength": 0,
-    "mind": 2
+    "mind": 0
 }
 
-var slots = [2,1]
+var orbs: int
+var slots: Array
+
+var knowledges := []
 
 func _ready():
     var f = File.new()
@@ -46,3 +49,19 @@ func get_abilities() -> Array:
     for slot in slots:
         if slot != null: arr.append(load("res://assets/abilities/" + str(slot) + ".tscn"))
     return arr
+
+func add_orb():
+    orbs += 1
+
+func learn(id: int):
+    if !knowledges.has(id): 
+        knowledges.append(id)
+        print("You learn ", get_enemy(id).name, ", ", get_enemy(id).desc)
+
+func set_level(type: String, val: int):
+    level[type] += val
+
+func get_levels() -> int:
+    var total = 0
+    for i in level.values(): total += i
+    return total

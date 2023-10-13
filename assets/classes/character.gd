@@ -19,15 +19,17 @@ func damaged(damage: int):
         die()
 
 func die():
-  print(self.name, " Die")
+    Utils.learn(id)
+    get_parent().call_deferred("add_child", create_orb())
+    queue_free()
 
 func create_orb():
-  var orb_ins = orb.instance()
-  orb_ins.id = self.id
-  return orb_ins
+    var orb_ins = orb.instance()
+    orb_ins.global_position = self.global_position
+    return orb_ins
 
 func create_timer(time, oneshot = true) -> Timer:
-  var timer = Timer.new()
-  timer.wait_time = time
-  timer.one_shot = oneshot
-  return timer
+    var timer = Timer.new()
+    timer.wait_time = time
+    timer.one_shot = oneshot
+    return timer

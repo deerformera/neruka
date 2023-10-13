@@ -13,3 +13,5 @@ func _input(event):
 func cast(col: Color):
     ($"../Sprite".material as ShaderMaterial).set_shader_param("u_replacement_color", col)
     get_parent().animstate.travel("cast")
+    
+    yield(get_tree().create_timer(0.3), "timeout")

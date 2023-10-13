@@ -1,7 +1,5 @@
 extends Character
 
-const SPEED = 200
-
 signal attack
 
 var android = false
@@ -35,9 +33,7 @@ func _physics_process(delta):
     else:
         velocity = Vector2()
     
-    
-    
-    move_and_slide(velocity * SPEED)
+    move_and_slide(velocity * 200)
 
 func _input(event):
     if event.is_action_pressed("n_attack"):
@@ -64,6 +60,8 @@ func strike():
 func damaged(damage: int):
     self.health -= damage
     if self.health <= 0: print("die")
+
+func die(): pass
 
 func heal(val: int):
     var base = Utils.get_base()

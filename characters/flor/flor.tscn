@@ -1,10 +1,7 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://proto/proto-sprite.png" type="Texture" id=1]
-[ext_resource path="res://assets/scenes/healthbar.tscn" type="PackedScene" id=2]
 [ext_resource path="res://characters/flor/flor.gd" type="Script" id=3]
-[ext_resource path="res://assets/scenes/flor_bullet.tscn" type="PackedScene" id=4]
-[ext_resource path="res://assets/scenes/orb.tscn" type="PackedScene" id=5]
 
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 16, 16 )
@@ -37,20 +34,6 @@ tracks/1/keys = {
 "values": [ {
 "args": [  ],
 "method": "shoot"
-} ]
-}
-tracks/2/type = "method"
-tracks/2/path = NodePath("DetectArea")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 1 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "detect"
 } ]
 }
 
@@ -106,9 +89,6 @@ animation = "chase"
 [sub_resource type="AnimationNodeAnimation" id=11]
 animation = "hurt"
 
-[sub_resource type="AnimationNodeAnimation" id=12]
-animation = "knock"
-
 [sub_resource type="AnimationNodeAnimation" id=13]
 animation = "normal"
 
@@ -116,13 +96,7 @@ animation = "normal"
 switch_mode = 2
 auto_advance = true
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=15]
-switch_mode = 2
-auto_advance = true
-
 [sub_resource type="AnimationNodeStateMachineTransition" id=16]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=17]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=18]
 
@@ -130,54 +104,23 @@ auto_advance = true
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=20]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=21]
-
 [sub_resource type="AnimationNodeStateMachine" id=2]
 states/chase/node = SubResource( 10 )
 states/chase/position = Vector2( 535, 111 )
 states/hurt/node = SubResource( 11 )
-states/hurt/position = Vector2( 535, 49 )
-states/knock/node = SubResource( 12 )
-states/knock/position = Vector2( 535, 170 )
+states/hurt/position = Vector2( 383, 23 )
 states/normal/node = SubResource( 13 )
 states/normal/position = Vector2( 383, 111 )
-transitions = [ "hurt", "chase", SubResource( 14 ), "knock", "chase", SubResource( 15 ), "normal", "hurt", SubResource( 16 ), "normal", "knock", SubResource( 17 ), "normal", "chase", SubResource( 18 ), "chase", "normal", SubResource( 19 ), "chase", "hurt", SubResource( 20 ), "chase", "knock", SubResource( 21 ) ]
+transitions = [ "hurt", "chase", SubResource( 14 ), "normal", "hurt", SubResource( 16 ), "normal", "chase", SubResource( 18 ), "chase", "normal", SubResource( 19 ), "chase", "hurt", SubResource( 20 ) ]
 start_node = "normal"
+graph_offset = Vector2( -36, -42 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=3]
-
-[sub_resource type="GDScript" id=9]
-resource_name = "DetectArea"
-script/source = "extends Area2D
-
-onready var detect_timer = Player.NTimer.new(self, 1, \"_detect_timer_timeout\")
-
-func _detect_timer_timeout():
-	if get_parent().animstate.get_current_node() == \"chase\": return
-	get_parent().animstate.travel(\"chase\")
-
-func _body_entered(_body): detect_timer.start()
-func _body_exited(_body): detect_timer.stop()
-
-func _ready():
-	self.connect(\"body_entered\", self, \"_body_entered\")
-	self.connect(\"body_exited\", self, \"_body_exited\")
-
-func detect():
-	if self.get_overlapping_bodies().empty(): 
-		get_parent().animstate.travel(\"normal\")
-"
-
-[sub_resource type="CircleShape2D" id=1]
-radius = 160.0
 
 [node name="Flor" type="KinematicBody2D"]
 collision_layer = 4
 collision_mask = 7
 script = ExtResource( 3 )
-health_base = 3
-bullet = ExtResource( 4 )
-orb = ExtResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 4 )
@@ -196,13 +139,3 @@ tree_root = SubResource( 2 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 3 )
-
-[node name="DetectArea" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 2
-script = SubResource( 9 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea"]
-shape = SubResource( 1 )
-
-[node name="HealthBar" parent="." instance=ExtResource( 2 )]
