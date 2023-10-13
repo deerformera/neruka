@@ -36,8 +36,10 @@ func decrement(node, type):
 
 func set_required():
     $Margin/Panel/VBox/Margin/VBox/RequiredOrbs.text = "required: " + str(Utils.get_levels_requirement(level))
+    if Utils.get_levels_requirement(level) > Utils.orbs: 
+        $Margin/Panel/VBox/Margin/VBox/UpButton.disabled = true
+    else: $Margin/Panel/VBox/Margin/VBox/UpButton.disabled = false
 
 func levelup():
-    if Utils.get_levels_requirement(level) > Utils.orbs: return
     Utils.set_levels(level)
     close()
