@@ -12,12 +12,12 @@ var level := {
     "mind": 3
 }
 
-var orbs: int = 100
+var orbs: int = 7
 
 var abilities_data: Array
 var abilities: Array
 var current_abilities: Array = [2,1,0]
-var knowledges: Array
+var knowledges: Array = [1,2,0]
 
 func _ready():
     var f = File.new()
@@ -69,8 +69,8 @@ func get_abilities() -> Array:
     return arr
 
 func learn(id: int):
-    if !abilities.has(id): 
-        print("You forged ", get_ability(id).name)
+    if !abilities.has(id):
+        orbs -= get_ability(id).price
         abilities.append(id)
 
 func identify(id: int):

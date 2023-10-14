@@ -34,7 +34,20 @@ margin_top = 7.0
 margin_right = 873.0
 margin_bottom = 513.0
 
-[node name="CloseButton" type="Button" parent="Margin/Panel/VBox"]
+[node name="HBox" type="HBoxContainer" parent="Margin/Panel/VBox"]
+margin_right = 866.0
+margin_bottom = 64.0
+
+[node name="Label" type="Label" parent="Margin/Panel/VBox/HBox"]
+margin_right = 798.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Forge"
+align = 1
+valign = 1
+
+[node name="CloseButton" type="Button" parent="Margin/Panel/VBox/HBox"]
 margin_left = 802.0
 margin_right = 866.0
 margin_bottom = 64.0
@@ -95,6 +108,15 @@ valign = 1
 
 [node name="Desc" type="Label" parent="Margin/Panel/VBox/Margin/HBox/VBox"]
 margin_top = 60.0
+margin_right = 398.0
+margin_bottom = 184.0
+size_flags_vertical = 3
+custom_styles/normal = SubResource( 3 )
+align = 1
+valign = 1
+
+[node name="Price" type="Label" parent="Margin/Panel/VBox/Margin/HBox/VBox"]
+margin_top = 194.0
 margin_right = 398.0
 margin_bottom = 318.0
 size_flags_vertical = 3
