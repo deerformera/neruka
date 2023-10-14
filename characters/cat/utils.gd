@@ -15,9 +15,9 @@ var level := {
 var orbs: int = 7
 
 var abilities_data: Array
-var abilities: Array
-var current_abilities: Array = [2,1,0]
-var knowledges: Array = [1,2,0]
+var abilities: Array = [0,1,2]
+var current_abilities: Array = [0,1]
+var knowledges: Array
 
 func _ready():
     var f = File.new()

@@ -5,7 +5,7 @@ func _ready():
     abilities_changed()
 
 func abilities_changed():
-    for i in get_children(): i.queue_free()
+    for i in get_children(): i.free()
     
     var abilities = Utils.get_abilities_nodes()
     for i in abilities.size():

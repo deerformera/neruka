@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://characters/cat/levelup.gd" type="Script" id=1]
+[ext_resource path="res://characters/cat/tabs/levelup.gd" type="Script" id=1]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.270588, 0.258824, 0.313726, 1 )

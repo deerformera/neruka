@@ -1802,7 +1802,7 @@ material = SubResource( 200 )
 texture = ExtResource( 1 )
 hframes = 10
 vframes = 56
-frame = 249
+frame = 245
 
 [node name="DashSprite" type="Sprite" parent="."]
 visible = false
@@ -1900,5 +1900,4 @@ shape = SubResource( 153 )
 script = ExtResource( 5 )
 
 [node name="HUD" parent="." instance=ExtResource( 6 )]
-process_priority = 1
 layer = 1

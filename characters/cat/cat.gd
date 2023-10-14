@@ -1,6 +1,7 @@
 extends Character
 
 signal attack
+signal health_changed
 
 var android = false
 
@@ -46,6 +47,7 @@ func _input(event):
             if animnode == "normal" or animnode == "attack2": animstate.travel("attack1")
             if animnode == "attack1": animstate.travel("attack2")
 
+
 func attack():
     emit_signal("attack")
     yield(get_tree().create_timer(0.3), "timeout")
@@ -63,6 +65,8 @@ func strike():
 
 func damaged(damage: int):
     self.health -= damage
+    animstate.travel("hurt")
+    emit_signal("health_changed")
     if self.health <= 0: print("die")
 
 func die(): pass
@@ -70,3 +74,4 @@ func die(): pass
 func heal(val: int):
     var base = Utils.get_base()
     self.health = clamp(self.health + val, 0, base.health)
+    emit_signal("health_changed")

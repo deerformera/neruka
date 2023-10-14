@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-var item = preload("res://assets/scenes/forge_item.tscn")
+var item = preload("res://characters/cat/tabs/forge_item.tscn")
 
 var selected: int
 
@@ -19,7 +19,8 @@ func items():
     for i in Utils.knowledges.size():
         data.append(Utils.get_ability(Utils.knowledges[i]))
         var item_ins = item.instance()
-        item_ins.get_node("VB/Label").text = str(data[i].price)
+        item_ins.get_node("M/Label").text = str(data[i].price)
+        item_ins.get_node("M/TextureRect").texture = load("res://assets/abilities/"+str(Utils.knowledges[i])+".png")
         item_ins.connect("pressed", self, "item_pressed", [i])
         container.add_child(item_ins)
 

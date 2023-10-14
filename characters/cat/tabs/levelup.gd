@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-var item = preload("res://assets/scenes/levelup_item.tscn")
+var item = preload("res://characters/cat/tabs/levelup_item.tscn")
 
 var level: Dictionary
 

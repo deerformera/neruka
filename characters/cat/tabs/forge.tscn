@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://characters/cat/forge.gd" type="Script" id=1]
+[ext_resource path="res://characters/cat/tabs/forge.gd" type="Script" id=1]
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.270588, 0.258824, 0.313726, 1 )
@@ -36,11 +36,11 @@ margin_bottom = 513.0
 
 [node name="HBox" type="HBoxContainer" parent="Margin/Panel/VBox"]
 margin_right = 866.0
-margin_bottom = 64.0
+margin_bottom = 50.0
 
 [node name="Label" type="Label" parent="Margin/Panel/VBox/HBox"]
-margin_right = 798.0
-margin_bottom = 64.0
+margin_right = 812.0
+margin_bottom = 50.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Forge"
@@ -48,10 +48,10 @@ align = 1
 valign = 1
 
 [node name="CloseButton" type="Button" parent="Margin/Panel/VBox/HBox"]
-margin_left = 802.0
+margin_left = 816.0
 margin_right = 866.0
-margin_bottom = 64.0
-rect_min_size = Vector2( 64, 64 )
+margin_bottom = 50.0
+rect_min_size = Vector2( 50, 50 )
 size_flags_horizontal = 8
 size_flags_vertical = 0
 custom_styles/hover = SubResource( 2 )
@@ -60,7 +60,7 @@ custom_styles/normal = SubResource( 1 )
 text = "X"
 
 [node name="Margin" type="MarginContainer" parent="Margin/Panel/VBox"]
-margin_top = 68.0
+margin_top = 54.0
 margin_right = 866.0
 margin_bottom = 506.0
 size_flags_vertical = 3
@@ -73,12 +73,12 @@ custom_constants/margin_bottom = 30
 margin_left = 30.0
 margin_top = 30.0
 margin_right = 836.0
-margin_bottom = 408.0
+margin_bottom = 422.0
 custom_constants/separation = 10
 
 [node name="Scroll" type="ScrollContainer" parent="Margin/Panel/VBox/Margin/HBox"]
 margin_right = 398.0
-margin_bottom = 378.0
+margin_bottom = 392.0
 size_flags_horizontal = 3
 scroll_horizontal_enabled = false
 
@@ -93,7 +93,7 @@ columns = 4
 [node name="VBox" type="VBoxContainer" parent="Margin/Panel/VBox/Margin/HBox"]
 margin_left = 408.0
 margin_right = 806.0
-margin_bottom = 378.0
+margin_bottom = 392.0
 size_flags_horizontal = 3
 custom_constants/separation = 10
 
@@ -109,24 +109,24 @@ valign = 1
 [node name="Desc" type="Label" parent="Margin/Panel/VBox/Margin/HBox/VBox"]
 margin_top = 60.0
 margin_right = 398.0
-margin_bottom = 184.0
+margin_bottom = 191.0
 size_flags_vertical = 3
 custom_styles/normal = SubResource( 3 )
 align = 1
 valign = 1
 
 [node name="Price" type="Label" parent="Margin/Panel/VBox/Margin/HBox/VBox"]
-margin_top = 194.0
+margin_top = 201.0
 margin_right = 398.0
-margin_bottom = 318.0
+margin_bottom = 332.0
 size_flags_vertical = 3
 custom_styles/normal = SubResource( 3 )
 align = 1
 valign = 1
 
 [node name="ForgeButton" type="Button" parent="Margin/Panel/VBox/Margin/HBox/VBox"]
-margin_top = 328.0
+margin_top = 342.0
 margin_right = 398.0
-margin_bottom = 378.0
+margin_bottom = 392.0
 rect_min_size = Vector2( 0, 50 )
 text = "Forge Knowledge"
