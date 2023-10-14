@@ -6,8 +6,8 @@
     ],
 
     "abilities":[
-        ["Headshot!", "Shoot a bullet"],
-        ["Heal", "Heal you 20 HP"],
-        ["Dash", "now Its soulslike B)"]
+        ["Headshot!", "Shoot a bullet", 6],
+        ["Heal", "Heal you 20 HP", 10],
+        ["Dash", "now Its soulslike B)", 10]
     ]
 }

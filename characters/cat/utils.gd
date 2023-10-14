@@ -9,15 +9,15 @@ var enemies: Array
 var level := {
     "vigor": 0,
     "strength": 0,
-    "mind": 0
+    "mind": 3
 }
 
 var orbs: int = 100
 
 var abilities_data: Array
-var abilities: Array = [2]
-var current_abilities: Array
-var knowledges: Array = [2,1,0]
+var abilities: Array
+var current_abilities: Array = [2,1,0]
+var knowledges: Array
 
 func _ready():
     var f = File.new()
@@ -26,7 +26,8 @@ func _ready():
     abilities_data = parse_json(f.get_as_text())["abilities"]
     f.close()
     
-    current_abilities.resize(level.mind + 1)
+    if current_abilities.size() > level.mind + 1:
+        current_abilities.resize(level.mind + 1)
 
 func get_base():
     var base = {}
@@ -52,7 +53,7 @@ func set_ability(slots: Array):
 func get_ability(id: int) -> Dictionary:
     if id > abilities_data.size() - 1: return {}
     var ability = self.abilities_data[id]
-    var dict = { "name": ability[0], "desc": ability[1] }
+    var dict = { "name": ability[0], "desc": ability[1], "price": ability[2] }
     return dict
 
 func get_abilities_nodes() -> Array:
