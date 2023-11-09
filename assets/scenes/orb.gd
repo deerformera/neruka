@@ -18,7 +18,7 @@ func _ready():
 
 func _physics_process(delta):
     if active:
-        self.global_position += (cat.global_position - self.global_position).normalized() * 4
+        self.global_position += (cat.global_position - self.global_position).normalized() * 8
 
 func body_entered(body):
     Utils.add_orb()
