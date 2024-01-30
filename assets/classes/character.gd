@@ -33,3 +33,8 @@ func create_timer(time, oneshot = true) -> Timer:
 	timer.wait_time = time
 	timer.one_shot = oneshot
 	return timer
+
+func create_rng() -> RandomNumberGenerator:
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	return rng

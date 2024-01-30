@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=2]
+[gd_scene load_steps=80 format=2]
 
 [ext_resource path="res://characters/fortis/fortis.gd" type="Script" id=1]
 
@@ -20,7 +20,7 @@ tracks/0/keys = {
 "values": [ Vector2( 16, 16 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -49,6 +49,8 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=10]
 resource_name = "initial"
+length = 3.0
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("CollisionShape2D:shape:extents")
 tracks/0/interp = 1
@@ -62,7 +64,7 @@ tracks/0/keys = {
 "values": [ Vector2( 16, 16 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -103,7 +105,7 @@ tracks/0/keys = {
 "values": [ Vector2( 16, 20 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -144,7 +146,7 @@ tracks/0/keys = {
 "values": [ Vector2( 20, 16 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -185,7 +187,7 @@ tracks/0/keys = {
 "values": [ Vector2( 20, 16 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -226,7 +228,7 @@ tracks/0/keys = {
 "values": [ Vector2( 16, 20 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -267,7 +269,7 @@ tracks/0/keys = {
 "values": [ Vector2( 16, 20 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -308,7 +310,7 @@ tracks/0/keys = {
 "values": [ Vector2( 20, 16 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -349,7 +351,7 @@ tracks/0/keys = {
 "values": [ Vector2( 20, 16 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -390,7 +392,7 @@ tracks/0/keys = {
 "values": [ Vector2( 16, 20 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -431,7 +433,7 @@ tracks/0/keys = {
 "values": [ Vector2( 16, 20 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -472,7 +474,7 @@ tracks/0/keys = {
 "values": [ Vector2( 20, 16 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -513,7 +515,7 @@ tracks/0/keys = {
 "values": [ Vector2( 20, 16 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -554,7 +556,7 @@ tracks/0/keys = {
 "values": [ Vector2( 16, 20 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -595,7 +597,7 @@ tracks/0/keys = {
 "values": [ Vector2( 16, 20 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -636,7 +638,7 @@ tracks/0/keys = {
 "values": [ Vector2( 20, 16 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -677,7 +679,7 @@ tracks/0/keys = {
 "values": [ Vector2( 20, 16 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -718,7 +720,7 @@ tracks/0/keys = {
 "values": [ Vector2( 16, 20 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -759,7 +761,7 @@ tracks/0/keys = {
 "values": [ Vector2( 16, 20 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -781,7 +783,7 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
-"method": "attack1"
+"method": "conslash"
 } ]
 }
 
@@ -800,7 +802,7 @@ tracks/0/keys = {
 "values": [ Vector2( 20, 16 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -822,7 +824,7 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
-"method": "attack1"
+"method": "conslash"
 } ]
 }
 
@@ -841,7 +843,7 @@ tracks/0/keys = {
 "values": [ Vector2( 20, 16 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -863,7 +865,7 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
-"method": "attack1"
+"method": "conslash"
 } ]
 }
 
@@ -882,7 +884,7 @@ tracks/0/keys = {
 "values": [ Vector2( 16, 20 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -904,7 +906,7 @@ tracks/2/keys = {
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [  ],
-"method": "attack1"
+"method": "conslash"
 } ]
 }
 
@@ -923,7 +925,7 @@ tracks/0/keys = {
 "values": [ Vector2( 16, 20 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -964,7 +966,7 @@ tracks/0/keys = {
 "values": [ Vector2( 20, 16 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -1005,7 +1007,7 @@ tracks/0/keys = {
 "values": [ Vector2( 20, 16 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -1046,7 +1048,7 @@ tracks/0/keys = {
 "values": [ Vector2( 16, 20 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Area2D/CollisionShape2D:position")
+tracks/1/path = NodePath("AttackArea/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -1216,24 +1218,67 @@ animation = "delay"
 [sub_resource type="AnimationNodeAnimation" id=22]
 animation = "initial"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=66]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=67]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=68]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=71]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=72]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=73]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=74]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=75]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=76]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=77]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=78]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=79]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=80]
+switch_mode = 2
+auto_advance = true
+
 [sub_resource type="AnimationNodeStateMachine" id=19]
 states/attack1/node = SubResource( 27 )
 states/attack1/position = Vector2( 751, 95 )
 states/attack2/node = SubResource( 32 )
 states/attack2/position = Vector2( 916, 95 )
 states/audash/node = SubResource( 59 )
-states/audash/position = Vector2( 593, 161 )
+states/audash/position = Vector2( 593, 264 )
 states/backslash/node = SubResource( 41 )
-states/backslash/position = Vector2( 751, 161 )
+states/backslash/position = Vector2( 751, 264 )
 states/conslash/node = SubResource( 54 )
-states/conslash/position = Vector2( 916, 161 )
+states/conslash/position = Vector2( 916, 264 )
 states/dash/node = SubResource( 21 )
 states/dash/position = Vector2( 593, 95 )
 states/delay/node = SubResource( 65 )
-states/delay/position = Vector2( 431, 161 )
+states/delay/position = Vector2( 916, 181 )
 states/initial/node = SubResource( 22 )
-states/initial/position = Vector2( 431, 95 )
+states/initial/position = Vector2( 593, 181 )
+transitions = [ "initial", "dash", SubResource( 66 ), "dash", "initial", SubResource( 67 ), "delay", "initial", SubResource( 68 ), "audash", "delay", SubResource( 71 ), "backslash", "delay", SubResource( 72 ), "conslash", "delay", SubResource( 73 ), "attack1", "attack2", SubResource( 74 ), "attack2", "delay", SubResource( 75 ), "initial", "attack1", SubResource( 76 ), "initial", "audash", SubResource( 77 ), "initial", "backslash", SubResource( 78 ), "initial", "conslash", SubResource( 79 ), "attack1", "delay", SubResource( 80 ) ]
 start_node = "initial"
+graph_offset = Vector2( 183, 59 )
 
 [sub_resource type="AnimationNodeStateMachine" id=2]
 states/phase1/node = SubResource( 19 )
@@ -1247,7 +1292,7 @@ start_node = "phase1"
 [sub_resource type="CircleShape2D" id=9]
 radius = 16.0
 
-[node name="Character" type="KinematicBody2D"]
+[node name="Fortis" type="KinematicBody2D"]
 script = ExtResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -1295,9 +1340,9 @@ parameters/phase1/backslash/blend_position = Vector2( -0.503962, 0.0344827 )
 parameters/phase1/conslash/blend_position = Vector2( 0.348653, -0.680412 )
 parameters/phase1/dash/blend_position = Vector2( -0.416799, 0.327586 )
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="AttackArea" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
 position = Vector2( 0, 20 )
 shape = SubResource( 9 )
 disabled = true
