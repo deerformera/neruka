@@ -748,6 +748,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id=50]
 resource_name = "p1_conslash_down"
+length = 5.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("CollisionShape2D:shape:extents")
 tracks/0/interp = 1
@@ -767,10 +768,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( -16, 20 ) ]
+"times": PoolRealArray( 0, 1, 2, 2.8, 3.4, 4, 4.4, 4.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 0, 0 ), Vector2( -16, 20 ), Vector2( 16, 20 ), Vector2( -16, 20 ), Vector2( 16, 20 ), Vector2( -16, 20 ), Vector2( 16, 20 ), Vector2( -16, 20 ) ]
 }
 tracks/2/type = "method"
 tracks/2/path = NodePath(".")
@@ -779,16 +780,35 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 1, 2, 2.8, 3.4, 4, 4.4, 4.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "values": [ {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
 "args": [  ],
 "method": "conslash"
 } ]
 }
 
-[sub_resource type="Animation" id=51]
+[sub_resource type="Animation" id=83]
 resource_name = "p1_conslash_left"
+length = 5.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("CollisionShape2D:shape:extents")
 tracks/0/interp = 1
@@ -808,10 +828,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( -20, -16 ) ]
+"times": PoolRealArray( 0, 1, 2, 2.8, 3.4, 4, 4.4, 4.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 0, 0 ), Vector2( -20, -16 ), Vector2( -20, 16 ), Vector2( -20, -16 ), Vector2( -20, 16 ), Vector2( -20, -16 ), Vector2( -20, 16 ), Vector2( -20, -16 ) ]
 }
 tracks/2/type = "method"
 tracks/2/path = NodePath(".")
@@ -820,16 +840,35 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 1, 2, 2.8, 3.4, 4, 4.4, 4.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "values": [ {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
 "args": [  ],
 "method": "conslash"
 } ]
 }
 
-[sub_resource type="Animation" id=52]
+[sub_resource type="Animation" id=82]
 resource_name = "p1_conslash_right"
+length = 5.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("CollisionShape2D:shape:extents")
 tracks/0/interp = 1
@@ -849,10 +888,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 20, 16 ) ]
+"times": PoolRealArray( 0, 1, 2, 2.8, 3.4, 4, 4.4, 4.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 0, 0 ), Vector2( 20, 16 ), Vector2( 20, -16 ), Vector2( 20, 16 ), Vector2( 20, -16 ), Vector2( 20, 16 ), Vector2( 20, -16 ), Vector2( 20, 16 ) ]
 }
 tracks/2/type = "method"
 tracks/2/path = NodePath(".")
@@ -861,16 +900,35 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 1, 2, 2.8, 3.4, 4, 4.4, 4.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "values": [ {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
 "args": [  ],
 "method": "conslash"
 } ]
 }
 
-[sub_resource type="Animation" id=53]
+[sub_resource type="Animation" id=81]
 resource_name = "p1_conslash_up"
+length = 5.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("CollisionShape2D:shape:extents")
 tracks/0/interp = 1
@@ -890,10 +948,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 16, -20 ) ]
+"times": PoolRealArray( 0, 1, 2, 2.8, 3.4, 4, 4.4, 4.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 0, 0 ), Vector2( 16, -20 ), Vector2( -16, -20 ), Vector2( 16, -20 ), Vector2( -16, -20 ), Vector2( 16, -20 ), Vector2( -16, -20 ), Vector2( 16, -20 ) ]
 }
 tracks/2/type = "method"
 tracks/2/path = NodePath(".")
@@ -902,9 +960,27 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 1, 2, 2.8, 3.4, 4, 4.4, 4.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "values": [ {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
+"args": [  ],
+"method": "conslash"
+}, {
 "args": [  ],
 "method": "conslash"
 } ]
@@ -1319,9 +1395,9 @@ anims/p1_backslash_left = SubResource( 38 )
 anims/p1_backslash_right = SubResource( 39 )
 anims/p1_backslash_up = SubResource( 40 )
 anims/p1_conslash_down = SubResource( 50 )
-anims/p1_conslash_left = SubResource( 51 )
-anims/p1_conslash_right = SubResource( 52 )
-anims/p1_conslash_up = SubResource( 53 )
+anims/p1_conslash_left = SubResource( 83 )
+anims/p1_conslash_right = SubResource( 82 )
+anims/p1_conslash_up = SubResource( 81 )
 anims/p1_dash_down = SubResource( 4 )
 anims/p1_dash_left = SubResource( 8 )
 anims/p1_dash_right = SubResource( 7 )

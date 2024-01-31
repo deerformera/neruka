@@ -55,6 +55,7 @@ func backslash():
 	create_tween().tween_property(self, "global_position", global_position - velocity * 100, 1).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
 
 func conslash(): # Consecutive Slash
-	print("conslash")
+	create_tween().tween_property(self, "global_position", global_position + (velocity * 20), 0.5).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
 func audash(): # audax dash
 	print("audash")
