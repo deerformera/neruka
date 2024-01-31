@@ -39,8 +39,13 @@ func initial():
 		elif random == 1:
 			animstate.travel("conslash")
 		else: animstate.travel("attack1")
+	else:
+		var random = rng.randi_range(0, 1)
+		if random == 0: animstate.travel("audash")
+		else: animstate.travel("dash")
 
 func dash():
+	print("dash")
 	create_tween().tween_property(self, "global_position", cat.global_position, 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func attack1():
@@ -52,10 +57,14 @@ func attack2():
 	print("attack2")
 
 func backslash():
+	print("backslash")
 	create_tween().tween_property(self, "global_position", global_position - velocity * 100, 1).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
 
 func conslash(): # Consecutive Slash
+	print("conslash")
 	create_tween().tween_property(self, "global_position", global_position + (velocity * 20), 0.5).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
 func audash(): # audax dash
 	print("audash")
+	var tween = create_tween()
+	tween.tween_property($AttackArea/CollisionShape2D, "position", $AttackArea/CollisionShape2D.position + (velocity * 200), 1)
