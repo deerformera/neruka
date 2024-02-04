@@ -2,12 +2,14 @@
     "enemies":[
         ["Flor", "A plant that likely shoot you"],
         ["Pinach", "How to kill this?!"],
-        ["Hopp", "Left? No, right! I mean left!"]
+        ["Hopp", "Left? No, right! I mean left!"],
+	["", ""]
     ],
 
     "abilities":[
         ["Headshot!", "Shoot a bullet", 6],
         ["Heal", "Heal you 20 HP", 10],
-        ["Dash", "now Its soulslike B)", 10]
+        ["Dash", "now Its soulslike B)", 10],
+	["Shadow", "Behind u", 20]
     ]
 }

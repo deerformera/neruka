@@ -33,7 +33,7 @@ _global_script_class_icons={
 [application]
 
 config/name="neruka"
-run/main_scene="res://worlds/boss.tscn"
+run/main_scene="res://worlds/world.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -60,6 +60,10 @@ script_templates_search_path="res://templates"
 [editor_plugins]
 
 enabled=PoolStringArray(  )
+
+[global]
+
+resource=false
 
 [gui]
 

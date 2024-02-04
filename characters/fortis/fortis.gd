@@ -45,12 +45,18 @@ func initial():
 		else: animstate.travel("dash")
 
 func dash():
-	print("dash")
-	create_tween().tween_property(self, "global_position", cat.global_position, 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	$AttackArea/CollisionShape2D.disabled = false
+	var tw = create_tween()
+	tw.tween_property(self, "global_position", cat.global_position, 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	yield(tw, "finished")
+	$AttackArea/CollisionShape2D.disabled = true
 
 func attack1():
-	print("attack1")
-	yield(get_tree().create_timer(0.9), "timeout")
+	yield(get_tree().create_timer(0.4), "timeout")
+	$AttackArea/CollisionShape2D.disabled = false
+	yield(get_tree().create_timer(0.1), "timeout")
+	$AttackArea/CollisionShape2D.disabled = true
+	yield(get_tree().create_timer(0.4), "timeout")
 	if is_in_range(): animstate.travel("attack2")
 
 func attack2(): 
