@@ -38,3 +38,8 @@ func create_rng() -> RandomNumberGenerator:
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
 	return rng
+
+func get_cat():
+	var arr = get_tree().get_nodes_in_group("cat")
+	if arr.empty(): return null
+	else: return arr[0]
