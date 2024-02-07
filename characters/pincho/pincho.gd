@@ -15,12 +15,13 @@ func shoot():
 		return
 	var bullet_ins = bullet.instance()
 	bullet_ins.dir = (cat.global_position - self.global_position).normalized()
+	bullet_ins.position.y -= 16
 	add_child(bullet_ins)
 
 func damaged(damage: int):
 	.damaged(damage)
 	var rng = create_rng()
-	var location = Vector2(rng.randf_range(-200, 200), rng.randf_range(-200, 200))
+	var location = Vector2(rng.randf_range(-150, 150), rng.randf_range(-150, 150))
 	if location.x < 32 && location.x > -32: location.x += 32
 	if location.y < 32 && location.y > -32: location.y += 32
 	
