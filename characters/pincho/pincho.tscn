@@ -5,7 +5,7 @@
 [ext_resource path="res://assets/scenes/boss_healthbar.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 10, 8 )
+extents = Vector2( 16, 8 )
 
 [sub_resource type="Animation" id=14]
 length = 0.001
@@ -21,6 +21,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [ 0 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 4 ]
+}
 
 [sub_resource type="Animation" id=9]
 resource_name = "idle"
@@ -33,6 +45,7 @@ resource_name = "initial"
 resource_name = "shoot"
 length = 2.0
 loop = true
+step = 0.05
 tracks/0/type = "method"
 tracks/0/path = NodePath(".")
 tracks/0/interp = 1
@@ -54,10 +67,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.3, 0.4, 0.9, 1 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.3, 0.35, 0.4, 0.95, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 0, 1, 2, 1, 0 ]
+"values": [ 0, 1, 2, 3, 1, 0 ]
 }
 
 [sub_resource type="AnimationNodeAnimation" id=10]
@@ -103,7 +116,7 @@ damage = 5
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
-hframes = 3
+hframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
