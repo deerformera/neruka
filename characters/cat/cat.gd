@@ -53,7 +53,7 @@ func _input(event):
 
 func attack():
 	emit_signal("attack")
-	yield(get_tree().create_timer(0.3), "timeout")
+	yield(get_tree().create_timer(0.2), "timeout")
 	if slash: add_child(slash.instance())
 	else: add_child(slash_base.instance())
 	create_tween().tween_property(self, "global_position", global_position + velocity_static * 10, 0.1).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
