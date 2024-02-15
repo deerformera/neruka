@@ -8,5 +8,5 @@ func ability():
 	yield(get_tree().create_timer(0.3), "timeout")
 	
 	var bullet_ins = bullet.instance()
-	bullet_ins.init(self.global_position, cat.velocity_static * 4, 3, cat.damage)
+	bullet_ins.init(self.global_position, cat.velocity_static * 4, cat.damage)
 	cat.get_parent().add_child(bullet_ins)

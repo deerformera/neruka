@@ -35,7 +35,7 @@ points = PoolVector2Array( 64, 128, 0, 128, 0, 96, 64, 96 )
 [node name="World" type="Node2D"]
 
 [node name="Cat" parent="." instance=ExtResource( 2 )]
-position = Vector2( 2496, 167 )
+position = Vector2( 2503, 195 )
 
 [node name="Maps" type="Node2D" parent="."]
 

@@ -36,7 +36,7 @@ func _physics_process(delta):
 		velocity = velocity_static * 1.8
 	
 	elif animnode == "hurt":
-		velocity = velocity_static * 0.5
+		pass
 	
 	else:
 		velocity = Vector2()

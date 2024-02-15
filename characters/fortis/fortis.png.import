@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/fiora.png-a2a44bb9c0de5c0c17ca1e7a62a79ca4.stex"
+path="res://.import/fortis.png-a81fce9452da898ad46591ea458bb344.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://characters/fiora/fiora.png"
-dest_files=[ "res://.import/fiora.png-a2a44bb9c0de5c0c17ca1e7a62a79ca4.stex" ]
+source_file="res://characters/fortis/fortis.png"
+dest_files=[ "res://.import/fortis.png-a81fce9452da898ad46591ea458bb344.stex" ]
 
 [params]
 

@@ -34,6 +34,7 @@ func initial():
 	
 	if is_in_range(): 
 		var random = rng.randi_range(0, 4)
+#		random = 0
 		if random == 0:
 			animstate.travel("backslash")
 		elif random == 1:
@@ -46,6 +47,7 @@ func initial():
 
 func dash():
 	$AttackArea/CollisionShape2D.disabled = false
+	yield(get_tree().create_timer(0.1), "timeout")
 	var tw = create_tween()
 	tw.tween_property(self, "global_position", cat.global_position, 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	yield(tw, "finished")
@@ -64,6 +66,7 @@ func attack2():
 
 func backslash():
 	print("backslash")
+	yield(get_tree().create_timer(0.3), "timeout")
 	create_tween().tween_property(self, "global_position", global_position - velocity * 100, 1).set_trans(Tween.TRANS_CIRC).set_ease(Tween.EASE_OUT)
 
 func conslash(): # Consecutive Slash

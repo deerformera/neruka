@@ -14,8 +14,8 @@ func shoot():
 		animstate.travel("idle")
 		return
 	var bullet_ins = bullet.instance()
-	bullet_ins.dir = (cat.global_position - self.global_position).normalized()
-	bullet_ins.position.y -= 16
+	bullet_ins.dir = (cat.global_position - (self.global_position + Vector2(0, -20))).normalized()
+	bullet_ins.position.y -= 20
 	add_child(bullet_ins)
 
 func damaged(damage: int):
