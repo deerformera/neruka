@@ -15,6 +15,7 @@ func _physics_process(delta):
 	if animstate.get_current_node() == "initial":
 		velocity = (cat.global_position - self.global_position).normalized()
 		$AnimationTree.set("parameters/phase1/dash/blend_position", velocity)
+		$AnimationTree.set("parameters/phase1/delay/blend_position", velocity)
 		$AnimationTree.set("parameters/phase1/audash/blend_position", velocity)
 		$AnimationTree.set("parameters/phase1/attack1/blend_position", velocity)
 		$AnimationTree.set("parameters/phase1/attack2/blend_position", velocity)
@@ -34,7 +35,6 @@ func initial():
 	
 	if is_in_range(): 
 		var random = rng.randi_range(0, 4)
-#		random = 0
 		if random == 0:
 			animstate.travel("backslash")
 		elif random == 1:
