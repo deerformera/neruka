@@ -39,7 +39,7 @@ func create_rng() -> RandomNumberGenerator:
 	rng.randomize()
 	return rng
 
-func get_cat():
+func get_cat() -> Character:
 	var arr = get_tree().get_nodes_in_group("cat")
 	if arr.empty(): return null
 	else: return arr[0]

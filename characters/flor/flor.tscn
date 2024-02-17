@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://characters/flor/flor.png" type="Texture" id=1]
 [ext_resource path="res://characters/flor/flor.gd" type="Script" id=3]
@@ -9,12 +9,10 @@ radius = 128.0
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 16, 8 )
 
-[sub_resource type="Animation" id=5]
-resource_name = "chase"
-length = 2.0
-loop = true
+[sub_resource type="Animation" id=22]
+length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:self_modulate")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -23,15 +21,21 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ) ]
+"values": [ 0 ]
 }
-tracks/1/type = "method"
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
+
+[sub_resource type="Animation" id=5]
+resource_name = "chase"
+length = 2.0
+loop = true
+step = 0.05
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
 "times": PoolRealArray( 1 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
@@ -39,36 +43,34 @@ tracks/1/keys = {
 "method": "shoot"
 } ]
 }
-
-[sub_resource type="Animation" id=6]
-resource_name = "hurt"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:self_modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Color( 1, 0, 0, 1 ) ]
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.9, 0.95, 1, 1.5, 1.55, 1.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 3, 4, 5, 6, 5, 4, 3 ]
 }
 
-[sub_resource type="Animation" id=8]
-resource_name = "knock"
+[sub_resource type="Animation" id=23]
+resource_name = "initial"
+length = 0.2
+step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:self_modulate")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 0, 1 ) ]
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
 }
 
 [sub_resource type="Animation" id=7]
@@ -86,35 +88,31 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="AnimationNodeAnimation" id=10]
+[sub_resource type="AnimationNodeAnimation" id=24]
 animation = "chase"
 
-[sub_resource type="AnimationNodeAnimation" id=11]
-animation = "hurt"
+[sub_resource type="AnimationNodeAnimation" id=25]
+animation = "initial"
 
 [sub_resource type="AnimationNodeAnimation" id=13]
 animation = "normal"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=14]
+[sub_resource type="AnimationNodeStateMachineTransition" id=26]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=27]
 switch_mode = 2
 auto_advance = true
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=16]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=18]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=19]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=20]
+[sub_resource type="AnimationNodeStateMachineTransition" id=28]
 
 [sub_resource type="AnimationNodeStateMachine" id=2]
-states/chase/node = SubResource( 10 )
-states/chase/position = Vector2( 535, 111 )
-states/hurt/node = SubResource( 11 )
-states/hurt/position = Vector2( 383, 23 )
+states/chase/node = SubResource( 24 )
+states/chase/position = Vector2( 544, 183 )
+states/initial/node = SubResource( 25 )
+states/initial/position = Vector2( 544, 111 )
 states/normal/node = SubResource( 13 )
 states/normal/position = Vector2( 383, 111 )
-transitions = [ "hurt", "chase", SubResource( 14 ), "normal", "hurt", SubResource( 16 ), "normal", "chase", SubResource( 18 ), "chase", "normal", SubResource( 19 ), "chase", "hurt", SubResource( 20 ) ]
+transitions = [ "normal", "initial", SubResource( 26 ), "initial", "chase", SubResource( 27 ), "chase", "normal", SubResource( 28 ) ]
 start_node = "normal"
 graph_offset = Vector2( -36, -42 )
 
@@ -138,11 +136,13 @@ shape = SubResource( 4 )
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 offset = Vector2( 0, -44 )
+hframes = 4
+vframes = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 22 )
 anims/chase = SubResource( 5 )
-anims/hurt = SubResource( 6 )
-anims/knock = SubResource( 8 )
+anims/initial = SubResource( 23 )
 anims/normal = SubResource( 7 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]

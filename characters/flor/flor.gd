@@ -1,7 +1,7 @@
 extends Character
 
 onready var cat = get_tree().get_nodes_in_group("cat")[0]
-onready var bullet = preload("res://assets/scenes/bullet.tscn")
+onready var bullet = preload("res://characters/flor/flor-bullet.tscn")
 
 func _ready():
 	$AttackArea.connect("body_entered", self, "body_entered")
@@ -16,5 +16,5 @@ func body_exited(body):
 
 func shoot():
 	var bullet_ins = bullet.instance()
-	bullet_ins.init(self.global_position, (cat.global_position - self.global_position).normalized(), 1)
-	get_parent().call_deferred("add_child", bullet_ins)
+	bullet_ins.dir = (cat.global_position - self.global_position).normalized()
+	add_child(bullet_ins)
