@@ -1,6 +1,6 @@
 extends Character
 
-onready var cat = get_tree().get_nodes_in_group("cat")[0]
+onready var cat = get_cat()
 onready var bullet = preload("res://characters/flor/flor-bullet.tscn")
 
 func _ready():
