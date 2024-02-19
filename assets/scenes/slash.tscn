@@ -9,17 +9,16 @@ script/source = "extends Area2D
 func finished(): queue_free()
 
 func _ready():
-    $AnimatedSprite.connect(\"animation_finished\", self, \"finished\")
-    $AnimatedSprite.play()
-    if get_parent().animstate.get_current_node() == \"attack2\": $AnimatedSprite.flip_v = true
-    self.rotation = get_parent().velocity_static.angle()
-    self.position += get_parent().velocity_static * 20
-    
-    self.connect(\"body_entered\", self, \"entered\")
+	$AnimatedSprite.connect(\"animation_finished\", self, \"finished\")
+	$AnimatedSprite.play()
+	if get_parent().animstate.get_current_node() == \"attack2\": $AnimatedSprite.flip_v = true
+	self.rotation = get_parent().velocity_static.angle()
+	self.position += get_parent().velocity_static * 20
+	self.connect(\"body_entered\", self, \"entered\")
 
 func entered(body: Character):
-    body.emit_signal(\"damaged\", get_parent().damage)
-    get_parent().strike()
+	body.emit_signal(\"damaged\", get_parent().damage)
+	get_parent().strike()
 "
 
 [sub_resource type="RectangleShape2D" id=140]

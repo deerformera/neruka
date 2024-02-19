@@ -20,7 +20,7 @@ func damaged(damage: int):
 
 func die():
 	Utils.identify(id)
-	get_parent().call_deferred("add_child", create_orb())
+	get_world().call_deferred("add_child", create_orb())
 	queue_free()
 
 func create_orb():
@@ -43,3 +43,6 @@ func get_cat() -> Character:
 	var arr = get_tree().get_nodes_in_group("cat")
 	if arr.empty(): return null
 	else: return arr[0]
+
+func get_world() -> Node2D:
+	return get_tree().root.get_node("World") as Node2D

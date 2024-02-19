@@ -14,6 +14,7 @@ func damaged(val):
 	.damaged(val)
 
 func _physics_process(delta):
+	$AnimationTree.set("parameters/idle/blend_position", velocity)
 	if animstate.get_current_node() == "chase":
 		velocity = (cat.global_position - self.global_position).normalized()
 		$AnimationTree.set("parameters/attack/blend_position", velocity)
