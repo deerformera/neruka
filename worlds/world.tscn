@@ -7,7 +7,7 @@
 [node name="World" type="Node2D"]
 
 [node name="Cat" parent="." instance=ExtResource( 2 )]
-position = Vector2( 3487, 102 )
+position = Vector2( 213, -710 )
 
 [node name="Maps" type="Node2D" parent="."]
 
