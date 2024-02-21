@@ -3,13 +3,15 @@
         ["Flor", "A plant that likely shoot you"],
         ["Pincho", "How to kill this?!"],
         ["Hopp", "Left? No, right! I mean left!"],
-	["", ""]
+	["Tortoise", "Hard"],
+	["Pingu","slippery"]
     ],
 
     "abilities":[
         ["Headshot!", "Shoot a bullet", 6],
         ["Heal", "Heal you 20 HP", 10],
         ["Dash", "now Its soulslike B)", 10],
-	["Shadow", "Behind u", 20]
+	["Shield", "Increease defense"],
+	["Slide", "project a sliding cat"]
     ]
 }

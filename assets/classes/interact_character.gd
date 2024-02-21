@@ -8,16 +8,16 @@ signal activated
 onready var tag = preload("res://assets/textures/tag.png")
 
 func _init():
-    var sprite = Sprite.new()
-    sprite.texture = tag
-    sprite.name = "Tag"
-    add_child(sprite)
+	var sprite = Sprite.new()
+	sprite.texture = tag
+	sprite.name = "Tag"
+	add_child(sprite)
 
 func interacted():
-    $Tag.show()
+	$Tag.show()
 
 func uninteracted():
-    $Tag.hide()
+	$Tag.hide()
 
 func activated():
-    pass
+	pass

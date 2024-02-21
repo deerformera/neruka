@@ -41,7 +41,7 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id=200]
 shader = SubResource( 199 )
 shader_param/u_color_key = Color( 1, 1, 1, 1 )
-shader_param/u_replacement_color = Color( 1, 0.866667, 0, 1 )
+shader_param/u_replacement_color = Color( 1, 0.235294, 0.360784, 1 )
 shader_param/u_tolerance = 0.0
 shader_param/active = false
 
@@ -67,6 +67,30 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ 325 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:material:shader_param/active")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite:material:shader_param/u_replacement_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 0.235294, 0.360784, 1 ) ]
 }
 
 [sub_resource type="Animation" id=49]

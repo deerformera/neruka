@@ -26,11 +26,16 @@ func _physics_process(delta):
 	animnode = animstate.get_current_node()
 	
 	if animnode == "normal":
-		if !android: velocity = Input.get_vector("n_left", "n_right", "n_up", "n_down")
+		if !android: 
+			var vector = Input.get_vector("n_left", "n_right", "n_up", "n_down")
+			if vector != Vector2(): velocity = vector
+			else: velocity = lerp(velocity, vector, 0.2)
+		
 		if velocity:
 			velocity_static = velocity.normalized()
 			$AnimationTree.get("parameters/normal/playback").travel("walk")
-		else: $AnimationTree.get("parameters/normal/playback").travel("idle")
+		if velocity.length() < 0.5:
+			$AnimationTree.get("parameters/normal/playback").travel("idle")
 	
 	elif animnode == "dash":
 		velocity = velocity_static * 1.8

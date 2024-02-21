@@ -1,8 +1,9 @@
 extends Character
 
-onready var cat = get_tree().get_nodes_in_group("cat")[0]
+onready var cat = get_cat()
 onready var rng = create_rng()
 onready var attack_timer = create_timer(0.9)
+onready var audax = preload("res://characters/fortis/audax.tscn")
 
 var initial = 0
 var velocity: Vector2
@@ -42,6 +43,7 @@ func initial():
 		else: animstate.travel("attack1")
 	else:
 		var random = rng.randi_range(0, 1)
+		random = 0
 		if random == 0: animstate.travel("audash")
 		else: animstate.travel("dash")
 
@@ -49,7 +51,10 @@ func dash():
 	$AttackArea/CollisionShape2D.disabled = false
 	yield(get_tree().create_timer(0.1), "timeout")
 	var tw = create_tween()
-	tw.tween_property(self, "global_position", cat.global_position, 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	if (cat.global_position - self.global_position).length() > 200:
+		tw.tween_property(self, "global_position", cat.global_position, 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	else:
+		tw.tween_property(self, "global_position", global_position + (velocity * 200), 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	yield(tw, "finished")
 	$AttackArea/CollisionShape2D.disabled = true
 
@@ -76,4 +81,7 @@ func conslash(): # Consecutive Slash
 func audash(): # audax dash
 	print("audash")
 	var tween = create_tween()
-	tween.tween_property($AttackArea/CollisionShape2D, "position", $AttackArea/CollisionShape2D.position + (velocity * 200), 1)
+	tween.tween_property($AttackArea/CollisionShape2D, "position", $AttackArea/CollisionShape2D.position + (velocity * 300), 1)
+	var audax_ins = audax.instance()
+	add_child(audax_ins)
+	audax_ins.move(velocity)

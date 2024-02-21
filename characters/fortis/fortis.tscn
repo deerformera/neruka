@@ -1817,6 +1817,7 @@ parameters/phase1/delay/blend_position = Vector2( 0, 0 )
 [node name="AttackArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+position = Vector2( 0, 20 )
 shape = SubResource( 9 )
 disabled = true
 
