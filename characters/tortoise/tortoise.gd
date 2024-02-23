@@ -7,10 +7,11 @@ func _ready():
 	$AttackArea.connect("body_entered", self, "attack")
 
 func attack(body: Character):
-	body.emit_signal("damaged", 5)
+	body.emit_signal("damaged", damage)
 
 func damaged(val):
 	if animstate.get_current_node() == "idle": animstate.travel("attack")
+	
 	.damaged(val)
 
 func _physics_process(delta):
