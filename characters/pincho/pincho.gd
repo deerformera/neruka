@@ -5,6 +5,7 @@ onready var minion = preload("res://characters/pincho/pincho-minion.tscn")
 onready var cat = get_cat()
 
 signal health_changed
+signal died
 
 func _ready():
 	$Area2D.connect("body_entered", self, "body_entered")
@@ -17,6 +18,10 @@ func shoot():
 	bullet_ins.dir = (cat.global_position - (self.global_position + Vector2(0, -20))).normalized()
 	bullet_ins.position.y -= 20
 	add_child(bullet_ins)
+
+func die():
+	emit_signal("died")
+	.die()
 
 func damaged(damage: int):
 	.damaged(damage)

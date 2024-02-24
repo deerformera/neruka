@@ -26,10 +26,9 @@ func _physics_process(delta):
 	animnode = animstate.get_current_node()
 	
 	if animnode == "normal":
-		if !android: 
-			var vector = Input.get_vector("n_left", "n_right", "n_up", "n_down")
-			if vector != Vector2(): velocity = vector
-			else: velocity = lerp(velocity, vector, 0.2)
+		var vector = Input.get_vector("n_left", "n_right", "n_up", "n_down")
+		if vector != Vector2(): velocity = vector
+		else: velocity = lerp(velocity, vector, 0.2)
 		
 		if velocity:
 			velocity_static = velocity.normalized()
@@ -46,7 +45,7 @@ func _physics_process(delta):
 	else:
 		velocity = Vector2()
 	
-	move_and_slide(velocity * 200)
+	if $AnimationTree.active: move_and_slide(velocity * 200)
 
 func _input(event):
 	if event.is_action_pressed("n_attack"):
@@ -83,3 +82,21 @@ func heal(val: int):
 	var base = Utils.get_base()
 	self.health = clamp(self.health + val, 0, base.health)
 	emit_signal("health_changed")
+
+func cutscene_start(animation_name: String, camera_position = Vector2()):
+	$AnimationTree.active = false
+	$AnimationPlayer.play(animation_name)
+#	Global.shrink_in()
+	var tw = create_tween()
+	tw.tween_property($Camera2D, "global_position", camera_position, 2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	yield(tw, "finished")
+	return
+
+func cutscene_stop():
+	$AnimationPlayer.stop()
+#	Global.shrink_out()
+	var tw = create_tween()
+	tw.tween_property($Camera2D, "global_position", self.global_position, 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	yield(tw, "finished")
+	$AnimationTree.active = true
+	

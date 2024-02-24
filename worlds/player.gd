@@ -74,6 +74,11 @@ func _ready():
 	emit_signal("health_base_changed")
 	sync_level()
 
+func get_cat() -> Character:
+	var arr = get_tree().get_nodes_in_group("cat")
+	if arr.empty(): return null
+	else: return arr[0]
+
 func get_panel(panel: String):
 	for child in $Panel/P/VB/Main.get_children(): child.hide()
 	$Panel.show()

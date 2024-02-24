@@ -29,14 +29,15 @@ func inventory():
 	get_parent().add_child(inventory.instance())
 
 func joystick(event):
-	if event is InputEventScreenDrag && joystick.pressed:
-		center = (event.position - joystick.rect_global_position) - (joystick.rect_min_size / 2)
-		center = center.normalized()
+	if event is InputEventScreenDrag:
+		if joystick.pressed:
+			center = (event.position - joystick.rect_global_position) - (joystick.rect_min_size / 2)
+			center = center.normalized()
 		
 		cat.velocity = center
 	
-	if event is InputEventScreenTouch && !event.is_pressed():
-		cat.velocity = Vector2()
+#	if event is InputEventScreenTouch && !event.is_pressed():
+#		cat.velocity = Vector2()
 
 func set_button():
 	var abilities_button = $Margin/VBox/Bot/VBox/AbilitiesButtons

@@ -1744,9 +1744,9 @@ states/idle/position = Vector2( 492, 300.77 )
 states/sit/node = SubResource( 84 )
 states/sit/position = Vector2( 384, 196 )
 states/walk/node = SubResource( 19 )
-states/walk/position = Vector2( 594, 196 )
+states/walk/position = Vector2( 595, 196 )
 transitions = [ "walk", "sit", SubResource( 85 ), "sit", "walk", SubResource( 86 ), "sit", "idle", SubResource( 228 ), "idle", "walk", SubResource( 229 ) ]
-start_node = "sit"
+start_node = "idle"
 graph_offset = Vector2( -1, 130.77 )
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=127]
@@ -1812,7 +1812,7 @@ states/normal/node = SubResource( 17 )
 states/normal/position = Vector2( 509, 253 )
 transitions = [ "normal", "dash", SubResource( 127 ), "attack_spin", "normal", SubResource( 130 ), "consume", "normal", SubResource( 145 ), "normal", "consume", SubResource( 146 ), "normal", "hurt", SubResource( 149 ), "hurt", "normal", SubResource( 150 ), "dash", "normal", SubResource( 151 ), "attack1", "attack2", SubResource( 181 ), "attack2", "attack1", SubResource( 182 ), "attack1", "normal", SubResource( 183 ), "attack2", "normal", SubResource( 184 ), "normal", "attack1", SubResource( 185 ), "normal", "cast", SubResource( 217 ), "cast", "normal", SubResource( 218 ) ]
 start_node = "normal"
-graph_offset = Vector2( -91, 144.88 )
+graph_offset = Vector2( -104, 93.88 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=16]
 

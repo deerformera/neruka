@@ -213,13 +213,13 @@ position = Vector2( 1121, 431 )
 position = Vector2( 1309, 418 )
 
 [node name="Flor4" parent="Creatures" instance=ExtResource( 3 )]
-position = Vector2( 1561, 1319 )
+position = Vector2( 1542, 1255 )
 
 [node name="Flor5" parent="Creatures" instance=ExtResource( 3 )]
-position = Vector2( 1682, 1238 )
+position = Vector2( 1595, 1153 )
 
 [node name="Flor6" parent="Creatures" instance=ExtResource( 3 )]
-position = Vector2( 1618, 1080 )
+position = Vector2( 1631, 1066 )
 
 [node name="Props" type="TileMap" parent="."]
 z_index = 1
