@@ -28,3 +28,16 @@ func shrink_in():
 func shrink_out():
 	$Control/VB/AnimationPlayer.play_backwards("cinematic")
 	shrinken = false
+
+func chat(nama: String, text: Array):
+	$Dialogue.show()
+	$Dialogue/Panel/M/HB/M/VB/Nama.text = nama
+	for i in text:
+		$Dialogue/Panel/M/HB/M/VB/Text.visible_characters = 0
+		$Dialogue/Panel/M/HB/M/VB/Text.text = i
+		while $Dialogue/Panel/M/HB/M/VB/Text.visible_characters < i.length():
+			$Dialogue/Panel/M/HB/M/VB/Text.visible_characters += 1
+			yield(get_tree().create_timer(0.05), "timeout")
+		yield(get_tree().create_timer(1), "timeout")
+	
+	$Dialogue.hide()

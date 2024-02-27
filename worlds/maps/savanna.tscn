@@ -182,6 +182,7 @@ tile_data = PoolIntArray( -2031648, 3, 0, -2031647, 3, 0, -2031646, 3, 0, -20316
 
 [node name="Pincho" parent="Creatures" groups=["pincho"] instance=ExtResource( 2 )]
 position = Vector2( -1152, 136 )
+health = 2
 
 [node name="Tortoise" parent="Creatures" instance=ExtResource( 3 )]
 position = Vector2( -135, 190 )

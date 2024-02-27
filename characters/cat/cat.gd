@@ -83,10 +83,10 @@ func heal(val: int):
 	self.health = clamp(self.health + val, 0, base.health)
 	emit_signal("health_changed")
 
-func cutscene_start(animation_name: String, camera_position = Vector2()):
+func cutscene_start(animation_name: String, camera_position = self.global_position):
 	$AnimationTree.active = false
 	$AnimationPlayer.play(animation_name)
-#	Global.shrink_in()
+	$HUD.hide()
 	var tw = create_tween()
 	tw.tween_property($Camera2D, "global_position", camera_position, 2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	yield(tw, "finished")
@@ -94,7 +94,7 @@ func cutscene_start(animation_name: String, camera_position = Vector2()):
 
 func cutscene_stop():
 	$AnimationPlayer.stop()
-#	Global.shrink_out()
+	$HUD.show()
 	var tw = create_tween()
 	tw.tween_property($Camera2D, "global_position", self.global_position, 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	yield(tw, "finished")
