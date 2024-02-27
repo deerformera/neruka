@@ -1,16 +1,15 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://worlds/maps/grora.tscn" type="PackedScene" id=1]
 [ext_resource path="res://characters/cat/cat.tscn" type="PackedScene" id=2]
 [ext_resource path="res://worlds/maps/savanna.tscn" type="PackedScene" id=3]
 [ext_resource path="res://worlds/maps/tundra.tscn" type="PackedScene" id=4]
 [ext_resource path="res://worlds/scenes/01-rika-appearance.tscn" type="PackedScene" id=5]
-[ext_resource path="res://characters/cinpho/cinpho.tscn" type="PackedScene" id=6]
 
 [node name="World" type="Node2D"]
 
 [node name="Cat" parent="." instance=ExtResource( 2 )]
-position = Vector2( 4048, -2688 )
+position = Vector2( 3792, 176 )
 
 [node name="Maps" type="Node2D" parent="."]
 
@@ -21,9 +20,6 @@ position = Vector2( 4096, 0 )
 
 [node name="Tundra" parent="Maps" groups=["map"] instance=ExtResource( 4 )]
 position = Vector2( 4096, -4096 )
-
-[node name="Cinpho" parent="Maps" instance=ExtResource( 6 )]
-position = Vector2( 4232, -2856 )
 
 [node name="Scenes" type="Node2D" parent="."]
 

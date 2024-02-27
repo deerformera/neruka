@@ -33,7 +33,7 @@ _global_script_class_icons={
 [application]
 
 config/name="neruka"
-run/main_scene="res://worlds/world.tscn"
+run/main_scene="res://worlds/proto-world.tscn"
 boot_splash/show_image=false
 config/icon="res://icon.png"
 
