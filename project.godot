@@ -19,6 +19,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://assets/classes/character.gd"
 }, {
+"base": "Node2D",
+"class": "Cutscene",
+"language": "GDScript",
+"path": "res://assets/classes/cutscene.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "InteractCharacter",
 "language": "GDScript",
@@ -27,13 +32,14 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "Ability": "",
 "Character": "",
+"Cutscene": "",
 "InteractCharacter": ""
 }
 
 [application]
 
 config/name="neruka"
-run/main_scene="res://worlds/proto-world.tscn"
+run/main_scene="res://worlds/world.tscn"
 boot_splash/show_image=false
 config/icon="res://icon.png"
 
@@ -164,11 +170,12 @@ pointing/emulate_touch_from_mouse=true
 
 [layer_names]
 
-2d_physics/layer_1="Thing"
+2d_physics/layer_1="World"
 2d_physics/layer_2="Cat"
 2d_physics/layer_3="Creature"
 2d_physics/layer_4="Interactable"
 2d_physics/layer_5="InteractableThing"
+2d_physics/layer_6="Jumpable"
 
 [physics]
 

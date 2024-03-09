@@ -1,14 +1,14 @@
 extends Node
 
 var shrinken = false
+export var debug = true
+
+signal chat_end
 
 func get_cat() -> Character:
 	var arr = get_tree().get_nodes_in_group("cat")
 	if arr.empty(): return null
 	else: return arr[0]
-
-func get_between(first_vector: Vector2, second_vector: Vector2) -> Vector2:
-	return first_vector + (second_vector - first_vector) / 2
 
 func fade_in(): 
 	$BlackScreen/AnimationPlayer.play("fade")
@@ -30,6 +30,9 @@ func shrink_out():
 	shrinken = false
 
 func chat(nama: String, text: Array):
+	var cat = get_cat()
+	cat.get_node("HUD").hide()
+	
 	$Dialogue.show()
 	$Dialogue/Panel/M/HB/M/VB/Nama.text = nama
 	for i in text:
@@ -37,7 +40,15 @@ func chat(nama: String, text: Array):
 		$Dialogue/Panel/M/HB/M/VB/Text.text = i
 		while $Dialogue/Panel/M/HB/M/VB/Text.visible_characters < i.length():
 			$Dialogue/Panel/M/HB/M/VB/Text.visible_characters += 1
-			yield(get_tree().create_timer(0.05), "timeout")
-		yield(get_tree().create_timer(1), "timeout")
+			yield(get_tree().create_timer(0.01), "timeout")
+		yield(get_tree().create_timer(0.1), "timeout")
 	
+	cat.get_node("HUD").show()
 	$Dialogue.hide()
+
+func introduce(texture: Texture, nama: String):
+	$Poster/Label.text = nama
+	$Poster/TextureRect.texture = texture
+	$Poster.show()
+	yield(get_tree().create_timer(1), "timeout")
+	$Poster.hide()

@@ -1,6 +1,4 @@
-extends Node2D
-
-onready var cat = Global.get_cat()
+extends Cutscene
 
 var entered = false
 var completed = false
