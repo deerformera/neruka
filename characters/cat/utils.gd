@@ -9,7 +9,7 @@ var enemies: Array
 var level := {
 	"vigor": 0,
 	"strength": 0,
-	"mind": 3
+	"mind": 0
 }
 
 var orbs: int = 7

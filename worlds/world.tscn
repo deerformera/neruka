@@ -1,44 +1,16 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://worlds/maps/grora.tscn" type="PackedScene" id=1]
 [ext_resource path="res://characters/cat/cat.tscn" type="PackedScene" id=2]
 [ext_resource path="res://worlds/maps/savanna.tscn" type="PackedScene" id=3]
 [ext_resource path="res://worlds/maps/tundra.tscn" type="PackedScene" id=4]
-[ext_resource path="res://characters/rika/rika.tscn" type="PackedScene" id=5]
 [ext_resource path="res://worlds/maps/jungle.tscn" type="PackedScene" id=6]
-[ext_resource path="res://worlds/scenes/01.gd" type="Script" id=7]
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 100, 200 )
-
-[sub_resource type="RectangleShape2D" id=6]
-extents = Vector2( 200, 100 )
-
-[sub_resource type="RectangleShape2D" id=8]
-extents = Vector2( 200, 100 )
-
-[sub_resource type="RectangleShape2D" id=9]
-extents = Vector2( 100, 200 )
-
-[sub_resource type="Curve2D" id=10]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 2271, 1217, 0, 0, 0, 0, 2815, 1217, 0, 0, 0, 0, 2951, 1025, 0, 0, 0, 0, 2951, 225 )
-}
-
-[sub_resource type="Curve2D" id=11]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 2855, 657, 0, 0, 0, 0, 2855, 257, 0, 0, 0, 0, 3015, 129, 0, 0, 0, 0, 3519, 129, 0, 0, 0, 0, 3919, -311, 0, 0, 0, 0, 3919, -543, 0, 0, 0, 0, 3143, -543, 0, 0, 0, 0, 3143, -1215, 0, 0, 0, 0, 3903, -1215, 0, 0, 0, 0, 3903, -2167 )
-}
-
-[sub_resource type="Curve2D" id=12]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 3223, 129, 0, 0, 0, 0, 3519, 129, 0, 0, 0, 0, 3919, -311, 0, 0, 0, 0, 3919, -543, 0, 0, 0, 0, 3143, -543, 0, 0, 0, 0, 3143, -1215, 0, 0, 0, 0, 3903, -1215, 0, 0, 0, 0, 3903, -2167 )
-}
+[ext_resource path="res://worlds/scenes/03.tscn" type="PackedScene" id=7]
 
 [node name="World" type="Node2D"]
 
 [node name="Cat" parent="." instance=ExtResource( 2 )]
-position = Vector2( 3443, 104 )
+position = Vector2( 4104, -2576 )
 collision_mask = 63
 
 [node name="Maps" type="Node2D" parent="."]
@@ -57,62 +29,4 @@ position = Vector2( 4096, 4096 )
 [node name="Scenes" type="Node2D" parent="."]
 position = Vector2( -7, -1 )
 
-[node name="01" type="Node2D" parent="Scenes"]
-script = ExtResource( 7 )
-
-[node name="Rika" parent="Scenes/01" instance=ExtResource( 5 )]
-position = Vector2( 2479, 1121 )
-
-[node name="Areas" type="Node2D" parent="Scenes/01"]
-
-[node name="trigger" type="Area2D" parent="Scenes/01/Areas"]
-position = Vector2( 2154, 1216 )
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Scenes/01/Areas/trigger"]
-shape = SubResource( 1 )
-
-[node name="before_pincho" type="Area2D" parent="Scenes/01/Areas"]
-position = Vector2( 2952, 628 )
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Scenes/01/Areas/before_pincho"]
-shape = SubResource( 6 )
-
-[node name="after_pincho_down" type="Area2D" parent="Scenes/01/Areas"]
-position = Vector2( 2951, 621 )
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Scenes/01/Areas/after_pincho_down"]
-shape = SubResource( 8 )
-disabled = true
-
-[node name="after_pincho_right" type="Area2D" parent="Scenes/01/Areas"]
-position = Vector2( 3565, 65 )
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Scenes/01/Areas/after_pincho_right"]
-shape = SubResource( 9 )
-disabled = true
-
-[node name="Points" type="Node2D" parent="Scenes/01"]
-
-[node name="Trigger" type="Path2D" parent="Scenes/01/Points"]
-curve = SubResource( 10 )
-
-[node name="PathFollow2D" type="PathFollow2D" parent="Scenes/01/Points/Trigger"]
-position = Vector2( 2271, 1217 )
-
-[node name="PinchoDown" type="Path2D" parent="Scenes/01/Points"]
-curve = SubResource( 11 )
-
-[node name="PathFollow2D" type="PathFollow2D" parent="Scenes/01/Points/PinchoDown"]
-
-[node name="PinchoRight" type="Path2D" parent="Scenes/01/Points"]
-curve = SubResource( 12 )
-
-[node name="PathFollow2D" type="PathFollow2D" parent="Scenes/01/Points/PinchoRight"]
+[node name="03" parent="Scenes" instance=ExtResource( 7 )]
