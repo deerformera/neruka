@@ -4,6 +4,7 @@ class_name Cutscene
 onready var cat: Character = Utils.get_cat()
 
 export var id: int = 0
+export var debug = false
 
 var hook: Array = []
 
@@ -19,21 +20,15 @@ func cat_look_start(animation_name: String, camera_position = cat.global_positio
 	cat.get_node("AnimationPlayer").play(animation_name)
 	cat.get_node("HUD").hide()
 	var tw = create_tween()
-	if Global.debug:
-		tw.tween_property(cat.get_node("Camera2D"), "global_position", camera_position, 0.5).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-		yield(tw, "finished")
-		return
-	tw.tween_property(cat.get_node("Camera2D"), "global_position", camera_position, 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	if debug: tw.tween_property(cat.get_node("Camera2D"), "global_position", camera_position, 0.5).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	else: tw.tween_property(cat.get_node("Camera2D"), "global_position", camera_position, 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	
 	yield(tw, "finished")
 	return
 
 func cat_look_stop():
 	cat.get_node("AnimationPlayer").stop()
 	cat.get_node("HUD").show()
-	if Global.debug: 
-		cat.get_node("Camera2D").global_position = cat.global_position
-		cat.get_node("AnimationTree").active = true
-		return
 	var tw = create_tween()
 	tw.tween_property(cat.get_node("Camera2D"), "global_position", cat.global_position, 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	yield(tw, "finished")

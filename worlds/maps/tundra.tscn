@@ -1,8 +1,7 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://worlds/maps/tundra.png" type="Texture" id=1]
 [ext_resource path="res://worlds/maps/tundra-props.png" type="Texture" id=2]
-[ext_resource path="res://assets/scenes/checkpoint.tscn" type="PackedScene" id=3]
 
 [sub_resource type="ConvexPolygonShape2D" id=4]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
@@ -181,8 +180,3 @@ tile_data = PoolIntArray( -2031648, 3, 0, -2031647, 3, 0, -2031646, 3, 0, -20316
 tile_set = SubResource( 6 )
 format = 1
 tile_data = PoolIntArray( 720896, 0, 0, 720897, 0, 0, 720898, 0, 0, 720899, 0, 0, 983033, 0, 0, 1048569, 0, 0, 1114105, 0, 0, 1179641, 0, 0 )
-
-[node name="Checkpoints" type="Node2D" parent="."]
-
-[node name="Checkpoint" parent="Checkpoints" instance=ExtResource( 3 )]
-position = Vector2( 128, 1216 )

@@ -1,7 +1,6 @@
 extends Node
 
 var shrinken = false
-export var debug = false
 
 signal chat_end
 

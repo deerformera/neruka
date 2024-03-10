@@ -46,7 +46,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Utils="*res://characters/cat/utils.gd"
-Global="*res://assets/scenes/global.tscn"
+Interface="*res://assets/scenes/interface.tscn"
 
 [debug]
 

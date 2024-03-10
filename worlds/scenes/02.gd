@@ -16,7 +16,7 @@ func after_pincho_down_entered(body):
 	$Areas/after_pincho_right.queue_free()
 	
 	yield(cat_look_start("idle_down", $Rika.global_position), "completed")
-	yield(Global.chat("Rika", [
+	yield(Interface.chat("Rika", [
 		"Terima kasih telah membantuku", 
 		"Ku melihat kau tadi bereaksi setelah membunuh tanaman jahat itu",
 		"Apakah kau seorang Sentinel?!",
@@ -46,7 +46,7 @@ func after_pincho_right_entered(body):
 	
 	yield(cat_look_start("idle_left", get_between($Rika.global_position)), "completed")
 	
-	yield(Global.chat("Rika", [
+	yield(Interface.chat("Rika", [
 		"Tunggu!", 
 		"Ku melihat kau tadi bereaksi setelah membunuh tanaman jahat itu",
 		"Apakah kau seorang Sentinel?!",

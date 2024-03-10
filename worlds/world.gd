@@ -1,17 +1,17 @@
 extends Node2D
 
-var first_scene = false
-
-func _ready():
-	$RikaFirstScene.connect("body_entered", self, "rika_first_scene")
-	$RikaFirstScene.set_as_toplevel(true)
-
-func rika_first_scene(body):
-	$RikaFirstScene.queue_free()
-	first_scene = true
-
-func _physics_process(delta):
-	if first_scene:
-		if $Path2D/PathFollow2D.unit_offset < 1:
-			$Path2D/PathFollow2D.offset += 3
-			print(Vector2.RIGHT.rotated($Path2D/PathFollow2D.rotation))
+func refresh():
+	for i in $Maps.get_children(): i.queue_free()
+	
+	var maps = {
+		"grora": preload("res://worlds/maps/grora.tscn").instance(),
+		"savanna": preload("res://worlds/maps/savanna.tscn").instance(),
+		"tundra": preload("res://worlds/maps/tundra.tscn").instance()
+	}
+	
+	maps.grora.global_position = Vector2()
+	maps.savanna.global_position = Vector2(4096, 0)
+	maps.tundra.global_position = Vector2(4096, -4096)
+	
+	for i in maps:
+		$Maps.call_deferred("add_child", maps[i])

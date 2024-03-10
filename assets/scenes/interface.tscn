@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://assets/scenes/global.gd" type="Script" id=1]
+[ext_resource path="res://assets/scenes/interface.gd" type="Script" id=1]
 [ext_resource path="res://characters/pincho/pincho-poster.png" type="Texture" id=2]
 
 [sub_resource type="Animation" id=2]
@@ -251,9 +251,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Panel" type="Panel" parent="Poster"]
-margin_top = 104.0
+margin_top = 232.0
 margin_right = 1280.0
-margin_bottom = 616.0
+margin_bottom = 488.0
 rect_min_size = Vector2( 0, 256 )
 size_flags_horizontal = 3
 size_flags_vertical = 4

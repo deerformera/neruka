@@ -3,6 +3,7 @@ extends Node
 #onready var cat: Character = get_tree().get_nodes_in_group("cat")[0]
 signal level_changed
 signal abilities_changed
+signal tab_closed
 
 var enemies: Array
 
@@ -138,3 +139,5 @@ func tab_close():
 	
 	var cat = self.get_cat()
 	cat.get_node("HUD").show()
+	
+	emit_signal("tab_closed")
