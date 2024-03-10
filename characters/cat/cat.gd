@@ -76,8 +76,6 @@ func damaged(damage: int):
 	emit_signal("health_changed")
 	if self.health <= 0: print("die")
 
-func die(): pass
-
 func heal(val: int):
 	var base = Utils.get_base()
 	self.health = clamp(self.health + val, 0, base.health)

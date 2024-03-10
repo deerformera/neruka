@@ -1,7 +1,7 @@
 extends Node2D
 class_name Cutscene
 
-onready var cat: Character = Global.get_cat()
+onready var cat: Character = Utils.get_cat()
 
 export var id: int = 0
 
@@ -15,7 +15,6 @@ func _ready():
 			i.connect("body_entered", self, i.name + "_entered")
 
 func cat_look_start(animation_name: String, camera_position = cat.global_position):
-	
 	cat.get_node("AnimationTree").active = false
 	cat.get_node("AnimationPlayer").play(animation_name)
 	cat.get_node("HUD").hide()
@@ -56,7 +55,6 @@ func _physics_process(delta):
 			unhook()
 			return
 		
-		print(self.hook[1].unit_offset)
 		self.hook[0].velocity = Vector2.RIGHT.rotated(self.hook[1].rotation)
 		self.hook[0].global_position = self.hook[1].global_position
 		self.hook[1].offset += 3

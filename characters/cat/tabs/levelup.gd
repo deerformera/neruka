@@ -12,9 +12,7 @@ func _ready():
 	
 	items()
 
-func close(): 
-	self.queue_free()
-	emit_signal("closed")
+func close(): Utils.tab_close()
 
 func items():
 	set_required()

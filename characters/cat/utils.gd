@@ -111,3 +111,30 @@ func get_level_requirement(type: String, val: int) -> int:
 	return total
 # ___End of Level System___
 
+# ___Misc___
+
+func get_cat() -> Character:
+	var arr = get_tree().get_nodes_in_group("cat")
+	if arr.empty(): return null
+	else: return arr[0]
+
+
+# ___Tab___
+func tab_open(tab: String):
+	for i in get_tree().get_nodes_in_group("tab"):
+		i.queue_free()
+	
+	var cat = self.get_cat()
+	var scene = load("res://characters/cat/tabs/" + tab + ".tscn")
+	
+	if !scene: return
+	cat.add_child(scene.instance())
+	
+	cat.get_node("HUD").hide()
+
+func tab_close():
+	for i in get_tree().get_nodes_in_group("tab"):
+		i.queue_free()
+	
+	var cat = self.get_cat()
+	cat.get_node("HUD").show()

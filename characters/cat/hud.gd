@@ -26,7 +26,7 @@ func _input(event):
 	joystick(event)
 
 func inventory():
-	get_parent().add_child(inventory.instance())
+	Utils.tab_open("inventory")
 
 func joystick(event):
 	if event is InputEventScreenDrag:

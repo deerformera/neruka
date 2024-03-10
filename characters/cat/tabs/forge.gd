@@ -12,7 +12,8 @@ func _ready():
 	$Margin/Panel/VBox/Margin/HBox/VBox/ForgeButton.disabled = true
 	items()
 
-func close(): self.queue_free()
+func close(): 
+	Utils.tab_close()
 
 func items():
 	var container = $Margin/Panel/VBox/Margin/HBox/Scroll/Items

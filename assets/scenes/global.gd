@@ -5,11 +5,6 @@ export var debug = false
 
 signal chat_end
 
-func get_cat() -> Character:
-	var arr = get_tree().get_nodes_in_group("cat")
-	if arr.empty(): return null
-	else: return arr[0]
-
 func fade_in(): 
 	$BlackScreen/AnimationPlayer.play("fade")
 	yield(get_tree().create_timer(0.4), "timeout")
@@ -30,7 +25,7 @@ func shrink_out():
 	shrinken = false
 
 func chat(nama: String, text: Array):
-	var cat = get_cat()
+	var cat = Utils.get_cat()
 	cat.get_node("HUD").hide()
 	
 	$Dialogue.show()
