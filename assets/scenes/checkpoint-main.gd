@@ -3,6 +3,8 @@ extends Area2D
 onready var cat = Utils.get_cat()
 export var grow = false
 
+signal grow
+
 func body_entered(body):
 	if grow:
 		$AnimationPlayer.play("close")
@@ -17,6 +19,7 @@ func body_entered(body):
 		Utils.connect("tab_closed", self, "tab_closed")
 	else:
 		$AnimationPlayer.play("grow")
+		emit_signal("grow")
 
 func tab_closed():
 	Utils.disconnect("tab_closed", self, "tab_closed")

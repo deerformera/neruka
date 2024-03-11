@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/scenes/interface.gd" type="Script" id=1]
 [ext_resource path="res://characters/pincho/pincho-poster.png" type="Texture" id=2]
@@ -59,6 +59,46 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Up:rect_size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1280, 716 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "blink"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Up:rect_min_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 360 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Down:rect_min_size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 360 ) ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -151,20 +191,22 @@ alignment = 1
 
 [node name="Up" type="ColorRect" parent="Control/VB"]
 margin_right = 1280.0
+margin_bottom = 716.0
 mouse_filter = 2
 size_flags_vertical = 2
 color = Color( 0, 0, 0, 1 )
 
 [node name="Down" type="ColorRect" parent="Control/VB"]
-margin_top = 720.0
+margin_top = 364.0
 margin_right = 1280.0
-margin_bottom = 720.0
+margin_bottom = 724.0
 mouse_filter = 2
 size_flags_vertical = 0
 color = Color( 0, 0, 0, 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Control/VB"]
 anims/RESET = SubResource( 4 )
+anims/blink = SubResource( 8 )
 anims/cinematic = SubResource( 3 )
 
 [node name="Dialogue" type="MarginContainer" parent="."]

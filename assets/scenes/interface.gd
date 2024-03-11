@@ -14,6 +14,7 @@ func fade_out():
 	yield(get_tree().create_timer(0.4), "timeout")
 	return
 
+
 func shrink_in():
 	if shrinken: return
 	$Control/VB/AnimationPlayer.play("cinematic")

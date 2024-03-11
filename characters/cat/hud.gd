@@ -33,11 +33,12 @@ func joystick(event):
 		if joystick.pressed:
 			center = (event.position - joystick.rect_global_position) - (joystick.rect_min_size / 2)
 			center = center.normalized()
-		
-		cat.velocity = center
 	
-#	if event is InputEventScreenTouch && !event.is_pressed():
-#		cat.velocity = Vector2()
+	if event is InputEventScreenTouch && !event.is_pressed():
+		center = Vector2()
+
+func _physics_process(delta):
+	cat.velocity = center
 
 func set_button():
 	var abilities_button = $Margin/VBox/Bot/VBox/AbilitiesButtons
