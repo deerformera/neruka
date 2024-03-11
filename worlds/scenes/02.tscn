@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://worlds/scenes/02.gd" type="Script" id=1]
+[ext_resource path="res://characters/rika/rika.gd" type="Script" id=2]
 [ext_resource path="res://characters/rika/rika.tscn" type="PackedScene" id=3]
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 200, 100 )
 
 [sub_resource type="RectangleShape2D" id=2]
@@ -11,18 +12,21 @@ extents = Vector2( 100, 200 )
 
 [sub_resource type="Curve2D" id=3]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 2855, 657, 0, 0, 0, 0, 2855, 257, 0, 0, 0, 0, 3015, 129, 0, 0, 0, 0, 3519, 129, 0, 0, 0, 0, 3919, -311, 0, 0, 0, 0, 3919, -543, 0, 0, 0, 0, 3143, -543, 0, 0, 0, 0, 3143, -1215, 0, 0, 0, 0, 3911, -1215, 0, 0, 0, 0, 3911, -2879, 0, 0, 0, 0, 4039, -2879 )
+"points": PoolVector2Array( 0, 0, 0, 0, 2855, 657, 0, 0, 0, 0, 2855, 257, 0, 0, 0, 0, 3015, 129, 0, 0, 0, 0, 3519, 129, 0, 0, 0, 0, 3919, -311, 0, 0, 0, 0, 3919, -543, 0, 0, 0, 0, 3143, -543, 0, 0, 0, 0, 3143, -1215, 0, 0, 0, 0, 3911, -1215, 0, 0, 0, 0, 3911, -2879, 0, 0, 0, 0, 4032, -2880 )
 }
 
 [sub_resource type="Curve2D" id=4]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 3223, 129, 0, 0, 0, 0, 3519, 129, 0, 0, 0, 0, 3919, -311, 0, 0, 0, 0, 3919, -543, 0, 0, 0, 0, 3143, -543, 0, 0, 0, 0, 3143, -1215, 0, 0, 0, 0, 3911, -1215, 0, 0, 0, 0, 3911, -2879, 0, 0, 0, 0, 4039, -2879 )
+"points": PoolVector2Array( 0, 0, 0, 0, 3223, 129, 0, 0, 0, 0, 3519, 129, 0, 0, 0, 0, 3919, -311, 0, 0, 0, 0, 3919, -543, 0, 0, 0, 0, 3143, -543, 0, 0, 0, 0, 3143, -1215, 0, 0, 0, 0, 3911, -1215, 0, 0, 0, 0, 3911, -2879, 0, 0, 0, 0, 4032, -2880 )
 }
 
 [node name="02" type="Node2D"]
 script = ExtResource( 1 )
 
-[node name="Rika" parent="." instance=ExtResource( 3 )]
+[node name="Rika" type="KinematicBody2D" parent="." instance=ExtResource( 3 )]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource( 2 )
 
 [node name="Areas" type="Node2D" parent="."]
 
@@ -32,7 +36,7 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Areas/after_pincho_down"]
-shape = SubResource( 1 )
+shape = SubResource( 5 )
 disabled = true
 
 [node name="after_pincho_right" type="Area2D" parent="Areas"]

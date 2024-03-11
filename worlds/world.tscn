@@ -33,7 +33,7 @@ position = Vector2( 4096, 4096 )
 [node name="Checkpoints" type="Node2D" parent="."]
 
 [node name="Hub" parent="Checkpoints" instance=ExtResource( 8 )]
-position = Vector2( 4232, -2880 )
+position = Vector2( 4224, -2880 )
 script = ExtResource( 9 )
 
 [node name="Scenes" type="Node2D" parent="."]
