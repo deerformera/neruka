@@ -28,7 +28,8 @@ func _physics_process(delta):
 	if animnode == "normal":
 		var vector = Input.get_vector("n_left", "n_right", "n_up", "n_down")
 		if vector != Vector2(): velocity = vector
-		else: velocity = lerp(velocity, vector, 0.2)
+		else:
+			velocity = lerp(velocity, vector, 0.2)
 		
 		if velocity:
 			velocity_static = velocity.normalized()

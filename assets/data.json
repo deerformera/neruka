@@ -10,7 +10,7 @@
     "abilities":[
         ["Headshot!", "Shoot a bullet", 6],
         ["Heal", "Heal you 20 HP", 10],
-        ["Dash", "now Its soulslike B)", 10],
+        ["Dash", "now Its soulslike B)", 0],
 	["Shield", "Increease defense"],
 	["Slide", "project a sliding cat"]
     ]

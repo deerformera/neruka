@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends InteractCharacter
 
 export var velocity = Vector2.DOWN
 

@@ -6,7 +6,7 @@
 [ext_resource path="res://worlds/maps/tundra.tscn" type="PackedScene" id=4]
 [ext_resource path="res://worlds/world.gd" type="Script" id=5]
 [ext_resource path="res://worlds/maps/jungle.tscn" type="PackedScene" id=6]
-[ext_resource path="res://worlds/scenes/03.tscn" type="PackedScene" id=7]
+[ext_resource path="res://worlds/scenes/05.tscn" type="PackedScene" id=7]
 [ext_resource path="res://assets/scenes/checkpoint.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/scenes/checkpoint-main.gd" type="Script" id=9]
 
@@ -14,7 +14,7 @@
 script = ExtResource( 5 )
 
 [node name="Cat" parent="." instance=ExtResource( 2 )]
-position = Vector2( 3992, -2592 )
+position = Vector2( 5664, -3096 )
 collision_mask = 63
 
 [node name="Maps" type="Node2D" parent="."]
@@ -38,4 +38,4 @@ script = ExtResource( 9 )
 
 [node name="Scenes" type="Node2D" parent="."]
 
-[node name="03" parent="Scenes" instance=ExtResource( 7 )]
+[node name="05" parent="Scenes" instance=ExtResource( 7 )]

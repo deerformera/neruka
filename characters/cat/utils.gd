@@ -16,8 +16,8 @@ var level := {
 var orbs: int = 7
 
 var abilities_data: Array
-var abilities: Array = [0,1,2]
-var current_abilities: Array = [0,1]
+var abilities: Array = []
+var current_abilities: Array = []
 var knowledges: Array
 
 func _ready():
@@ -73,13 +73,15 @@ func get_abilities() -> Array:
 
 func learn(id: int):
 	if !abilities.has(id):
-		orbs -= get_ability(id).price
+		var ability = get_ability(id)
+		orbs -= ability.price
 		abilities.append(id)
+		print("You learned ", ability.name, ", ", ability.desc)
 
 func identify(id: int):
 	if !knowledges.has(id): 
 		knowledges.append(id)
-		print("You learn ", get_enemy(id).name, ", ", get_enemy(id).desc)
+		print("You identify ", get_enemy(id).name, ", ", get_enemy(id).desc)
 # ___End of Ability System___
 
 # ___Level System___
