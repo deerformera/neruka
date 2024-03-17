@@ -20,9 +20,12 @@ func darken_entered(body):
 func _physics_process(delta):
 	if dark: $CatLight.global_position = cat.global_position
 
-func _exit_tree():
+func exit():
 	cat.global_position = Vector2(5664, -3096)
 	get_tree().root.get_node("World/Checkpoints/Hub").show()
 	get_tree().root.get_node("World/Checkpoints/Hub").collision_mask = 2
 	get_tree().root.get_node("World").refresh()
+	yield(get_tree().create_timer(1), "timeout")
 	get_parent().add_child(preload("res://worlds/scenes/06.tscn").instance())
+	Interface.fade_out()
+	self.queue_free()

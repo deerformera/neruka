@@ -16,8 +16,8 @@ var level := {
 var orbs: int = 7
 
 var abilities_data: Array
-var abilities: Array = []
-var current_abilities: Array = []
+var abilities: Array = [2]
+var current_abilities: Array = [2]
 var knowledges: Array
 
 func _ready():

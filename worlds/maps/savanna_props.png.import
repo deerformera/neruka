@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/savanna-props.png-926b0954f845824c170d43920a41332c.stex"
+path="res://.import/savanna_props.png-0c8aec0126bf8284a525723da5baf57c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://worlds/maps/savanna-props.png"
-dest_files=[ "res://.import/savanna-props.png-926b0954f845824c170d43920a41332c.stex" ]
+source_file="res://worlds/maps/savanna_props.png"
+dest_files=[ "res://.import/savanna_props.png-0c8aec0126bf8284a525723da5baf57c.stex" ]
 
 [params]
 

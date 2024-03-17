@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tundra-props.png-258fcf06749ac7fd37b781dcecc0757a.stex"
+path="res://.import/tundra_vital.png-aff7001ea657eef000e4eeea11418c01.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://worlds/maps/tundra-props.png"
-dest_files=[ "res://.import/tundra-props.png-258fcf06749ac7fd37b781dcecc0757a.stex" ]
+source_file="res://worlds/maps/tundra_vital.png"
+dest_files=[ "res://.import/tundra_vital.png-aff7001ea657eef000e4eeea11418c01.stex" ]
 
 [params]
 

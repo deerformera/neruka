@@ -27,12 +27,13 @@ func _physics_process(delta):
 	
 	if animnode == "normal":
 		var vector = Input.get_vector("n_left", "n_right", "n_up", "n_down")
-		if vector != Vector2(): velocity = vector
+		if vector:
+			velocity_static = vector.normalized()
+			velocity = vector
 		else:
 			velocity = lerp(velocity, vector, 0.2)
 		
 		if velocity:
-			velocity_static = velocity.normalized()
 			$AnimationTree.get("parameters/normal/playback").travel("walk")
 		if velocity.length() < 0.5:
 			$AnimationTree.get("parameters/normal/playback").travel("idle")
