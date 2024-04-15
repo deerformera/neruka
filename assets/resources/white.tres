@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=21]
+code = "shader_type canvas_item;
+
+uniform float amount = 0;
+
+void fragment(){
+	COLOR = texture(TEXTURE, UV);
+	vec4 faded_color = mix(COLOR, vec4(1,1,1, COLOR.a), amount);
+	COLOR = faded_color;
+}"
+
+[resource]
+shader = SubResource( 21 )
+shader_param/amount = 0.0
