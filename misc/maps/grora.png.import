@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tundra.png-75ed5efc744e0914e5b6d8bcb682527a.stex"
+path="res://.import/grora.png-09f8ceb50eb8b9cab92f9b485b480380.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/maps/tundra.png"
-dest_files=[ "res://.import/tundra.png-75ed5efc744e0914e5b6d8bcb682527a.stex" ]
+source_file="res://misc/maps/grora.png"
+dest_files=[ "res://.import/grora.png-09f8ceb50eb8b9cab92f9b485b480380.stex" ]
 
 [params]
 

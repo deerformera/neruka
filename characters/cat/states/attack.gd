@@ -2,11 +2,11 @@ extends State
 
 var valid = false
 var current: String
+var slash = preload("res://misc/slash/slash.tscn")
 
 func enter(msg):
 	valid = false
 	owner.animstate.travel("Attack1")
-	attack()
 
 func update():
 	var animnode = owner.animstate.get_current_node()
@@ -16,14 +16,22 @@ func update():
 	
 	if current != animnode:
 		current = animnode
-		if animnode == "Attack1" or animnode == "Attack2": attack()
+		if animnode == "Attack1" or animnode == "Attack2": 
+			attack(animnode)
 	
 	if animnode == "Attack1" && !valid: valid = true
 	
 	if valid && animnode == "Walk": machine.travel("Normal")
 
-func attack():
+func attack(animnode: String):
 	yield(get_tree().create_timer(0.2), "timeout")
+	
+	var slash_ins = slash.instance()
+	slash_ins.global_position = owner.global_position + (owner.velocity_static * 35)
+	slash_ins.rotation = owner.velocity_static.angle()
+	if animnode == "Attack2": slash_ins.get_node("AnimatedSprite").flip_v = true
+	owner.get_parent().add_child(slash_ins)
+	
 	create_tween().tween_property(
 		owner, 
 		"global_position", 

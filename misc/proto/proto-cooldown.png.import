@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/proto-tile.png-572011939e722b4cbe3122876167df40.stex"
+path="res://.import/proto-cooldown.png-abc4127924e9dcb416000180994302cf.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/proto/proto-tile.png"
-dest_files=[ "res://.import/proto-tile.png-572011939e722b4cbe3122876167df40.stex" ]
+source_file="res://misc/proto/proto-cooldown.png"
+dest_files=[ "res://.import/proto-cooldown.png-abc4127924e9dcb416000180994302cf.stex" ]
 
 [params]
 

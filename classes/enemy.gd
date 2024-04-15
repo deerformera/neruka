@@ -3,11 +3,11 @@ class_name Enemy
 
 var target: Character = null
 
-var orb = preload("res://assets/scenes/orb.tscn")
+var orb = preload("res://misc/scenes/orb.tscn")
 
 func _ready():
 	get_node("AlertArea").connect("body_entered", self, "onAlert")
-	get_node("LimitArea").connect("body_entered", self, "onLimit")
+	get_node("LimitArea").connect("body_exited", self, "onLimit")
 
 func onAlert(body: Character):
 	target = body
@@ -17,6 +17,7 @@ func onAlert(body: Character):
 func onLimit(body: Character):
 	target = null
 	get_node("StateMachine").travel("Idle")
+	get_node("AlertArea/CollisionShape2D").set_deferred("disabled", false)
 
 func die():
 	get_tree().root.get_node("World").call_deferred("add_child", create_orb())

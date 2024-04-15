@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/jungle.png-2f5f8bcc9048b887b05fc964d063bd9b.stex"
+path="res://.import/jungle.png-aee472d2b23a76b2a2ce8a55e1657c32.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/maps/jungle.png"
-dest_files=[ "res://.import/jungle.png-2f5f8bcc9048b887b05fc964d063bd9b.stex" ]
+source_file="res://misc/maps/jungle.png"
+dest_files=[ "res://.import/jungle.png-aee472d2b23a76b2a2ce8a55e1657c32.stex" ]
 
 [params]
 

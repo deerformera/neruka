@@ -42,6 +42,10 @@ config/name="neruka-reconstruct"
 run/main_scene="res://worlds/world.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Utils="*res://scripts/utilities.gd"
+
 [display]
 
 window/size/width=1280
@@ -122,6 +126,12 @@ n_ability4={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":52,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
+
+[layer_names]
+
+2d_physics/layer_1="world"
+2d_physics/layer_2="cat"
+2d_physics/layer_3="entity"
 
 [physics]
 

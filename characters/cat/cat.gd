@@ -15,3 +15,9 @@ func _physics_process(delta):
 func damaged(val, knockback = Vector2()):
 	get_node("StateMachine").travel("Hurt")
 	.damaged(val)
+
+func hit():
+	var vec = Vector2(randf(), randf()).normalized()
+	$Camera2D.offset = vec * 5
+	yield(get_tree().create_timer(0.05), "timeout")
+	$Camera2D.offset = Vector2()
