@@ -23,8 +23,6 @@ func update():
 	
 	if valid && animnode == "Walk": machine.travel("Normal")
 	
-	var cat = owner as Character
-	
 	owner.get_node("WallRay").rotation = owner.velocity_static.angle()
 
 func attack(animnode: String):
