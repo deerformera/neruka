@@ -9,6 +9,10 @@ func _ready():
 	get_node("AlertArea").connect("body_entered", self, "onAlert")
 	get_node("LimitArea").connect("body_exited", self, "onLimit")
 
+func damaged(val):
+	.damaged(val)
+	get_node("StateMachine").travel("Hurt")
+
 func onAlert(body: Character):
 	target = body
 	get_node("StateMachine").travel("Aggressive")

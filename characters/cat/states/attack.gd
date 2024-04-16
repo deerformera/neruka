@@ -22,6 +22,10 @@ func update():
 	if animnode == "Attack1" && !valid: valid = true
 	
 	if valid && animnode == "Walk": machine.travel("Normal")
+	
+	var cat = owner as Character
+	
+	owner.get_node("WallRay").rotation = owner.velocity_static.angle()
 
 func attack(animnode: String):
 	yield(get_tree().create_timer(0.2), "timeout")
@@ -32,8 +36,11 @@ func attack(animnode: String):
 	if animnode == "Attack2": slash_ins.get_node("AnimatedSprite").flip_v = true
 	owner.get_parent().add_child(slash_ins)
 	
-	create_tween().tween_property(
-		owner, 
-		"global_position", 
-		owner.global_position + owner.velocity_static * 5, 
-		0.05).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	var ray: RayCast2D = owner.get_node("WallRay")
+	
+	if !ray.is_colliding():
+		create_tween().tween_property(
+			owner, 
+			"global_position", 
+			owner.global_position + owner.velocity_static * 10, 
+			0.05).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)

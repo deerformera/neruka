@@ -7,6 +7,6 @@ func enter(msg):
 	owner.animstate.travel("Hurt")
 
 func update():
-	var animnode = owner.animstate.get_current_node("Hurt")
+	var animnode = owner.animstate.get_current_node()
 	if !valid && animnode == "Hurt": valid = true
 	if valid && animnode == "Aggressive": machine.travel("Aggressive")

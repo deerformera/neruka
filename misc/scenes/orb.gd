@@ -16,9 +16,12 @@ func onEnter(body: Character):
 
 func spawn():
 	var rng = Utils.create_rng()
-	var vec = Vector2(
-		rng.randi_range(-50, 50), 
-		rng.randi_range(-50, 50))
+	var vec = Vector2()
+	while vec.length() < 50:
+		vec = Vector2(
+			rng.randi_range(-100, 100), 
+			rng.randi_range(-100, 100))
+		
 	var tw = create_tween()
 	tw.tween_property(self, "global_position", global_position + vec, 0.5).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 	yield(tw, "finished")
