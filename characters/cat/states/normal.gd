@@ -5,6 +5,7 @@ func update():
 	if vec:
 		owner.velocity_static = vec
 		owner.animstate.travel("Walk")
+		owner.get_node("InteractRay").rotation = vec.angle()
 	else: owner.animstate.travel("Idle")
 	
 	owner.velocity = lerp(owner.velocity, vec * 200, 0.22)

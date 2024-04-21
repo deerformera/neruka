@@ -1775,3 +1775,7 @@ script = ExtResource( 6 )
 enabled = true
 cast_to = Vector2( 32, 0 )
 collision_mask = 5
+
+[node name="InteractRay" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 50, 0 )

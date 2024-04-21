@@ -1,0 +1,80 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://gui/default.tres" type="Theme" id=1]
+[ext_resource path="res://gui/tab.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.317647, 0.392157, 0.470588, 1 )
+corner_radius_top_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.172549, 0.207843, 0.247059, 1 )
+corner_radius_top_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 1
+
+[node name="Tab" type="CanvasLayer"]
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.392157 )
+
+[node name="M" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource( 1 )
+custom_constants/margin_right = 120
+custom_constants/margin_top = 60
+custom_constants/margin_left = 120
+custom_constants/margin_bottom = 60
+
+[node name="P" type="PanelContainer" parent="M"]
+margin_left = 120.0
+margin_top = 60.0
+margin_right = 1160.0
+margin_bottom = 660.0
+mouse_filter = 2
+
+[node name="VB" type="VBoxContainer" parent="M/P"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 1036.0
+margin_bottom = 596.0
+mouse_filter = 2
+
+[node name="Top" type="HBoxContainer" parent="M/P/VB"]
+margin_right = 1032.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+mouse_filter = 2
+
+[node name="Button" type="Button" parent="M/P/VB/Top"]
+margin_left = 968.0
+margin_right = 1032.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+focus_mode = 0
+size_flags_horizontal = 10
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 1 )
+custom_styles/disabled = SubResource( 2 )
+custom_styles/normal = SubResource( 1 )
+text = "X"
+
+[node name="Main" type="MarginContainer" parent="M/P/VB"]
+margin_top = 68.0
+margin_right = 1032.0
+margin_bottom = 592.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
