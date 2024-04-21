@@ -2,13 +2,15 @@ extends CanvasLayer
 
 func _ready():
 	self.hide()
-	$M/P/VB/Top/Button.connect("pressed", self, "pressed")
+	$M/P/VB/Top/Button.connect("pressed", self, "onExit")
 
-func pressed():
+func onExit():
 	for i in $M/P/VB/Main.get_children(): i.queue_free()
+	HUD.show()
 	self.hide()
 	
 func open(val: String):
+	HUD.hide()
 	self.show()
 	var tab: Control = load("res://gui/tabs/" + val + ".tscn").instance()
 	

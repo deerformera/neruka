@@ -83,14 +83,20 @@ margin_bottom = 80.0
 rect_min_size = Vector2( 0, 80 )
 mouse_filter = 2
 
-[node name="Name" type="Label" parent="Right/Top"]
+[node name="M" type="MarginContainer" parent="Right/Top"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 623.0
 margin_bottom = 73.0
+custom_constants/margin_right = 20
+custom_constants/margin_left = 20
+
+[node name="Name" type="Label" parent="Right/Top/M"]
+margin_left = 20.0
+margin_right = 596.0
+margin_bottom = 66.0
 size_flags_vertical = 1
 custom_styles/normal = SubResource( 1 )
-align = 1
 valign = 1
 
 [node name="Bottom" type="PanelContainer" parent="Right"]
@@ -132,4 +138,4 @@ margin_bottom = 566.0
 rect_min_size = Vector2( 0, 64 )
 focus_mode = 0
 size_flags_vertical = 8
-text = "Equip"
+disabled = true

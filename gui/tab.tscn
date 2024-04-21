@@ -41,25 +41,33 @@ margin_bottom = 660.0
 mouse_filter = 2
 
 [node name="VB" type="VBoxContainer" parent="M/P"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 1036.0
-margin_bottom = 596.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 1038.0
+margin_bottom = 598.0
 mouse_filter = 2
 
 [node name="Top" type="HBoxContainer" parent="M/P/VB"]
-margin_right = 1032.0
+margin_right = 1036.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 0, 64 )
 mouse_filter = 2
 
+[node name="Label" type="Label" parent="M/P/VB/Top"]
+margin_right = 968.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+align = 1
+valign = 1
+
 [node name="Button" type="Button" parent="M/P/VB/Top"]
-margin_left = 968.0
-margin_right = 1032.0
+margin_left = 972.0
+margin_right = 1036.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 focus_mode = 0
-size_flags_horizontal = 10
+size_flags_horizontal = 8
 custom_styles/hover = SubResource( 1 )
 custom_styles/pressed = SubResource( 2 )
 custom_styles/focus = SubResource( 1 )
@@ -69,8 +77,8 @@ text = "X"
 
 [node name="Main" type="MarginContainer" parent="M/P/VB"]
 margin_top = 68.0
-margin_right = 1032.0
-margin_bottom = 592.0
+margin_right = 1036.0
+margin_bottom = 596.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

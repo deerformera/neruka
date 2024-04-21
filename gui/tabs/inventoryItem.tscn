@@ -13,3 +13,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 align = 1
 valign = 1
+
+[node name="Icon" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand = true
