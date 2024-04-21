@@ -44,9 +44,10 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Utils="*res://controller/utilities.gd"
+Utils="*res://scripts/utilities.gd"
 Tab="*res://gui/tab.tscn"
 HUD="*res://gui/HUD.tscn"
+CatController="*res://scripts/catController.gd"
 
 [display]
 

@@ -8,13 +8,19 @@ focus_mode = 0
 size_flags_vertical = 4
 toggle_mode = true
 
-[node name="Label" type="Label" parent="."]
+[node name="M" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-align = 1
-valign = 1
+mouse_filter = 2
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
 
-[node name="Icon" type="TextureRect" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="Icon" type="TextureRect" parent="M"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 70.0
+margin_bottom = 70.0
+mouse_filter = 2
 expand = true

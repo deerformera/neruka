@@ -2,9 +2,6 @@ extends HBoxContainer
 
 var item = preload("res://gui/tabs/inventoryItem.tscn")
 
-var equipped = [1,2]
-var equipments = [1,2,3,4,5,6]
-
 var selected: int
 
 func _ready():
@@ -20,13 +17,13 @@ func refresh():
 		for ii in i:
 			ii.free()
 
-	for i in equipped:
+	for i in CatController.current_abilities:
 		if i <= 0: continue
 		$Left/Top/Equipped.add_child(createItem(i))
 	
-	for i in equipments:
+	for i in CatController.abilities:
 		if i <= 0: continue
-		if i in equipped: continue
+		if i in CatController.current_abilities: continue
 		$Left/Bottom/S/M/Equipments.add_child(createItem(i))
 
 func onItemSelected(pressed: bool, id: int):
@@ -42,9 +39,9 @@ func onItemSelected(pressed: bool, id: int):
 		$Right/Top/M/Name.text = id as String
 		$Right/Bottom/M/VB/Desc.text = "Ini deskripsi dari " + id as String
 		
-		if id in equipped: $Right/Bottom/M/VB/EquipButton.text = "Unequip"
+		if id in CatController.current_abilities: $Right/Bottom/M/VB/EquipButton.text = "Unequip"
 		else:
-			if equipped.size() >= 4: $Right/Bottom/M/VB/EquipButton.disabled = true 
+			if CatController.current_abilities.size() >= 4: $Right/Bottom/M/VB/EquipButton.disabled = true 
 			$Right/Bottom/M/VB/EquipButton.text = "Equip"
 	else:
 		if id == selected:
@@ -56,16 +53,15 @@ func createItem(id: int) -> Button:
 	if id <= 0: return null
 	var item_ins = item.instance()
 	item_ins.name = str(id)
-	item_ins.get_node("Label").text = str(id)
-	item_ins.get_node("Icon").texture = load("res://misc/abilities/" + str(id) + ".png")
+	item_ins.get_node("M/Icon").texture = load("res://misc/abilities/" + str(id) + ".png")
 	item_ins.connect("toggled", self, "onItemSelected", [id])
 	return item_ins
 
 func onEquip():
-	if selected in equipped:
-		equipped.remove(equipped.find(selected))
+	if selected in CatController.current_abilities:
+		CatController.current_abilities.remove(CatController.current_abilities.find(selected))
 	else: 
-		if equipped.size() == 4: return
-		equipped.append(selected)
+		if CatController.current_abilities.size() == 4: return
+		CatController.current_abilities.append(selected)
 	
 	refresh()

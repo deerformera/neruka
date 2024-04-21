@@ -1,7 +1,6 @@
 extends CanvasLayer
 
 func _ready():
-	self.hide()
 	$M/P/VB/Top/Button.connect("pressed", self, "onExit")
 
 func onExit():
