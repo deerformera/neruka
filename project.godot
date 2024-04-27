@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "AbilitiesController",
+"language": "GDScript",
+"path": "res://scripts/abilitiesController.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Character",
 "language": "GDScript",
@@ -18,6 +23,11 @@ _global_script_classes=[ {
 "class": "Enemy",
 "language": "GDScript",
 "path": "res://classes/enemy.gd"
+}, {
+"base": "Node",
+"class": "LevelController",
+"language": "GDScript",
+"path": "res://scripts/levelController.gd"
 }, {
 "base": "Node",
 "class": "State",
@@ -30,8 +40,10 @@ _global_script_classes=[ {
 "path": "res://classes/stateMachine.gd"
 } ]
 _global_script_class_icons={
+"AbilitiesController": "",
 "Character": "",
 "Enemy": "",
+"LevelController": "",
 "State": "",
 "StateMachine": ""
 }
