@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://gui/default.tres" type="Theme" id=1]
 [ext_resource path="res://gui/tab.gd" type="Script" id=2]
-[ext_resource path="res://gui/tabs/upgrade.tscn" type="PackedScene" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.317647, 0.392157, 0.470588, 1 )
@@ -88,5 +87,3 @@ custom_constants/margin_right = 20
 custom_constants/margin_top = 20
 custom_constants/margin_left = 20
 custom_constants/margin_bottom = 20
-
-[node name="Upgrade" parent="M/P/VB/Main" instance=ExtResource( 3 )]

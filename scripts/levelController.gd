@@ -1,17 +1,26 @@
 extends Node
 class_name LevelController
-var stats = {
+var level = {
 	"vitality": 0,
 	"strength": 0,
 	"mind": 0
 }
 
-func getLevels() -> int:
+var level_data = {
+	"vitality": "Increase cat's healths",
+	"strength": "Attack do more damage",
+	"mind": "Add more ability slot"
+}
+
+var point = 2
+
+func getLevel() -> int:
 	var total = 1
-	for i in stats: stats += i
+	for i in level.values(): total += i
 	return total
 
 func upgrade(val):
-	if !stats.has(val): return
+	if !level.has(val): return
 	print(val + " Upgraded!")
-	stats[val] += 1
+	level[val] += 1
+	point -= 1

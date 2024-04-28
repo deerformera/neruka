@@ -9,34 +9,53 @@ func _ready():
 	refresh()
 
 func refresh():
-	for i in $Center/Items.get_children(): i.queue_free()
+	$Level.text = "Level: " + str(CatController.Level.getLevel())
+	$Available.text = "Point available: " + str(CatController.Level.point)
 	
-	for i in CatController.Level.stats:
-		var item_ins = item.instance()
+	for i in $Center/Items.get_children(): i.free()
+	
+	for i in CatController.Level.level:
 		$Center/Items.add_child(createItem(i))
 
 func createItem(val) -> VBoxContainer:
 	var item_ins = item.instance()
-	item_ins.get_node("Label").text = val
 	item_ins.name = val
+	item_ins.get_node("Name").text = val
+	item_ins.get_node("Button/Level").text = CatController.Level.level[val] as String
 	item_ins.get_node("Button").connect("toggled", self, "onItemSelected", [val])
 	return item_ins
 
 func onItemSelected(pressed: bool, val):
-	$UpgradeButton.disabled = false
 	if pressed:
 		selected = val
-		$Center/Desc.text = "this is " + val
 		for i in $Center/Items.get_children():
 			if i.name != val:
 				i.get_node("Button").pressed = false
 	else:
-		if selected == val:
-			$UpgradeButton.disabled = true
-			$Center/Desc.text = ""
-			selected = ""
+		if selected == val: selected = ""
+	
+	setDescription()
+
+func setDescription():
+	if selected == "":
+		$Center/Desc.text = ""
+		$UpgradeLabel.text = ""
+		$UpgradeButton.disabled = true
+		return
+	
+	$Center/Desc.text = CatController.Level.level_data[selected]
+	
+	if CatController.Level.point <= 0:
+		$UpgradeLabel.text = "No Point available!"
+		$UpgradeButton.disabled = true
+	else:
+		$UpgradeLabel.text = ""
+		$UpgradeButton.disabled = false
 
 func onUpgrade():
 	if selected == "": return
-	CatController.Level.upgrade(selected)
 	
+	CatController.Level.upgrade(selected)
+	selected = ""
+	setDescription()
+	refresh()
