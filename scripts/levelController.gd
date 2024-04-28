@@ -11,11 +11,7 @@ func getLevels() -> int:
 	for i in stats: stats += i
 	return total
 
-
-func upgradeLevels(val: Dictionary) -> void:
-	for i in val.keys():
-		if not stats.has(i): continue
-		stats[i] += val[i]
-
-func getLevelsRequirement(val: Dictionary) -> int:
-	return 0
+func upgrade(val):
+	if !stats.has(val): return
+	print(val + " Upgraded!")
+	stats[val] += 1

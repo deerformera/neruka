@@ -66,3 +66,6 @@ func onEquip():
 	else: current_abilities.append(selected)
 	setDescription(0)
 	refresh()
+
+func _exit_tree():
+	CatController.Abilities.current_abilities = current_abilities

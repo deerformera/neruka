@@ -2,7 +2,7 @@
 
 [ext_resource path="res://gui/default.tres" type="Theme" id=1]
 [ext_resource path="res://gui/tab.gd" type="Script" id=2]
-[ext_resource path="res://gui/tabs/inventory.tscn" type="PackedScene" id=3]
+[ext_resource path="res://gui/tabs/upgrade.tscn" type="PackedScene" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.317647, 0.392157, 0.470588, 1 )
@@ -17,6 +17,7 @@ corner_radius_bottom_left = 10
 corner_detail = 1
 
 [node name="Tab" type="CanvasLayer"]
+visible = false
 script = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -88,10 +89,4 @@ custom_constants/margin_top = 20
 custom_constants/margin_left = 20
 custom_constants/margin_bottom = 20
 
-[node name="Inventory" parent="M/P/VB/Main" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 1136.0
-margin_bottom = 588.0
+[node name="Upgrade" parent="M/P/VB/Main" instance=ExtResource( 3 )]

@@ -1,0 +1,24 @@
+[gd_scene format=2]
+
+[node name="UpgradeItem" type="VBoxContainer"]
+margin_left = 318.0
+margin_right = 446.0
+margin_bottom = 152.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+custom_constants/separation = 10
+
+[node name="Button" type="Button" parent="."]
+margin_right = 128.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 128, 128 )
+focus_mode = 0
+size_flags_vertical = 0
+toggle_mode = true
+
+[node name="Label" type="Label" parent="."]
+margin_top = 138.0
+margin_right = 128.0
+margin_bottom = 152.0
+align = 1
+valign = 1
