@@ -12,7 +12,7 @@ func _physics_process(delta):
 	animtree.set("parameters/Attack1/blend_position", velocity_static)
 	animtree.set("parameters/Attack2/blend_position", velocity_static)
 
-func damaged(val, knockback = Vector2()):
+func damaged(val):
 	get_node("StateMachine").travel("Hurt")
 	.damaged(val)
 

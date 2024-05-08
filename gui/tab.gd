@@ -2,7 +2,6 @@ extends CanvasLayer
 
 func _ready():
 	$M/P/VB/Top/Button.connect("pressed", self, "onExit")
-	open("forge")
 
 func onExit():
 	for i in $M/P/VB/Main.get_children(): i.queue_free()

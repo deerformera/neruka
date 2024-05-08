@@ -1,0 +1,170 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://characters/pincho/pincho.png" type="Texture" id=1]
+[ext_resource path="res://classes/boss.gd" type="Script" id=2]
+[ext_resource path="res://classes/stateMachine.gd" type="Script" id=3]
+[ext_resource path="res://characters/pincho/states/hurt.gd" type="Script" id=4]
+[ext_resource path="res://characters/pincho/states/idle.gd" type="Script" id=5]
+[ext_resource path="res://characters/pincho/states/aggressive.gd" type="Script" id=6]
+[ext_resource path="res://misc/resources/white.tres" type="Material" id=7]
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 16, 16 )
+
+[sub_resource type="Animation" id=7]
+resource_name = "Aggressive"
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.35, 0.4, 0.45, 0.5, 0.95, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 0, 1, 2, 3, 2, 0 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("StateMachine/Aggressive")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "shoot"
+} ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "Hurt"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:material:shader_param/amount")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 2, 1 ),
+"update": 0,
+"values": [ 1.0, 0.0 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Idle"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=9]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:material:shader_param/amount")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+
+[sub_resource type="AnimationNodeAnimation" id=10]
+animation = "Aggressive"
+
+[sub_resource type="AnimationNodeAnimation" id=11]
+animation = "Hurt"
+
+[sub_resource type="AnimationNodeAnimation" id=12]
+animation = "Idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=13]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=14]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=15]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=16]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachine" id=1]
+states/Aggressive/node = SubResource( 10 )
+states/Aggressive/position = Vector2( 757, 83 )
+states/Hurt/node = SubResource( 11 )
+states/Hurt/position = Vector2( 418, 175 )
+states/Idle/node = SubResource( 12 )
+states/Idle/position = Vector2( 418, 83 )
+transitions = [ "Idle", "Hurt", SubResource( 13 ), "Aggressive", "Hurt", SubResource( 14 ), "Idle", "Aggressive", SubResource( 15 ), "Hurt", "Aggressive", SubResource( 16 ) ]
+start_node = "Idle"
+graph_offset = Vector2( -12, 20 )
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=2]
+
+[node name="Pincho" type="KinematicBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+material = ExtResource( 7 )
+texture = ExtResource( 1 )
+hframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 6 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Aggressive = SubResource( 7 )
+anims/Hurt = SubResource( 8 )
+anims/Idle = SubResource( 3 )
+anims/RESET = SubResource( 9 )
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 1 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource( 2 )
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource( 3 )
+
+[node name="Hurt" type="Node" parent="StateMachine"]
+script = ExtResource( 4 )
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource( 5 )
+
+[node name="Aggressive" type="Node" parent="StateMachine"]
+script = ExtResource( 6 )
