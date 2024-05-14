@@ -5,6 +5,11 @@ var velocity_static: Vector2
 
 onready var animtree = $AnimationTree
 
+func _ready():
+	var value = CatController.Level.getLevelValue()
+	self.damage = value.damage
+	self.health = value.health
+
 func _physics_process(delta):
 	animtree.set("parameters/Idle/blend_position", velocity_static)
 	animtree.set("parameters/Walk/blend_position", velocity_static)

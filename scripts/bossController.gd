@@ -18,11 +18,14 @@ func _ready():
 func onBossDie():
 	for i in $TileMap.get_children():
 		i.hide()
+	
+	HUD.bossExit()
 
 func onAlert(body: Character):
 	for i in $TileMap.get_children():
 		i.show()
 	
 	boss.enter(body)
+	HUD.bossEnter(boss)
 	
 	$AlertArea.queue_free()

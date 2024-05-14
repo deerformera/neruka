@@ -19,8 +19,11 @@ func getLevel() -> int:
 	for i in level.values(): total += i
 	return total
 
-func getHealth():
-	pass
+func getLevelValue() -> Dictionary:
+	return {
+		"health": (level.vitality * 2) + 5,
+		"damage": (level.strength * 2) + 1
+	}
 
 func upgrade(val):
 	if !level.has(val): return

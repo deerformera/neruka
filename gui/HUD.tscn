@@ -30,10 +30,11 @@ margin_bottom = 82.0
 mouse_filter = 2
 size_flags_vertical = 0
 
-[node name="ProgressBar" type="ProgressBar" parent="M/Top"]
+[node name="CatHealthbar" type="ProgressBar" parent="M/Top"]
 margin_right = 256.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 256, 32 )
+mouse_filter = 2
 custom_styles/fg = SubResource( 1 )
 custom_styles/bg = SubResource( 2 )
 value = 50.0
@@ -47,3 +48,22 @@ rect_min_size = Vector2( 100, 50 )
 size_flags_horizontal = 10
 size_flags_vertical = 0
 text = "Inventory"
+
+[node name="C" type="CenterContainer" parent="M"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 1248.0
+margin_bottom = 32.0
+mouse_filter = 2
+size_flags_vertical = 0
+
+[node name="BossHealthbar" type="ProgressBar" parent="M/C"]
+visible = false
+margin_left = 448.0
+margin_top = -16.0
+margin_right = 768.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 320, 32 )
+mouse_filter = 2
+value = 50.0
+percent_visible = false
