@@ -10,3 +10,9 @@ func create_rng() -> RandomNumberGenerator:
 	rng.randomize()
 	return rng
 
+func create_timer(wait_time: float) -> Timer:
+	var timer = Timer.new()
+	timer.wait_time = wait_time
+	timer.autostart = false
+	timer.one_shot = true
+	return timer

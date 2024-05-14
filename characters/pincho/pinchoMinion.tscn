@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://characters/pincho/pinchoMinion.gd" type="Script" id=1]
 [ext_resource path="res://characters/pincho/pinchoMinion.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 
 [sub_resource type="Animation" id=2]
 resource_name = "Aggressive"
+length = 3.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -14,10 +15,27 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.5, 0.6, 0.7, 0.8, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 1.2, 1.4, 1.6, 1.8, 2, 2.5, 2.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 0, 1, 2, 3, 4 ]
+"values": [ 0, 1, 2, 3, 4, 3, 0 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 2, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "heal"
+}, {
+"args": [  ],
+"method": "die"
+} ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -38,6 +56,10 @@ tracks/0/keys = {
 [sub_resource type="AnimationNodeStateMachine" id=4]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=5]
+
+[sub_resource type="Gradient" id=6]
+offsets = PoolRealArray( 0, 0.197279, 0.707483, 0.911565 )
+colors = PoolColorArray( 0.3, 1, 0.638333, 0, 0.298039, 1, 0.639216, 1, 0.298039, 1, 0.639216, 1, 0.3, 1, 0.638333, 0 )
 
 [node name="PinchoMinion" type="KinematicBody2D"]
 collision_layer = 4
@@ -60,3 +82,20 @@ anims/RESET = SubResource( 3 )
 tree_root = SubResource( 4 )
 anim_player = NodePath("../AnimationPlayer")
 parameters/playback = SubResource( 5 )
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 100
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+emission_shape = 1
+emission_sphere_radius = 18.89
+direction = Vector2( 0, 0 )
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 25.0
+initial_velocity_random = 1.0
+scale_amount = 2.0
+scale_amount_random = 1.0
+color_ramp = SubResource( 6 )
