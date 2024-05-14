@@ -34,6 +34,20 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 3, 4, 3, 4, 5, 6, 5, 4, 3 ]
 }
+tracks/1/type = "method"
+tracks/1/path = NodePath("StateMachine/Aggressive")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.75 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "shoot"
+} ]
+}
 
 [sub_resource type="Animation" id=1]
 resource_name = "Alert"

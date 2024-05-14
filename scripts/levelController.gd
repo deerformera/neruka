@@ -19,6 +19,9 @@ func getLevel() -> int:
 	for i in level.values(): total += i
 	return total
 
+func getHealth():
+	pass
+
 func upgrade(val):
 	if !level.has(val): return
 	print(val + " Upgraded!")
