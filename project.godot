@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/abilitiesController.gd"
 }, {
+"base": "Node",
+"class": "Ability",
+"language": "GDScript",
+"path": "res://classes/ability.gd"
+}, {
 "base": "Character",
 "class": "Boss",
 "language": "GDScript",
@@ -51,6 +56,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AbilitiesController": "",
+"Ability": "",
 "Boss": "",
 "Character": "",
 "Enemy": "",

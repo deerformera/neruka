@@ -10,6 +10,9 @@ func update():
 	
 	owner.velocity = lerp(owner.velocity, vec * 200, 0.22)
 	
+	if Input.is_action_just_pressed("n_ability1"):
+		machine.travel("Cast")
+	
 	if Input.is_action_just_pressed("n_attack"):
 		machine.travel("Attack")
 	
