@@ -27,4 +27,7 @@ func die():
 	timer.start()
 
 func onDie():
+	var particle = preload("res://misc/scenes/deathParticle.tscn").instance()
+	particle.global_position = self.global_position
+	get_tree().root.add_child(particle)
 	self.queue_free()

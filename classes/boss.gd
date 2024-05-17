@@ -17,8 +17,8 @@ func damaged(val):
 func die():
 	.die()
 	get_tree().root.get_node("World").call_deferred("add_child", create_orb())
+	get_node("AnimationPlayer").play("Die")
 	emit_signal("die")
-	
 
 func onTargetDie():
 	get_node("StateMachine").travel("Idle")

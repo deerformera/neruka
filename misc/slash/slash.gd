@@ -1,6 +1,6 @@
 extends Area2D
 
-var hitEffect = preload("res://misc/resources/hitEffect.tscn")
+var hitEffect = preload("res://misc/scenes/hitEffect.tscn")
 
 func _ready():
 	self.connect("body_entered", self, "onHit")

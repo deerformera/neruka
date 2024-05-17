@@ -5,3 +5,5 @@ func heal():
 	if parent:
 		parent.health += 1
 		$CPUParticles2D.emitting = true
+
+func die(): queue_free()
