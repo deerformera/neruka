@@ -248,7 +248,6 @@ boss_name = "Pincho"
 
 [node name="Pincho" parent="Maps/Savanna/Bosses/PinchoArea" instance=ExtResource( 7 )]
 position = Vector2( 5994, -888 )
-health = 10
 
 [node name="TileMap" type="TileMap" parent="Maps/Savanna/Bosses/PinchoArea"]
 tile_set = SubResource( 10 )

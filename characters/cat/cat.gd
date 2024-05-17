@@ -8,7 +8,7 @@ onready var animtree = $AnimationTree
 func _ready():
 	var value = CatController.Level.getLevelValue()
 	self.damage = value.damage
-	self.health = value.health
+	self.health = 2
 
 func _physics_process(delta):
 	animtree.set("parameters/Idle/blend_position", velocity_static)
@@ -26,3 +26,5 @@ func hit():
 	$Camera2D.offset = vec * 5
 	yield(get_tree().create_timer(0.05), "timeout")
 	$Camera2D.offset = Vector2()
+
+func onDie(): pass
