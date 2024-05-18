@@ -221,7 +221,7 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 [node name="World" type="Node2D"]
 
 [node name="Cat" parent="." instance=ExtResource( 2 )]
-position = Vector2( 5984, -808 )
+position = Vector2( 944, -1336 )
 
 [node name="Maps" type="Node" parent="."]
 

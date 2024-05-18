@@ -1,7 +1,7 @@
 extends Node
 class_name AbilitiesController
 
-var knowledges := [1,2,3]
+var knowledges := []
 var abilities := []
 var current_abilities := []
 

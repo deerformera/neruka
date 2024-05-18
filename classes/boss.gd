@@ -1,6 +1,7 @@
 extends Character
 class_name Boss
 
+export var id: int = 0
 var target: Character = null
 
 var orb = preload("res://misc/scenes/orb.tscn")
@@ -16,6 +17,7 @@ func damaged(val):
 
 func die():
 	.die()
+	CatController.Abilities.identify(id)
 	get_tree().root.get_node("World").call_deferred("add_child", create_orb())
 	get_node("AnimationPlayer").play("Die")
 	emit_signal("die")

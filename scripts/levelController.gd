@@ -21,7 +21,7 @@ func getLevel() -> int:
 
 func getLevelValue() -> Dictionary:
 	return {
-		"health": (level.vitality * 2) + 5,
+		"health": (level.vitality * 5) + 20,
 		"damage": (level.strength * 2) + 1
 	}
 
