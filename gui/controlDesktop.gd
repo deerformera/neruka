@@ -14,9 +14,3 @@ func refresh():
 		item_ins.name = str(i)
 		item_ins.get_node("M/Icon").texture = load("res://misc/abilities/" + str(i) + ".png")
 		add_child(item_ins)
-
-func _input(event):
-	if event is InputEventKey:
-		for i in CatController.Abilities.current_abilities.size():
-			if event.is_action_pressed("n_ability" + str(i + 1)):
-				print(get_child(i))

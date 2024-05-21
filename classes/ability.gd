@@ -6,12 +6,13 @@ signal activated
 
 export var cooldownTime: int = 1
 onready var cooldownTimer = Utils.create_timer(cooldownTime)
+onready var cat = Utils.get_cat()
 
 func _ready():
 	self.connect("cast", self, "onCast")
 	add_child(cooldownTimer)
 
-func cast():
+func onCast():
 	if !cooldownTimer.is_stopped(): return
 	
 	cooldownTimer.start()
