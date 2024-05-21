@@ -14,3 +14,6 @@ func refresh():
 		item_ins.name = str(i)
 		item_ins.get_node("M/Icon").texture = load("res://misc/abilities/" + str(i) + ".png")
 		add_child(item_ins)
+	
+	for i in Utils.get_cat().get_node("AbilitiesController").get_children():
+		get_node(i.name)

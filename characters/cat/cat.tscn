@@ -1742,6 +1742,7 @@ auto_advance = true
 [sub_resource type="AnimationNodeStateMachineTransition" id=327]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=328]
+priority = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=329]
 switch_mode = 2

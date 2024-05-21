@@ -1,16 +1,17 @@
 extends Character
 
-var velocity: Vector2
-var velocity_static: Vector2
+var velocity: Vector2 = Vector2.DOWN
+var velocity_static: Vector2 = Vector2.DOWN
 
 onready var animtree = $AnimationTree
 
 func _ready():
-	var value = CatController.Level.getLevelValue()
-	self.damage = value.damage
-	self.health = value.health
+	var base = CatController.Level.getLevelValue()
+	self.damage = base.damage
+	self.health = base.health
 
 func _physics_process(delta):
+	print(self.health)
 	animtree.set("parameters/Idle/blend_position", velocity_static)
 	animtree.set("parameters/Walk/blend_position", velocity_static)
 	animtree.set("parameters/Sit/blend_position", velocity_static)
@@ -21,6 +22,11 @@ func _physics_process(delta):
 func damaged(val):
 	get_node("StateMachine").travel("Hurt")
 	.damaged(val)
+
+func heal(val: int):
+	var base = CatController.Level.getLevelValue()
+	self.health += val
+	if self.health > base.health: self.health = base.health
 
 func hit():
 	var vec = Vector2(randf(), randf()).normalized()
