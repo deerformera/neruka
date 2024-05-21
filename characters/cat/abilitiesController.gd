@@ -11,6 +11,7 @@ func refresh():
 		var item = load("res://misc/abilities/" + str(i) + ".tscn").instance()
 		add_child(item)
 
+
 func _input(event):
 	if event is InputEventKey:
 		for i in CatController.Abilities.current_abilities.size():
