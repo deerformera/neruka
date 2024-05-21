@@ -68,4 +68,4 @@ func onEquip():
 	refresh()
 
 func _exit_tree():
-	CatController.Abilities.current_abilities = current_abilities
+	CatController.Abilities.setAbilities(current_abilities)

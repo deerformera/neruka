@@ -2,7 +2,7 @@ extends Node
 class_name AbilitiesController
 
 var knowledges := []
-var abilities := []
+var abilities := [1,2]
 var current_abilities := []
 
 var orbs: int = 0

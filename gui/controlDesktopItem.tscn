@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://misc/proto/protoCooldown.png" type="Texture" id=1]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 1, 1, 0 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 1, 1, 1, 1 )
+corner_detail = 1
+shadow_color = Color( 1, 1, 1, 0.215686 )
+shadow_size = 1
+
+[node name="ControlDesktopItem" type="Panel"]
+margin_right = 64.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_styles/panel = SubResource( 1 )
+
+[node name="M" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="Icon" type="TextureRect" parent="M"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 60.0
+margin_bottom = 60.0
+stretch_mode = 6
+
+[node name="Cooldown" type="TextureProgress" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -63.0
+margin_bottom = -63.0
+max_value = 10.0
+texture_progress = ExtResource( 1 )
+fill_mode = 4

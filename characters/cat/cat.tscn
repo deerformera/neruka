@@ -1740,7 +1740,7 @@ material = SubResource( 231 )
 texture = ExtResource( 1 )
 hframes = 10
 vframes = 56
-frame = 67
+frame = 325
 
 [node name="DashSprite" type="Sprite" parent="."]
 visible = false
