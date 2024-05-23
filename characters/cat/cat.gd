@@ -11,7 +11,6 @@ func _ready():
 	self.health = base.health
 
 func _physics_process(delta):
-	print(self.health)
 	animtree.set("parameters/Idle/blend_position", velocity_static)
 	animtree.set("parameters/Walk/blend_position", velocity_static)
 	animtree.set("parameters/Sit/blend_position", velocity_static)

@@ -221,7 +221,7 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 [node name="World" type="Node2D"]
 
 [node name="Cat" parent="." instance=ExtResource( 2 )]
-position = Vector2( 944, -1336 )
+position = Vector2( 5968, -296 )
 
 [node name="Maps" type="Node" parent="."]
 
@@ -252,7 +252,7 @@ position = Vector2( 5994, -888 )
 [node name="TileMap" type="TileMap" parent="Maps/Savanna/Bosses/PinchoArea"]
 tile_set = SubResource( 10 )
 format = 1
-tile_data = PoolIntArray( -1310633, 0, 0, -1245097, 0, 0, -1179561, 0, 0, -1179548, 0, 0, -1114025, 0, 0, -1114012, 0, 0, -1048489, 0, 0, -1048476, 0, 0, -982953, 0, 0, -982940, 0, 0, -917404, 0, 0, -851868, 0, 0, -524198, 0, 0, -524197, 0, 0, -524196, 0, 0, -524195, 0, 0, -524194, 0, 0, -524193, 0, 0 )
+tile_data = PoolIntArray( -1310634, 0, 0, -1245098, 0, 0, -1179562, 0, 0, -1179547, 0, 0, -1114026, 0, 0, -1114011, 0, 0, -1048490, 0, 0, -1048475, 0, 0, -982954, 0, 0, -982939, 0, 0, -917403, 0, 0, -851867, 0, 0, -458662, 0, 0, -458661, 0, 0, -458660, 0, 0, -458659, 0, 0, -458658, 0, 0, -458657, 0, 0 )
 
 [node name="AlertArea" type="Area2D" parent="Maps/Savanna/Bosses/PinchoArea"]
 collision_layer = 0

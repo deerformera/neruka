@@ -4,3 +4,4 @@
 
 [node name="1" type="Node"]
 script = ExtResource( 1 )
+cooldownTime = 2

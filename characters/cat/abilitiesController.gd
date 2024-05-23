@@ -1,5 +1,7 @@
 extends Node
 
+signal refreshed
+
 func _ready():
 	refresh()
 	CatController.Abilities.connect("abilities_changed", self, "refresh")
@@ -10,7 +12,8 @@ func refresh():
 	for i in CatController.Abilities.current_abilities:
 		var item = load("res://misc/abilities/" + str(i) + ".tscn").instance()
 		add_child(item)
-
+	
+	emit_signal("refreshed")
 
 func _input(event):
 	if event is InputEventKey:
