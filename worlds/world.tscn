@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://misc/maps/maps.png" type="Texture" id=1]
 [ext_resource path="res://characters/cat/cat.tscn" type="PackedScene" id=2]
@@ -9,8 +9,7 @@
 [ext_resource path="res://characters/pincho/pincho.tscn" type="PackedScene" id=7]
 [ext_resource path="res://misc/proto/protoSprite.png" type="Texture" id=8]
 [ext_resource path="res://scripts/bossController.gd" type="Script" id=9]
-[ext_resource path="res://cutscenes/02.gd" type="Script" id=10]
-[ext_resource path="res://characters/curos/curos.tscn" type="PackedScene" id=11]
+[ext_resource path="res://cutscenes/01.tscn" type="PackedScene" id=10]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
@@ -223,7 +222,7 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 [node name="World" type="Node2D"]
 
 [node name="Cat" parent="." instance=ExtResource( 2 )]
-position = Vector2( 5952, -288 )
+position = Vector2( 4758, 152 )
 
 [node name="Maps" type="Node" parent="."]
 
@@ -251,7 +250,6 @@ boss_name = "Pincho"
 [node name="Pincho" parent="Maps/Savanna/Bosses/PinchoArea" groups=["pincho"] instance=ExtResource( 7 )]
 position = Vector2( 6016, -896 )
 z_index = 1
-health = 1
 
 [node name="TileMap" type="TileMap" parent="Maps/Savanna/Bosses/PinchoArea"]
 tile_set = SubResource( 10 )
@@ -283,13 +281,4 @@ position = Vector2( 256, -695 )
 
 [node name="Cutscenes" type="Node" parent="."]
 
-[node name="02" type="Node" parent="Cutscenes"]
-script = ExtResource( 10 )
-
-[node name="Areas" type="Node" parent="Cutscenes/02"]
-
-[node name="Curos" parent="Cutscenes/02" instance=ExtResource( 11 )]
-position = Vector2( 5824, -256 )
-
-[node name="CurosCome" type="Node2D" parent="Cutscenes/02"]
-position = Vector2( 6016, -608 )
+[node name="01" parent="Cutscenes" instance=ExtResource( 10 )]
