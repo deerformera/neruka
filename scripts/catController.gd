@@ -5,6 +5,7 @@ var Level: LevelController = preload("res://scripts/levelController.gd").new()
 
 func _ready():
 	Abilities.abilities_data = getData("abilities")
+	Abilities.boss_data = getData("boss")
 
 func getData(val: String):
 	var file = File.new()

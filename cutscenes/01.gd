@@ -23,5 +23,9 @@ func onCurosKnock(body):
 	
 	create_tween().tween_property($Curos, "global_position", $KnockPoint.global_position, 0.5)
 	watch()
+	
 	yield(get_tree().create_timer(1), "timeout")
+	
 	unwatch()
+	
+	transition("res://cutscenes/02.tscn")

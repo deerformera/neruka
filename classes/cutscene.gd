@@ -36,3 +36,8 @@ func unlook():
 	var tw = create_tween()
 	tw.tween_property(cam, "position", Vector2(), 1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 	yield(tw, "finished")
+
+func transition(path: String):
+	if path == "": return
+	get_parent().add_child(load(path).instance())
+	self.queue_free()

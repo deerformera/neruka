@@ -1,5 +1,10 @@
 {
 	"1": {
+		"name": "Cleaning Service",
+		"desc": "Heal you",
+		"price": 6
+	},
+	"2": {
 		"name": "Headshot!",
 		"desc": "Shoot a projectile",
 		"price": 6

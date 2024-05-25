@@ -51,8 +51,10 @@ func setDescription(id: int) -> void:
 		selected = 0
 		return
 	
-	$Right/Top/M/Name.text = id as String
-	$Right/Bottom/M/VB/Desc.text = "description of " + id as String
+	var data = CatController.Abilities.abilities_data[str(id)]
+	
+	$Right/Top/M/Name.text = data.name
+	$Right/Bottom/M/VB/Desc.text = data.desc
 	$Right/Bottom/M/VB/EquipButton.disabled = false
 	if id in current_abilities:
 		$Right/Bottom/M/VB/EquipButton.text = "Unequip"
