@@ -7,13 +7,16 @@ var target: Character = null
 var orb = preload("res://misc/scenes/orb.tscn")
 
 func enter(target: Character):
+	
 	self.target = target
 	target.connect("die", self, "onTargetDie")
 	get_node("StateMachine").travel("Aggressive")
 
 func damaged(val):
 	.damaged(val)
-	get_node("StateMachine").travel("Hurt")
+	
+	$Sprite.material.set_shader_param("amount", 2.0)
+	create_tween().tween_property($Sprite, "material:shader_param/amount", 0.0, 0.1)
 
 func die():
 	.die()
