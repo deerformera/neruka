@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://gui/HUD.gd" type="Script" id=1]
 [ext_resource path="res://gui/default.tres" type="Theme" id=2]
@@ -11,6 +11,14 @@ bg_color = Color( 0, 0.929412, 1, 1 )
 bg_color = Color( 0, 0.556863, 0.776471, 1 )
 
 [sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.992157, 0.427451, 0.690196, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.6, 0.231373, 0.388235, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=6]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -39,7 +47,7 @@ margin_bottom = 50.0
 [node name="Background" type="ProgressBar" parent="M/Top/CatHealthbar"]
 margin_right = 40.0
 margin_bottom = 14.0
-rect_min_size = Vector2( 240, 40 )
+rect_min_size = Vector2( 240, 32 )
 custom_styles/fg = SubResource( 2 )
 max_value = 10.0
 value = 6.0
@@ -48,7 +56,7 @@ percent_visible = false
 [node name="Foreground" type="ProgressBar" parent="M/Top/CatHealthbar"]
 margin_right = 40.0
 margin_bottom = 14.0
-rect_min_size = Vector2( 240, 40 )
+rect_min_size = Vector2( 240, 32 )
 custom_styles/fg = SubResource( 3 )
 custom_styles/bg = SubResource( 1 )
 max_value = 10.0
@@ -65,23 +73,34 @@ size_flags_horizontal = 10
 size_flags_vertical = 0
 text = "Inventory"
 
-[node name="C" type="CenterContainer" parent="M"]
+[node name="BossHealthbar" type="CenterContainer" parent="M"]
 margin_left = 32.0
 margin_top = 32.0
 margin_right = 1248.0
-margin_bottom = 32.0
+margin_bottom = 64.0
 mouse_filter = 2
 size_flags_vertical = 0
 
-[node name="BossHealthbar" type="ProgressBar" parent="M/C"]
-visible = false
+[node name="Background" type="ProgressBar" parent="M/BossHealthbar"]
 margin_left = 448.0
-margin_top = -16.0
 margin_right = 768.0
-margin_bottom = 16.0
+margin_bottom = 32.0
 rect_min_size = Vector2( 320, 32 )
-mouse_filter = 2
-value = 50.0
+custom_styles/fg = SubResource( 4 )
+max_value = 10.0
+value = 6.0
+percent_visible = false
+
+[node name="Foreground" type="ProgressBar" parent="M/BossHealthbar"]
+margin_left = 448.0
+margin_right = 768.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 320, 32 )
+custom_styles/fg = SubResource( 5 )
+custom_styles/bg = SubResource( 6 )
+max_value = 10.0
+step = 1.0
+value = 5.0
 percent_visible = false
 
 [node name="ControlDesktop" parent="M" instance=ExtResource( 3 )]

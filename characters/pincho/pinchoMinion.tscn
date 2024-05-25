@@ -7,7 +7,7 @@
 
 [sub_resource type="Animation" id=2]
 resource_name = "Aggressive"
-length = 3.0
+length = 3.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -15,7 +15,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 1.2, 1.4, 1.6, 1.8, 2, 2.5, 2.8 ),
+"times": PoolRealArray( 1.7, 1.9, 2.1, 2.3, 2.5, 3, 3.3 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 0, 1, 2, 3, 4, 3, 0 ]
@@ -27,7 +27,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 2, 3 ),
+"times": PoolRealArray( 2.5, 3.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [  ],
