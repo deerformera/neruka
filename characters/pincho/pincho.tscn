@@ -1,14 +1,82 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://characters/pincho/pincho.png" type="Texture" id=1]
 [ext_resource path="res://characters/pincho/pincho.gd" type="Script" id=2]
-[ext_resource path="res://assets/scenes/boss_healthbar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://classes/stateMachine.gd" type="Script" id=3]
+[ext_resource path="res://characters/pincho/states/hurt.gd" type="Script" id=4]
+[ext_resource path="res://characters/pincho/states/idle.gd" type="Script" id=5]
+[ext_resource path="res://characters/pincho/states/aggressive.gd" type="Script" id=6]
+[ext_resource path="res://misc/resources/white.tres" type="Material" id=7]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 16, 8 )
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 16, 16 )
 
-[sub_resource type="Animation" id=14]
-length = 0.001
+[sub_resource type="Animation" id=7]
+resource_name = "Aggressive"
+length = 1.5
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.8, 0.85, 0.9, 0.95, 1.4, 1.45 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 0, 1, 2, 3, 2, 0 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("StateMachine/Aggressive")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1.45 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "shoot"
+} ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "Die"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 1, 2, 1 ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "Hurt"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:material:shader_param/amount")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 2, 1 ),
+"update": 0,
+"values": [ 1.0, 0.0 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Idle"
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
@@ -18,47 +86,23 @@ tracks/0/enabled = true
 tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 0,
+"update": 1,
 "values": [ 0 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ 4 ]
 }
 
 [sub_resource type="Animation" id=9]
-resource_name = "idle"
-loop = true
-
-[sub_resource type="Animation" id=5]
-resource_name = "initial"
-
-[sub_resource type="Animation" id=4]
-resource_name = "shoot"
-length = 2.0
-loop = true
-step = 0.05
-tracks/0/type = "method"
-tracks/0/path = NodePath(".")
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:material:shader_param/amount")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 1 ),
+"times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "shoot"
-} ]
+"update": 0,
+"values": [ 0.0 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Sprite:frame")
@@ -67,77 +111,81 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.3, 0.35, 0.4, 0.95, 1 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 0, 1, 2, 3, 1, 0 ]
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
 }
 
 [sub_resource type="AnimationNodeAnimation" id=10]
-animation = "idle"
+animation = "Aggressive"
 
-[sub_resource type="AnimationNodeAnimation" id=6]
-animation = "initial"
+[sub_resource type="AnimationNodeAnimation" id=11]
+animation = "Hurt"
 
-[sub_resource type="AnimationNodeAnimation" id=7]
-animation = "shoot"
+[sub_resource type="AnimationNodeAnimation" id=12]
+animation = "Idle"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=8]
+[sub_resource type="AnimationNodeStateMachineTransition" id=13]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=14]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=15]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=16]
 switch_mode = 2
 auto_advance = true
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=11]
+[sub_resource type="AnimationNodeStateMachine" id=1]
+states/Aggressive/node = SubResource( 10 )
+states/Aggressive/position = Vector2( 757, 83 )
+states/Hurt/node = SubResource( 11 )
+states/Hurt/position = Vector2( 418, 175 )
+states/Idle/node = SubResource( 12 )
+states/Idle/position = Vector2( 418, 83 )
+transitions = [ "Idle", "Hurt", SubResource( 13 ), "Aggressive", "Hurt", SubResource( 14 ), "Idle", "Aggressive", SubResource( 15 ), "Hurt", "Aggressive", SubResource( 16 ) ]
+start_node = "Idle"
+graph_offset = Vector2( -12, 20 )
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=12]
-switch_mode = 2
-
-[sub_resource type="AnimationNodeStateMachine" id=2]
-states/idle/node = SubResource( 10 )
-states/idle/position = Vector2( 616, 199 )
-states/initial/node = SubResource( 6 )
-states/initial/position = Vector2( 405, 106 )
-states/shoot/node = SubResource( 7 )
-states/shoot/position = Vector2( 616, 106 )
-transitions = [ "initial", "shoot", SubResource( 8 ), "shoot", "idle", SubResource( 11 ), "idle", "initial", SubResource( 12 ) ]
-start_node = "idle"
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id=3]
-
-[sub_resource type="RectangleShape2D" id=13]
-extents = Vector2( 320, 320 )
+[sub_resource type="AnimationNodeStateMachinePlayback" id=2]
 
 [node name="Pincho" type="KinematicBody2D"]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource( 2 )
+health = 8
+damage = 3
 id = 1
-health = 10
-damage = 5
 
 [node name="Sprite" type="Sprite" parent="."]
+material = ExtResource( 7 )
 texture = ExtResource( 1 )
 hframes = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+shape = SubResource( 6 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/RESET = SubResource( 14 )
-anims/idle = SubResource( 9 )
-anims/initial = SubResource( 5 )
-anims/shoot = SubResource( 4 )
+anims/Aggressive = SubResource( 7 )
+anims/Die = SubResource( 17 )
+anims/Hurt = SubResource( 8 )
+anims/Idle = SubResource( 3 )
+anims/RESET = SubResource( 9 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 2 )
+tree_root = SubResource( 1 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
-parameters/playback = SubResource( 3 )
+parameters/playback = SubResource( 2 )
 
-[node name="Area2D" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 2
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource( 3 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 13 )
+[node name="Hurt" type="Node" parent="StateMachine"]
+script = ExtResource( 4 )
 
-[node name="Healthbar" parent="." instance=ExtResource( 3 )]
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource( 5 )
+
+[node name="Aggressive" type="Node" parent="StateMachine"]
+script = ExtResource( 6 )
