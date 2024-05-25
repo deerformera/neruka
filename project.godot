@@ -29,6 +29,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://classes/character.gd"
 }, {
+"base": "Node",
+"class": "Cutscene",
+"language": "GDScript",
+"path": "res://classes/cutscene.gd"
+}, {
 "base": "Character",
 "class": "Enemy",
 "language": "GDScript",
@@ -59,6 +64,7 @@ _global_script_class_icons={
 "Ability": "",
 "Boss": "",
 "Character": "",
+"Cutscene": "",
 "Enemy": "",
 "LevelController": "",
 "State": "",
@@ -169,6 +175,7 @@ pointing/emulate_touch_from_mouse=true
 2d_physics/layer_1="world"
 2d_physics/layer_2="cat"
 2d_physics/layer_3="entity"
+2d_physics/layer_4="NPC"
 
 [physics]
 
