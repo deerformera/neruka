@@ -221,7 +221,7 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 [node name="World" type="Node2D"]
 
 [node name="Cat" parent="." instance=ExtResource( 2 )]
-position = Vector2( 5968, -296 )
+position = Vector2( 6000, -928 )
 
 [node name="Maps" type="Node" parent="."]
 
@@ -248,6 +248,7 @@ boss_name = "Pincho"
 
 [node name="Pincho" parent="Maps/Savanna/Bosses/PinchoArea" instance=ExtResource( 7 )]
 position = Vector2( 5994, -888 )
+z_index = 1
 
 [node name="TileMap" type="TileMap" parent="Maps/Savanna/Bosses/PinchoArea"]
 tile_set = SubResource( 10 )

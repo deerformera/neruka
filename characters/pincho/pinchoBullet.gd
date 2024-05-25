@@ -11,4 +11,4 @@ func _physics_process(delta):
 		self.queue_free()
 
 func onHit(body: Character):
-	body.emit_signal("damaged", 1)
+	body.emit_signal("damaged", get_parent().damage)

@@ -1,14 +1,16 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://gui/HUD.gd" type="Script" id=1]
 [ext_resource path="res://gui/default.tres" type="Theme" id=2]
 [ext_resource path="res://gui/controlDesktop.tscn" type="PackedScene" id=3]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.678431, 0.25098, 0.25098, 1 )
-
 [sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.227451, 0.239216, 0.282353, 1 )
+bg_color = Color( 0, 0.929412, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0, 0.556863, 0.776471, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=1]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -31,14 +33,27 @@ margin_bottom = 82.0
 mouse_filter = 2
 size_flags_vertical = 0
 
-[node name="CatHealthbar" type="ProgressBar" parent="M/Top"]
-margin_right = 256.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 256, 32 )
-mouse_filter = 2
-custom_styles/fg = SubResource( 1 )
-custom_styles/bg = SubResource( 2 )
-value = 50.0
+[node name="CatHealthbar" type="Control" parent="M/Top"]
+margin_bottom = 50.0
+
+[node name="Background" type="ProgressBar" parent="M/Top/CatHealthbar"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 240, 40 )
+custom_styles/fg = SubResource( 2 )
+max_value = 10.0
+value = 6.0
+percent_visible = false
+
+[node name="Foreground" type="ProgressBar" parent="M/Top/CatHealthbar"]
+margin_right = 40.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 240, 40 )
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 1 )
+max_value = 10.0
+step = 1.0
+value = 5.0
 percent_visible = false
 
 [node name="Button" type="Button" parent="M/Top"]

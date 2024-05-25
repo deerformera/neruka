@@ -4,7 +4,8 @@ var boss: Boss = null
 
 func _ready():
 	$M/Top/Button.connect("pressed", self, "pressed")
-	$M/Top/CatHealthbar.max_value = CatController.Level.getLevelValue()["health"]
+	$M/Top/CatHealthbar/Background.max_value = CatController.Level.getLevelValue()["health"]
+	$M/Top/CatHealthbar/Foreground.max_value = CatController.Level.getLevelValue()["health"]
 
 func pressed():
 	Tab.open("inventory")
@@ -21,4 +22,5 @@ func bossExit():
 
 func _physics_process(delta):
 	if boss: $M/C/BossHealthbar.value = boss.health * 10
-	$M/Top/CatHealthbar.value = Utils.get_cat().health
+	$M/Top/CatHealthbar/Foreground.value = Utils.get_cat().health
+	$M/Top/CatHealthbar/Background.value = lerp($M/Top/CatHealthbar/Background.value, $M/Top/CatHealthbar/Foreground.value, 0.2)
