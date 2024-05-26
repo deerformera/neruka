@@ -9,7 +9,7 @@
 [ext_resource path="res://characters/pincho/pincho.tscn" type="PackedScene" id=7]
 [ext_resource path="res://misc/proto/protoSprite.png" type="Texture" id=8]
 [ext_resource path="res://scripts/bossController.gd" type="Script" id=9]
-[ext_resource path="res://cutscenes/01.tscn" type="PackedScene" id=10]
+[ext_resource path="res://cutscenes/02.tscn" type="PackedScene" id=10]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
@@ -222,7 +222,7 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 [node name="World" type="Node2D"]
 
 [node name="Cat" parent="." instance=ExtResource( 2 )]
-position = Vector2( 4758, 152 )
+position = Vector2( 5952, -312 )
 
 [node name="Maps" type="Node" parent="."]
 
@@ -250,6 +250,7 @@ boss_name = "Pincho"
 [node name="Pincho" parent="Maps/Savanna/Bosses/PinchoArea" groups=["pincho"] instance=ExtResource( 7 )]
 position = Vector2( 6016, -896 )
 z_index = 1
+health = 2
 
 [node name="TileMap" type="TileMap" parent="Maps/Savanna/Bosses/PinchoArea"]
 tile_set = SubResource( 10 )
@@ -281,4 +282,4 @@ position = Vector2( 256, -695 )
 
 [node name="Cutscenes" type="Node" parent="."]
 
-[node name="01" parent="Cutscenes" instance=ExtResource( 10 )]
+[node name="02" parent="Cutscenes" instance=ExtResource( 10 )]

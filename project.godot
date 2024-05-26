@@ -84,11 +84,13 @@ Utils="*res://scripts/utilities.gd"
 Tab="*res://gui/tab.tscn"
 HUD="*res://gui/HUD.tscn"
 CatController="*res://scripts/catController.gd"
+Dialogue="*res://gui/dialogue.tscn"
 
 [display]
 
 window/size/width=1280
 window/size/height=720
+window/stretch/aspect="keep"
 
 [gui]
 
@@ -174,8 +176,8 @@ pointing/emulate_touch_from_mouse=true
 
 2d_physics/layer_1="world"
 2d_physics/layer_2="cat"
-2d_physics/layer_3="entity"
-2d_physics/layer_4="NPC"
+2d_physics/layer_3="enemy"
+2d_physics/layer_4="npc"
 
 [physics]
 
