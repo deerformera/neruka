@@ -7,7 +7,6 @@ var target: Character = null
 var orb = preload("res://misc/scenes/orb.tscn")
 
 func enter(target: Character):
-	
 	self.target = target
 	target.connect("die", self, "onTargetDie")
 	get_node("StateMachine").travel("Aggressive")

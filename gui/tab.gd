@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+signal tab_closed
+
 func _ready():
 	$M/P/VB/Top/Button.connect("pressed", self, "onExit")
 
@@ -7,6 +9,7 @@ func onExit():
 	for i in $M/P/VB/Main.get_children(): i.queue_free()
 	HUD.show()
 	self.hide()
+	emit_signal("tab_closed")
 	
 func open(val: String):
 	HUD.hide()

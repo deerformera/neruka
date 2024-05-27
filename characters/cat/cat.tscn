@@ -1774,7 +1774,7 @@ graph_offset = Vector2( 5, 46.96 )
 [node name="Cat" type="KinematicBody2D" groups=["cat"]]
 z_index = 1
 collision_layer = 2
-collision_mask = 31
+collision_mask = 15
 script = ExtResource( 4 )
 health = 100
 

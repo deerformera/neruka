@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://misc/maps/maps.png" type="Texture" id=1]
 [ext_resource path="res://characters/cat/cat.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://misc/proto/protoSprite.png" type="Texture" id=8]
 [ext_resource path="res://scripts/bossController.gd" type="Script" id=9]
 [ext_resource path="res://cutscenes/02.tscn" type="PackedScene" id=10]
+[ext_resource path="res://misc/scenes/checkpoint.tscn" type="PackedScene" id=11]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
@@ -222,7 +223,7 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 [node name="World" type="Node2D"]
 
 [node name="Cat" parent="." instance=ExtResource( 2 )]
-position = Vector2( 5952, -312 )
+position = Vector2( 6016, -824 )
 
 [node name="Maps" type="Node" parent="."]
 
@@ -263,6 +264,11 @@ collision_mask = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Maps/Savanna/Bosses/PinchoArea/AlertArea"]
 polygon = PoolVector2Array( 5632, -1280, 6400, -1280, 6400, -512, 5632, -512 )
+
+[node name="Checkpoints" type="Node" parent="Maps/Savanna"]
+
+[node name="PinchoCheckpoint" parent="Maps/Savanna/Checkpoints" groups=["pinchoCheckpoint"] instance=ExtResource( 11 )]
+position = Vector2( 6016, -896 )
 
 [node name="Tundra" type="Node2D" parent="Maps"]
 position = Vector2( 5120, -5120 )
