@@ -16,6 +16,7 @@ corner_radius_bottom_left = 10
 corner_detail = 1
 
 [node name="Tab" type="CanvasLayer"]
+layer = 2
 visible = false
 script = ExtResource( 2 )
 

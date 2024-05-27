@@ -85,6 +85,14 @@ Tab="*res://gui/tab.tscn"
 HUD="*res://gui/HUD.tscn"
 CatController="*res://scripts/catController.gd"
 Dialogue="*res://gui/dialogue.tscn"
+CheckpointMenu="*res://gui/checkpointMenu.tscn"
+
+[debug]
+
+gdscript/warnings/unused_variable=false
+gdscript/warnings/unused_argument=false
+gdscript/warnings/unused_signal=false
+gdscript/warnings/return_value_discarded=false
 
 [display]
 

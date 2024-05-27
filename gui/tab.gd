@@ -7,9 +7,10 @@ func _ready():
 
 func onExit():
 	for i in $M/P/VB/Main.get_children(): i.queue_free()
-	HUD.show()
 	self.hide()
 	emit_signal("tab_closed")
+	
+	if !CheckpointMenu.visible: HUD.show()
 	
 func open(val: String):
 	HUD.hide()

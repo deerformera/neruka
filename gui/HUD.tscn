@@ -1,24 +1,18 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://gui/HUD.gd" type="Script" id=1]
 [ext_resource path="res://gui/default.tres" type="Theme" id=2]
 [ext_resource path="res://gui/controlDesktop.tscn" type="PackedScene" id=3]
+[ext_resource path="res://misc/resources/healthbar/Over.png" type="Texture" id=4]
+[ext_resource path="res://misc/resources/healthbar/bossFG.png" type="Texture" id=5]
+[ext_resource path="res://misc/resources/healthbar/Under.png" type="Texture" id=6]
+[ext_resource path="res://misc/resources/healthbar/bossBG.png" type="Texture" id=7]
+[ext_resource path="res://misc/resources/healthbar/catBG.png" type="Texture" id=8]
+[ext_resource path="res://misc/resources/healthbar/catFG.png" type="Texture" id=9]
 
-[sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0, 0.929412, 1, 1 )
+[sub_resource type="StyleBoxEmpty" id=8]
 
-[sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0, 0.556863, 0.776471, 1 )
-
-[sub_resource type="StyleBoxEmpty" id=1]
-
-[sub_resource type="StyleBoxFlat" id=4]
-bg_color = Color( 0.992157, 0.427451, 0.690196, 1 )
-
-[sub_resource type="StyleBoxFlat" id=5]
-bg_color = Color( 0.6, 0.231373, 0.388235, 1 )
-
-[sub_resource type="StyleBoxEmpty" id=6]
+[sub_resource type="StyleBoxEmpty" id=7]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -33,77 +27,6 @@ custom_constants/margin_top = 32
 custom_constants/margin_left = 32
 custom_constants/margin_bottom = 32
 
-[node name="Top" type="HBoxContainer" parent="M"]
-margin_left = 32.0
-margin_top = 32.0
-margin_right = 1248.0
-margin_bottom = 82.0
-mouse_filter = 2
-size_flags_vertical = 0
-
-[node name="CatHealthbar" type="Control" parent="M/Top"]
-margin_bottom = 50.0
-
-[node name="Background" type="ProgressBar" parent="M/Top/CatHealthbar"]
-margin_right = 40.0
-margin_bottom = 14.0
-rect_min_size = Vector2( 240, 32 )
-custom_styles/fg = SubResource( 2 )
-max_value = 10.0
-value = 6.0
-percent_visible = false
-
-[node name="Foreground" type="ProgressBar" parent="M/Top/CatHealthbar"]
-margin_right = 40.0
-margin_bottom = 14.0
-rect_min_size = Vector2( 240, 32 )
-custom_styles/fg = SubResource( 3 )
-custom_styles/bg = SubResource( 1 )
-max_value = 10.0
-step = 1.0
-value = 5.0
-percent_visible = false
-
-[node name="Button" type="Button" parent="M/Top"]
-margin_left = 1116.0
-margin_right = 1216.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 100, 50 )
-size_flags_horizontal = 10
-size_flags_vertical = 0
-text = "Inventory"
-
-[node name="BossHealthbar" type="CenterContainer" parent="M"]
-visible = false
-margin_left = 32.0
-margin_top = 32.0
-margin_right = 1248.0
-margin_bottom = 64.0
-mouse_filter = 2
-size_flags_vertical = 0
-
-[node name="Background" type="ProgressBar" parent="M/BossHealthbar"]
-margin_left = 448.0
-margin_right = 768.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 320, 32 )
-custom_styles/fg = SubResource( 4 )
-max_value = 10.0
-value = 6.0
-percent_visible = false
-
-[node name="Foreground" type="ProgressBar" parent="M/BossHealthbar"]
-margin_left = 448.0
-margin_right = 768.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 320, 32 )
-custom_styles/fg = SubResource( 5 )
-custom_styles/bg = SubResource( 6 )
-max_value = 10.0
-step = 1.0
-value = 5.0
-percent_visible = false
-
 [node name="ControlDesktop" parent="M" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
@@ -111,3 +34,82 @@ margin_left = 952.0
 margin_top = 624.0
 margin_right = 1248.0
 margin_bottom = 688.0
+
+[node name="CatHealthbar" type="PanelContainer" parent="M"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 232.0
+margin_bottom = 64.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_styles/panel = SubResource( 8 )
+
+[node name="Background" type="TextureProgress" parent="M/CatHealthbar"]
+margin_right = 200.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 200, 32 )
+max_value = 10.0
+value = 5.0
+texture_under = ExtResource( 6 )
+texture_progress = ExtResource( 8 )
+nine_patch_stretch = true
+stretch_margin_left = 2
+stretch_margin_top = 2
+stretch_margin_right = 2
+stretch_margin_bottom = 2
+
+[node name="Foreground" type="TextureProgress" parent="M/CatHealthbar"]
+margin_right = 200.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 200, 32 )
+max_value = 10.0
+value = 3.0
+texture_over = ExtResource( 4 )
+texture_progress = ExtResource( 9 )
+nine_patch_stretch = true
+stretch_margin_left = 2
+stretch_margin_top = 2
+stretch_margin_right = 2
+stretch_margin_bottom = 2
+
+[node name="BossHealthbar" type="PanelContainer" parent="M"]
+margin_left = 1048.0
+margin_top = 32.0
+margin_right = 1248.0
+margin_bottom = 64.0
+mouse_filter = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+custom_styles/panel = SubResource( 7 )
+
+[node name="Background" type="TextureProgress" parent="M/BossHealthbar"]
+margin_right = 200.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 200, 32 )
+max_value = 10.0
+value = 5.0
+texture_under = ExtResource( 6 )
+texture_progress = ExtResource( 7 )
+fill_mode = 1
+nine_patch_stretch = true
+stretch_margin_left = 2
+stretch_margin_top = 2
+stretch_margin_right = 2
+stretch_margin_bottom = 2
+
+[node name="Foreground" type="TextureProgress" parent="M/BossHealthbar"]
+margin_right = 200.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 200, 32 )
+max_value = 10.0
+value = 3.0
+texture_over = ExtResource( 4 )
+texture_progress = ExtResource( 5 )
+fill_mode = 1
+nine_patch_stretch = true
+stretch_margin_left = 2
+stretch_margin_top = 2
+stretch_margin_right = 2
+stretch_margin_bottom = 2

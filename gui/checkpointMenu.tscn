@@ -1,0 +1,108 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://gui/checkpointMenu.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.168627, 0.207843, 0.25098, 0.607843 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.317647, 0.392157, 0.470588, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.227451, 0.27451, 0.329412, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.317647, 0.392157, 0.470588, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.168627, 0.207843, 0.25098, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.317647, 0.392157, 0.470588, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.25098, 0.168627, 0.192157, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.317647, 0.392157, 0.470588, 1 )
+
+[node name="CheckpointMenu" type="CanvasLayer"]
+visible = false
+script = ExtResource( 1 )
+
+[node name="Overlay" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 0.392157 )
+
+[node name="C" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="P" type="PanelContainer" parent="C"]
+margin_left = 590.0
+margin_top = 310.0
+margin_right = 690.0
+margin_bottom = 410.0
+rect_min_size = Vector2( 100, 100 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="M" type="MarginContainer" parent="C/P"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 282.0
+margin_bottom = 226.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+
+[node name="VB" type="VBoxContainer" parent="C/P/M"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 260.0
+margin_bottom = 204.0
+mouse_filter = 0
+custom_constants/separation = 20
+
+[node name="Inventory" type="Button" parent="C/P/M/VB"]
+margin_right = 240.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 240, 48 )
+focus_mode = 0
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/normal = SubResource( 3 )
+text = "Inventory"
+
+[node name="Upgrade" type="Button" parent="C/P/M/VB"]
+margin_top = 68.0
+margin_right = 240.0
+margin_bottom = 116.0
+rect_min_size = Vector2( 240, 48 )
+focus_mode = 0
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/normal = SubResource( 3 )
+text = "Upgrade"
+
+[node name="Exit" type="Button" parent="C/P/M/VB"]
+margin_top = 136.0
+margin_right = 240.0
+margin_bottom = 184.0
+rect_min_size = Vector2( 240, 48 )
+focus_mode = 0
+custom_styles/hover = SubResource( 4 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
+text = "Exit"
