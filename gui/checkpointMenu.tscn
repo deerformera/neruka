@@ -55,6 +55,7 @@ margin_top = 310.0
 margin_right = 690.0
 margin_bottom = 410.0
 rect_min_size = Vector2( 100, 100 )
+mouse_filter = 2
 custom_styles/panel = SubResource( 1 )
 
 [node name="M" type="MarginContainer" parent="C/P"]
@@ -62,6 +63,7 @@ margin_left = 2.0
 margin_top = 2.0
 margin_right = 282.0
 margin_bottom = 226.0
+mouse_filter = 2
 custom_constants/margin_right = 20
 custom_constants/margin_top = 20
 custom_constants/margin_left = 20
@@ -72,7 +74,7 @@ margin_left = 20.0
 margin_top = 20.0
 margin_right = 260.0
 margin_bottom = 204.0
-mouse_filter = 0
+mouse_filter = 2
 custom_constants/separation = 10
 
 [node name="Inventory" type="Button" parent="C/P/M/VB"]
@@ -80,17 +82,20 @@ margin_right = 240.0
 margin_bottom = 48.0
 rect_min_size = Vector2( 240, 48 )
 focus_mode = 0
+mouse_filter = 1
 custom_styles/hover = SubResource( 4 )
 custom_styles/pressed = SubResource( 4 )
 custom_styles/normal = SubResource( 3 )
 text = "Inventory"
 
 [node name="Upgrade" type="Button" parent="C/P/M/VB"]
+visible = false
 margin_top = 68.0
 margin_right = 240.0
 margin_bottom = 116.0
 rect_min_size = Vector2( 240, 48 )
 focus_mode = 0
+mouse_filter = 1
 custom_styles/hover = SubResource( 4 )
 custom_styles/pressed = SubResource( 4 )
 custom_styles/normal = SubResource( 3 )
@@ -102,6 +107,7 @@ margin_right = 240.0
 margin_bottom = 184.0
 rect_min_size = Vector2( 240, 48 )
 focus_mode = 0
+mouse_filter = 1
 custom_styles/hover = SubResource( 4 )
 custom_styles/pressed = SubResource( 4 )
 custom_styles/normal = SubResource( 5 )

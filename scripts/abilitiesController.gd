@@ -2,10 +2,10 @@ extends Node
 class_name AbilitiesController
 
 var knowledges := []
-var abilities := [1, 2]
-var current_abilities := [1]
+var abilities := []
+var current_abilities := []
 
-var orbs: int = 0
+var orbs: int = 10
 
 var abilities_data := {}
 var boss_data = {}
@@ -26,7 +26,7 @@ func learn(id: int):
 	orbs -= data.price
 	
 	abilities.append(id)
-	print("You Learned ", id)
+	print("You Learned ", data.name)
 
 func identify(id: int):
 	if id in knowledges: return

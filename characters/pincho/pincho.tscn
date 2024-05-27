@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://characters/pincho/pincho.png" type="Texture" id=1]
 [ext_resource path="res://characters/pincho/pincho.gd" type="Script" id=2]
@@ -59,22 +59,6 @@ tracks/0/keys = {
 "values": [ 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 2, 1, 2, 1 ]
 }
 
-[sub_resource type="Animation" id=8]
-resource_name = "Hurt"
-length = 0.1
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:material:shader_param/amount")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 2, 1 ),
-"update": 0,
-"values": [ 1.0, 0.0 ]
-}
-
 [sub_resource type="Animation" id=3]
 resource_name = "Idle"
 tracks/0/type = "value"
@@ -93,7 +77,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=9]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:material:shader_param/amount")
+tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -102,10 +86,10 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0.0 ]
+"values": [ 0 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite:frame")
+tracks/1/path = NodePath("Sprite:self_modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -114,7 +98,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0 ]
+"values": [ Color( 1, 1, 1, 1 ) ]
 }
 
 [sub_resource type="AnimationNodeAnimation" id=10]
@@ -168,7 +152,6 @@ shape = SubResource( 6 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Aggressive = SubResource( 7 )
 anims/Die = SubResource( 17 )
-anims/Hurt = SubResource( 8 )
 anims/Idle = SubResource( 3 )
 anims/RESET = SubResource( 9 )
 

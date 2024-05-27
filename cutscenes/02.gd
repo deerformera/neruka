@@ -5,25 +5,52 @@ func _ready():
 	var pincho: Boss = get_tree().get_nodes_in_group("pincho")[0]
 	pincho.connect("die", self, "onPinchoDie")
 	
-	yield(get_tree().create_timer(0.5), "timeout")
-	
-	Card.open("ceritane knock")
+#	yield(get_tree().create_timer(0.5), "timeout")
+#
+#	Card.open("ceritane knock")
 
 func onPinchoDie():
 	yield(get_tree().create_timer(1), "timeout")
 	
 	watch()
 	look($LookPoint.global_position)
-	
+
 	yield(get_tree().create_timer(1), "timeout")
-	
+
 	get_tree().get_nodes_in_group("pinchoCheckpoint")[0].activate()
 	CheckpointMenu.connect("exited", self, "onMenuExit")
-	
+
 	yield(get_tree().create_timer(1), "timeout")
-	unlook()
+	
 	unwatch()
+	unlook()
+	
 
 func onMenuExit():
+	CheckpointMenu.disconnect("exited", self, "onMenuExit")
+	
+	watch()
+	look($LookPoint.global_position)
+	
+	$Curos.global_position = cat.global_position + Vector2(0, 200)
+	create_tween().tween_property($Curos, "global_position", cat.global_position + Vector2(0, 100), 1)
+	
 	yield(get_tree().create_timer(1), "timeout")
-	Card.open("Wes ra enek opo opo")
+	
+	cat.get_node("StateMachine").travel("Idle")
+	cat.velocity_static = Vector2.DOWN
+	look($Curos.global_position)
+	
+	yield(get_tree().create_timer(1), "timeout")
+	
+	Dialogue.chat($Curos, ["kau seorang sentinel?", "Suwun om", "Aku bakul"])
+	
+	yield(Dialogue, "chat_end")
+	
+	unlook()
+	unwatch()
+	
+	$ExitArea.connect("body_entered", self, "onExit")
+
+func onExit(body):
+	Card.open("wes ra enek opo opo")

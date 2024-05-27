@@ -75,10 +75,11 @@ stretch_margin_right = 2
 stretch_margin_bottom = 2
 
 [node name="BossHealthbar" type="PanelContainer" parent="M"]
-margin_left = 1048.0
+visible = false
+margin_left = 1248.0
 margin_top = 32.0
 margin_right = 1248.0
-margin_bottom = 64.0
+margin_bottom = 32.0
 mouse_filter = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0

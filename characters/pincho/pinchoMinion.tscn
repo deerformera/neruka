@@ -70,6 +70,7 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
+self_modulate = Color( 1, 1.25, 1, 1 )
 texture = ExtResource( 2 )
 hframes = 5
 
