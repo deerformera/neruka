@@ -17,7 +17,7 @@ func onEnter(body: Character):
 	if grew: 
 		$AnimationPlayer.play("grow2")
 		cat.get_node("StateMachine").travel("Idle")
-		create_tween().tween_property(cat, "global_position", self.global_position, 0.2)
+		create_tween().tween_property(cat, "global_position", self.global_position - Vector2(0, 8), 0.2)
 		cat.heal(999)
 		CheckpointMenu.connect("exited", self, "onMenuExit")
 		yield(get_tree().create_timer(0.5), "timeout")

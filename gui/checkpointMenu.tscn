@@ -73,7 +73,7 @@ margin_top = 20.0
 margin_right = 260.0
 margin_bottom = 204.0
 mouse_filter = 0
-custom_constants/separation = 20
+custom_constants/separation = 10
 
 [node name="Inventory" type="Button" parent="C/P/M/VB"]
 margin_right = 240.0

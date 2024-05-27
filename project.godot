@@ -86,6 +86,7 @@ HUD="*res://gui/HUD.tscn"
 CatController="*res://scripts/catController.gd"
 Dialogue="*res://gui/dialogue.tscn"
 CheckpointMenu="*res://gui/checkpointMenu.tscn"
+Card="*res://gui/card.tscn"
 
 [debug]
 

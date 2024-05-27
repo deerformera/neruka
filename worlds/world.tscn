@@ -9,8 +9,8 @@
 [ext_resource path="res://characters/pincho/pincho.tscn" type="PackedScene" id=7]
 [ext_resource path="res://misc/proto/protoSprite.png" type="Texture" id=8]
 [ext_resource path="res://scripts/bossController.gd" type="Script" id=9]
-[ext_resource path="res://cutscenes/02.tscn" type="PackedScene" id=10]
 [ext_resource path="res://misc/scenes/checkpoint.tscn" type="PackedScene" id=11]
+[ext_resource path="res://cutscenes/01.tscn" type="PackedScene" id=12]
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
@@ -223,7 +223,7 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 [node name="World" type="Node2D"]
 
 [node name="Cat" parent="." instance=ExtResource( 2 )]
-position = Vector2( 6016, -824 )
+position = Vector2( 5960, -128 )
 
 [node name="Maps" type="Node" parent="."]
 
@@ -288,4 +288,4 @@ position = Vector2( 256, -695 )
 
 [node name="Cutscenes" type="Node" parent="."]
 
-[node name="02" parent="Cutscenes" instance=ExtResource( 10 )]
+[node name="01" parent="Cutscenes" instance=ExtResource( 12 )]
