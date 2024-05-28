@@ -17,7 +17,6 @@ func onPinchoDie():
 
 	yield(get_tree().create_timer(1), "timeout")
 
-	get_tree().get_nodes_in_group("pinchoCheckpoint")[0].activate()
 	CheckpointMenu.connect("exited", self, "onMenuExit")
 
 	yield(get_tree().create_timer(1), "timeout")
@@ -50,7 +49,4 @@ func onMenuExit():
 	unlook()
 	unwatch()
 	
-	$ExitArea.connect("body_entered", self, "onExit")
-
-func onExit(body):
-	Card.open("wes ra enek opo opo")
+	$Curos.interactable = true

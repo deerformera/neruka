@@ -20,6 +20,9 @@ func onBossDie():
 		i.hide()
 	
 	HUD.bossExit()
+	
+	yield(get_tree().create_timer(1), "timeout")
+	get_tree().root.get_node("World/Maps/Savanna/Checkpoints/PinchoCheckpoint").activate()
 
 func onAlert(body: Character):
 	for i in $TileMap.get_children():

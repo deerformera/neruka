@@ -223,7 +223,7 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 [node name="World" type="Node2D"]
 
 [node name="Cat" parent="." instance=ExtResource( 2 )]
-position = Vector2( -208, -714 )
+position = Vector2( 5856, -86 )
 
 [node name="Maps" type="Node" parent="."]
 
@@ -280,7 +280,7 @@ polygon = PoolVector2Array( 5632, -1280, 6400, -1280, 6400, -512, 5632, -512 )
 
 [node name="Checkpoints" type="Node" parent="Maps/Savanna"]
 
-[node name="PinchoCheckpoint" parent="Maps/Savanna/Checkpoints" groups=["pinchoCheckpoint"] instance=ExtResource( 11 )]
+[node name="PinchoCheckpoint" parent="Maps/Savanna/Checkpoints" instance=ExtResource( 11 )]
 position = Vector2( 6016, -896 )
 
 [node name="Tundra" type="Node2D" parent="Maps"]
