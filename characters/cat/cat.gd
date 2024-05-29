@@ -39,4 +39,5 @@ func shake():
 	yield(get_tree().create_timer(0.05), "timeout")
 	$Camera2D.offset = Vector2()
 
-func onDie(): pass
+func onDie():
+	get_tree().root.add_child(preload("res://gui/death.tscn").instance())

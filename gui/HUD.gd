@@ -5,7 +5,6 @@ var boss: Boss = null
 func _ready():
 	$M/CatHealthbar/Background.max_value = CatController.Level.getLevelValue()["health"] * 100
 	$M/CatHealthbar/Foreground.max_value = CatController.Level.getLevelValue()["health"] * 100
-	
 
 func bossEnter(boss: Boss):
 	$M/BossHealthbar.show()
