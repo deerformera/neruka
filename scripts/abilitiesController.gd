@@ -5,7 +5,7 @@ var knowledges := []
 var abilities := []
 var current_abilities := []
 
-var orbs: int = 10
+var orbs: int = 1000
 
 var abilities_data := {}
 var boss_data = {}

@@ -1,34 +1,33 @@
 extends VBoxContainer
 
-onready var item = preload("res://gui/tabs/upgradeItem.tscn")
-
-var selected: String
+var selected: String = ""
 
 func _ready():
 	$UpgradeButton.connect("pressed", self, "onUpgrade")
 	refresh()
 
 func refresh():
-	$Level.text = "Level: " + str(CatController.Level.getLevel())
-	$Available.text = "Point available: " + str(CatController.Level.point)
+	$Level.text = "level: " + CatController.Level.getLevel() as String
+	$OrbsAvailable.text = "orbs available : " + CatController.Abilities.orbs as String
 	
-	for i in $Center/Items.get_children(): i.free()
+	for i in $Items.get_children(): i.free()
 	
 	for i in CatController.Level.level:
-		$Center/Items.add_child(createItem(i))
+		$Items.add_child(createItem(i))
+	
 
-func createItem(val) -> VBoxContainer:
-	var item_ins = item.instance()
+func createItem(val: String) -> Button:
+	var item_ins = preload("res://gui/tabs/upgradeItem.tscn").instance()
 	item_ins.name = val
-	item_ins.get_node("Name").text = val
-	item_ins.get_node("Button/Level").text = CatController.Level.level[val] as String
+	item_ins.get_node("Label").text = "level: "+ CatController.Level.level[val] as String
+	item_ins.get_node("Button").icon = load("res://misc/resources/levels/" + val + ".png")
 	item_ins.get_node("Button").connect("toggled", self, "onItemSelected", [val])
 	return item_ins
 
-func onItemSelected(pressed: bool, val):
+func onItemSelected(pressed: bool, val: String):
 	if pressed:
 		selected = val
-		for i in $Center/Items.get_children():
+		for i in $Items.get_children():
 			if i.name != val:
 				i.get_node("Button").pressed = false
 	else:
@@ -38,23 +37,25 @@ func onItemSelected(pressed: bool, val):
 
 func setDescription():
 	if selected == "":
-		$Center/Desc.text = ""
-		$UpgradeLabel.text = ""
+		$ItemDescription.text = ""
+		$OrbsRequired.text = ""
+		$UpgradeButton.text = ""
 		$UpgradeButton.disabled = true
 		return
 	
-	$Center/Desc.text = CatController.Level.level_data[selected]
+	$ItemDescription.text = CatController.Level.level_data[selected]
 	
-	if CatController.Level.point <= 0:
-		$UpgradeLabel.text = "No Point available!"
+	if selected == "mind" && CatController.Level.level["mind"] >= 4:
+		$UpgradeButton.text = "Max Level!"
 		$UpgradeButton.disabled = true
-	else:
-		$UpgradeLabel.text = ""
-		$UpgradeButton.disabled = false
+		return
+	
+	var cost = CatController.Level.getLevelCost()[selected]
+	$OrbsRequired.text = "orbs required: " + cost as String
+	$UpgradeButton.text = "Upgrade"
+	$UpgradeButton.disabled = CatController.Abilities.orbs < cost
 
 func onUpgrade():
-	if selected == "": return
-	
 	CatController.Level.upgrade(selected)
 	selected = ""
 	setDescription()

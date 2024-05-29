@@ -4,6 +4,7 @@ signal tab_closed
 
 func _ready():
 	$M/P/VB/Top/Button.connect("pressed", self, "onExit")
+	open("upgrade")
 
 func onExit():
 	for i in $M/P/VB/Main.get_children(): i.queue_free()

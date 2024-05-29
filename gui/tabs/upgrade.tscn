@@ -5,48 +5,49 @@
 [node name="Upgrade" type="VBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_constants/separation = 20
 script = ExtResource( 1 )
 
 [node name="Level" type="Label" parent="."]
 margin_right = 1280.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 0, 32 )
-text = "Level: 0"
+margin_bottom = 14.0
+align = 1
 valign = 1
 
-[node name="Available" type="Label" parent="."]
-margin_top = 36.0
-margin_right = 1280.0
-margin_bottom = 68.0
-rect_min_size = Vector2( 0, 32 )
-text = "Upgrade Available: 0"
-valign = 1
+[node name="Items" type="HBoxContainer" parent="."]
+margin_left = 640.0
+margin_top = 34.0
+margin_right = 640.0
+margin_bottom = 34.0
+size_flags_horizontal = 6
+size_flags_vertical = 0
+custom_constants/separation = 20
 
-[node name="Center" type="VBoxContainer" parent="."]
-margin_top = 330.0
-margin_right = 1280.0
-margin_bottom = 376.0
+[node name="ItemDescription" type="Label" parent="."]
+margin_left = 640.0
+margin_top = 304.0
+margin_right = 640.0
+margin_bottom = 318.0
+size_flags_horizontal = 4
 size_flags_vertical = 6
-custom_constants/separation = 32
-
-[node name="Items" type="HBoxContainer" parent="Center"]
-margin_right = 1280.0
-custom_constants/separation = 48
-alignment = 1
-
-[node name="Desc" type="Label" parent="Center"]
-margin_top = 32.0
-margin_right = 1280.0
-margin_bottom = 46.0
 align = 1
 valign = 1
 
-[node name="UpgradeLabel" type="Label" parent="."]
-margin_top = 638.0
+[node name="OrbsAvailable" type="Label" parent="."]
+margin_top = 588.0
 margin_right = 1280.0
-margin_bottom = 652.0
+margin_bottom = 602.0
 align = 1
 valign = 1
+autowrap = true
+
+[node name="OrbsRequired" type="Label" parent="."]
+margin_top = 622.0
+margin_right = 1280.0
+margin_bottom = 636.0
+align = 1
+valign = 1
+autowrap = true
 
 [node name="UpgradeButton" type="Button" parent="."]
 margin_left = 480.0
@@ -54,8 +55,6 @@ margin_top = 656.0
 margin_right = 800.0
 margin_bottom = 720.0
 rect_min_size = Vector2( 320, 64 )
-focus_mode = 0
 size_flags_horizontal = 4
-size_flags_vertical = 8
+size_flags_vertical = 0
 disabled = true
-text = "Upgrade"
