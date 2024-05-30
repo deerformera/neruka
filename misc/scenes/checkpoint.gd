@@ -19,16 +19,16 @@ func onEnter(body: Character):
 		cat.get_node("StateMachine").travel("Idle")
 		create_tween().tween_property(cat, "global_position", self.global_position - Vector2(0, 8), 0.2)
 		cat.heal(999)
-		CheckpointMenu.connect("exited", self, "onMenuExit")
 		yield(get_tree().create_timer(0.5), "timeout")
-		CheckpointMenu.open()
+		var menu = preload("res://gui/checkpointMenu.tscn").instance()
+		menu.connect("exited", self, "onMenuExit")
+		get_tree().root.add_child(menu)
 
 	else: 
 		grew = true
 		$AnimationPlayer.play("grow1")
 
 func onMenuExit():
-	CheckpointMenu.disconnect("exited", self, "onMenuExit")
 	cat.get_node("StateMachine").travel("Normal")
 	$AnimationPlayer.play_backwards("grow2")
 	

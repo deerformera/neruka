@@ -10,7 +10,7 @@ func onExit():
 	self.hide()
 	emit_signal("tab_closed")
 	
-	if !CheckpointMenu.visible: HUD.show()
+	if !get_tree().root.get_node("CheckpointMenu").visible: HUD.show()
 	
 func open(val: String):
 	HUD.hide()

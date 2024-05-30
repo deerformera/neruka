@@ -12,11 +12,7 @@ func onUpgrade():
 	Tab.open("upgrade")
 
 func onExit():
-	self.hide()
 	HUD.show()
 	emit_signal("exited")
+	self.queue_free()
 
-func open():
-	self.show()
-	HUD.hide()
-	
