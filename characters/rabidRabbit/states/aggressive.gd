@@ -6,6 +6,8 @@ var timer = Utils.create_timer(1.5, false, false)
 func _ready():
 	add_child(timer)
 	timer.connect("timeout", self, "hop")
+
+func enter(msg):
 	timer.start()
 
 func update():
