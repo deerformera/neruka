@@ -15,5 +15,5 @@ func activate():
 	if cat.get_node("StateMachine").state.name != "Cast":
 		return
 	
-	cat.heal(2)
+	cat.heal(5)
 	cat.add_child(preload("res://misc/scenes/healEffect.tscn").instance())

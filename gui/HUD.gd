@@ -2,9 +2,10 @@ extends CanvasLayer
 
 var boss: Boss = null
 
-func _ready():
+func enter():
 	$M/CatHealthbar/Background.max_value = CatController.Level.getLevelValue()["health"] * 100
 	$M/CatHealthbar/Foreground.max_value = CatController.Level.getLevelValue()["health"]
+	$M/ControlDesktop.enter()
 
 func bossEnter(boss: Boss):
 	$M/BossHealthbar.show()
@@ -22,5 +23,6 @@ func _physics_process(delta):
 		$M/BossHealthbar/Foreground.value = boss.health
 		$M/BossHealthbar/Background.value = lerp($M/BossHealthbar/Background.value, $M/BossHealthbar/Foreground.value * 100, 0.25)
 	
-	$M/CatHealthbar/Foreground.value = Utils.get_cat().health
-	$M/CatHealthbar/Background.value = lerp($M/CatHealthbar/Background.value, $M/CatHealthbar/Foreground.value * 100, 0.25)
+	if Utils.get_cat():
+		$M/CatHealthbar/Foreground.value = Utils.get_cat().health
+		$M/CatHealthbar/Background.value = lerp($M/CatHealthbar/Background.value, $M/CatHealthbar/Foreground.value * 100, 0.25)

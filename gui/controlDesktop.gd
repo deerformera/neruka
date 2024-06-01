@@ -2,8 +2,9 @@ extends HBoxContainer
 
 var item = preload("res://gui/controlDesktopItem.tscn")
 
-func _ready():
+func enter():
 	Utils.get_cat().get_node("AbilitiesController").connect("refreshed", self, "onCatRefreshed")
+	onCatRefreshed()
 
 func onCatRefreshed():
 	for i in get_children(): i.free()

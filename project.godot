@@ -75,7 +75,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Neruka"
-run/main_scene="res://worlds/world.tscn"
+run/main_scene="res://worlds/start.tscn"
 config/icon="res://icon.png"
 config/windows_native_icon="res://icon.ico"
 

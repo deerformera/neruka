@@ -3,7 +3,7 @@ class_name AbilitiesController
 
 var knowledges := []
 var abilities := []
-var current_abilities := []
+var current_abilities := [1]
 
 var orbs: int = 1000
 
