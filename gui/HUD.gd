@@ -3,6 +3,7 @@ extends CanvasLayer
 var boss: Boss = null
 
 func enter():
+	self.show()
 	$M/CatHealthbar/Background.max_value = CatController.Level.getLevelValue()["health"] * 100
 	$M/CatHealthbar/Foreground.max_value = CatController.Level.getLevelValue()["health"]
 	$M/ControlDesktop.enter()

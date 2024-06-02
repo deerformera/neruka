@@ -15,6 +15,7 @@
 [sub_resource type="StyleBoxEmpty" id=7]
 
 [node name="HUD" type="CanvasLayer"]
+visible = false
 script = ExtResource( 1 )
 
 [node name="M" type="MarginContainer" parent="."]
@@ -38,8 +39,8 @@ margin_bottom = 688.0
 [node name="CatHealthbar" type="PanelContainer" parent="M"]
 margin_left = 32.0
 margin_top = 32.0
-margin_right = 232.0
-margin_bottom = 64.0
+margin_right = 32.0
+margin_bottom = 32.0
 grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 0
