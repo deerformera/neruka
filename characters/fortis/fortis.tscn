@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://characters/fortis/fortis.png" type="Texture" id=1]
+[ext_resource path="res://classes/stateMachine.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 32 )
@@ -133,3 +134,10 @@ anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 8 )
 parameters/Idle/blend_position = Vector2( -0.0190779, 0.931034 )
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource( 2 )
+
+[node name="Idle" type="Node" parent="StateMachine"]
+
+[node name="Aggressive" type="Node" parent="StateMachine"]

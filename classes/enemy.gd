@@ -24,6 +24,9 @@ func onLimit(body: Character):
 	get_node("AlertArea/CollisionShape2D").set_deferred("disabled", false)
 
 func die():
+	target = null
+	get_node("StateMachine").travel("Idle")
+	
 	get_tree().root.get_node("World").call_deferred("add_child", create_orb())
 	.die()
 

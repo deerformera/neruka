@@ -1767,7 +1767,7 @@ states/heal/node = SubResource( 326 )
 states/heal/position = Vector2( 452, 388 )
 transitions = [ "Walk", "Hurt", SubResource( 278 ), "Hurt", "Walk", SubResource( 279 ), "Idle", "Walk", SubResource( 283 ), "Walk", "Sit", SubResource( 302 ), "Sit", "Idle", SubResource( 303 ), "Attack1", "Attack2", SubResource( 304 ), "Attack2", "Walk", SubResource( 305 ), "Attack1", "Walk", SubResource( 306 ), "Walk", "Attack1", SubResource( 307 ), "Attack2", "Attack1", SubResource( 308 ), "Sit", "Walk", SubResource( 309 ), "Attack1", "Hurt", SubResource( 310 ), "Attack2", "Hurt", SubResource( 311 ), "Cast", "Hurt", SubResource( 322 ), "Walk", "Cast", SubResource( 323 ), "Cast", "Walk", SubResource( 324 ), "Walk", "heal", SubResource( 327 ), "heal", "Hurt", SubResource( 328 ), "heal", "Walk", SubResource( 329 ) ]
 start_node = "Walk"
-graph_offset = Vector2( 5, 46.96 )
+graph_offset = Vector2( 70, 144.96 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=233]
 
