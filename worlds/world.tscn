@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://characters/rabidRabbit/rabidRabbit.tscn" type="PackedScene" id=1]
 [ext_resource path="res://characters/cat/cat.tscn" type="PackedScene" id=2]
@@ -15,6 +15,10 @@
 [ext_resource path="res://misc/maps/ice.png" type="Texture" id=13]
 [ext_resource path="res://characters/goose/goose.tscn" type="PackedScene" id=14]
 [ext_resource path="res://misc/maps/dark.png" type="Texture" id=15]
+[ext_resource path="res://gui/canvas.tscn" type="PackedScene" id=16]
+
+[sub_resource type="CircleShape2D" id=23]
+radius = 200.0
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
 points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
@@ -430,7 +434,14 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 script = ExtResource( 10 )
 
 [node name="Cat" parent="." instance=ExtResource( 2 )]
-position = Vector2( 5120, 5140 )
+position = Vector2( -196, -1576 )
+
+[node name="Saver" type="Area2D" parent="Cat"]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cat/Saver"]
+shape = SubResource( 23 )
 
 [node name="Maps" type="Node" parent="."]
 
@@ -513,7 +524,7 @@ format = 1
 tile_data = PoolIntArray( -1310634, 0, 0, -1245098, 0, 0, -1179562, 0, 0, -1179547, 0, 0, -1114026, 0, 0, -1114011, 0, 0, -1048490, 0, 0, -1048475, 0, 0, -982954, 0, 0, -982939, 0, 0, -917403, 0, 0, -851867, 0, 0, -458662, 0, 0, -458661, 0, 0, -458660, 0, 0, -458659, 0, 0, -458658, 0, 0, -458657, 0, 0 )
 
 [node name="AlertArea" type="Area2D" parent="Bosses/PinchoArea"]
-collision_layer = 0
+collision_layer = 4
 collision_mask = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Bosses/PinchoArea/AlertArea"]
@@ -533,7 +544,7 @@ format = 1
 tile_data = PoolIntArray( -2097057, 0, 0, -2097056, 0, 0, -2097055, 0, 0, -2097054, 0, 0, -2097053, 0, 0, -2097052, 0, 0, -2097051, 0, 0, -2097050, 0, 0, -2097049, 0, 0, -2031521, 0, 0, -2031508, 0, 0, -1965985, 0, 0, -1965972, 0, 0, -1900436, 0, 0, -1703828, 0, 0, -1638292, 0, 0, -1572756, 0, 0, -1507220, 0, 0, -1310634, 0, 0, -1245098, 0, 0, -1179562, 0, 0, -1179547, 0, 0, -1114026, 0, 0, -1114011, 0, 0, -1048490, 0, 0, -1048475, 0, 0, -982954, 0, 0, -982939, 0, 0, -917403, 0, 0, -851867, 0, 0, -458662, 0, 0, -458661, 0, 0, -458660, 0, 0, -458659, 0, 0, -458658, 0, 0, -458657, 0, 0 )
 
 [node name="AlertArea" type="Area2D" parent="Bosses/RRArea"]
-collision_layer = 0
+collision_layer = 4
 collision_mask = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Bosses/RRArea/AlertArea"]
@@ -549,3 +560,5 @@ position = Vector2( 6912, -3832 )
 active = true
 
 [node name="Cutscenes" type="Node" parent="."]
+
+[node name="Canvas" parent="." instance=ExtResource( 16 )]
