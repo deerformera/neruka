@@ -1,10 +1,20 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://characters/fortis/fortis.png" type="Texture" id=1]
 [ext_resource path="res://classes/stateMachine.gd" type="Script" id=2]
+[ext_resource path="res://characters/fortis/states/aggressive.gd" type="Script" id=3]
+[ext_resource path="res://characters/fortis/fortis.gd" type="Script" id=4]
+[ext_resource path="res://characters/fortis/states/idle.gd" type="Script" id=5]
+[ext_resource path="res://characters/fortis/states/hop.gd" type="Script" id=6]
+[ext_resource path="res://misc/resources/white.tres" type="Material" id=7]
+[ext_resource path="res://characters/fortis/states/attack.gd" type="Script" id=8]
+[ext_resource path="res://characters/fortis/states/delay.gd" type="Script" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32, 32 )
+extents = Vector2( 24, 24 )
+
+[sub_resource type="Animation" id=25]
+resource_name = "Delay"
 
 [sub_resource type="Animation" id=3]
 length = 0.001
@@ -19,6 +29,130 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "hop_down"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 4 ), Vector2( 1, 4 ), Vector2( 2, 4 ), Vector2( 3, 4 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6 ),
+"transitions": PoolRealArray( 0.25, 2.5, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -16 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "hop_left"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 7 ), Vector2( 1, 7 ), Vector2( 2, 7 ), Vector2( 3, 7 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6 ),
+"transitions": PoolRealArray( 0.25, 2.5, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -16 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=15]
+resource_name = "hop_right"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 5 ), Vector2( 1, 5 ), Vector2( 2, 5 ), Vector2( 3, 5 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6 ),
+"transitions": PoolRealArray( 0.25, 2.5, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -16 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=16]
+resource_name = "hop_up"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 6 ), Vector2( 1, 6 ), Vector2( 2, 6 ), Vector2( 3, 6 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6 ),
+"transitions": PoolRealArray( 0.25, 2.5, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -16 ), Vector2( 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=2]
@@ -81,6 +215,32 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 2 ) ]
 }
 
+[sub_resource type="AnimationNodeAnimation" id=26]
+animation = "Delay"
+
+[sub_resource type="AnimationNodeAnimation" id=19]
+animation = "hop_left"
+
+[sub_resource type="AnimationNodeAnimation" id=20]
+animation = "hop_down"
+
+[sub_resource type="AnimationNodeAnimation" id=21]
+animation = "hop_right"
+
+[sub_resource type="AnimationNodeAnimation" id=22]
+animation = "hop_up"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id=18]
+blend_point_0/node = SubResource( 19 )
+blend_point_0/pos = Vector2( -1, 0 )
+blend_point_1/node = SubResource( 20 )
+blend_point_1/pos = Vector2( 0, 1 )
+blend_point_2/node = SubResource( 21 )
+blend_point_2/pos = Vector2( 1, 0 )
+blend_point_3/node = SubResource( 22 )
+blend_point_3/pos = Vector2( 0, -1 )
+blend_mode = 1
+
 [sub_resource type="AnimationNodeAnimation" id=10]
 animation = "idle_down"
 
@@ -104,25 +264,51 @@ blend_point_3/node = SubResource( 13 )
 blend_point_3/pos = Vector2( -1, 0 )
 blend_mode = 1
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=23]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=27]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=28]
+switch_mode = 2
+auto_advance = true
+
 [sub_resource type="AnimationNodeStateMachine" id=7]
+states/Delay/node = SubResource( 26 )
+states/Delay/position = Vector2( 617, 183 )
+states/Hop/node = SubResource( 18 )
+states/Hop/position = Vector2( 702, 94 )
 states/Idle/node = SubResource( 9 )
 states/Idle/position = Vector2( 549, 94 )
+transitions = [ "Idle", "Hop", SubResource( 23 ), "Hop", "Delay", SubResource( 27 ), "Delay", "Idle", SubResource( 28 ) ]
 start_node = "Idle"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=8]
 
 [node name="Fortis" type="KinematicBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource( 4 )
+health = 20
+damage = 2
 
 [node name="Sprite" type="Sprite" parent="."]
+material = ExtResource( 7 )
 texture = ExtResource( 1 )
 hframes = 4
-vframes = 8
+vframes = 12
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Delay = SubResource( 25 )
 anims/RESET = SubResource( 3 )
+anims/hop_down = SubResource( 14 )
+anims/hop_left = SubResource( 17 )
+anims/hop_right = SubResource( 15 )
+anims/hop_up = SubResource( 16 )
 anims/idle_down = SubResource( 2 )
 anims/idle_left = SubResource( 6 )
 anims/idle_right = SubResource( 4 )
@@ -133,11 +319,29 @@ tree_root = SubResource( 7 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 8 )
+parameters/Hop/blend_position = Vector2( 0, 0 )
 parameters/Idle/blend_position = Vector2( -0.0190779, 0.931034 )
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource( 2 )
 
 [node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource( 5 )
 
 [node name="Aggressive" type="Node" parent="StateMachine"]
+script = ExtResource( 3 )
+
+[node name="Hop" type="Node" parent="StateMachine"]
+script = ExtResource( 6 )
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource( 8 )
+
+[node name="Delay" type="Node" parent="StateMachine"]
+script = ExtResource( 9 )
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="WallRay" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 50, 0 )

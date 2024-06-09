@@ -23,12 +23,8 @@ func onBossDie():
 	
 	yield(get_tree().create_timer(1), "timeout")
 	get_tree().root.get_node("World/Checkpoints/PinchoCheckpoint").activate()
-	
-	Saver.saveData()
-	Saver.timer.start()
 
 func onAlert(body: Character):
-	Saver.timer.stop()
 	for i in $TileMap.get_children():
 		i.show()
 	

@@ -31,3 +31,7 @@ func create_orb():
 	var orb_ins = orb.instance()
 	orb_ins.global_position = self.global_position
 	return orb_ins
+
+func getDistance() -> Vector2:
+	if target == null: return Vector2()
+	return target.global_position - self.global_position

@@ -1,7 +1,6 @@
 extends Node
 
 var timer = Utils.create_timer(2, false, false)
-var saveable = false
 var cat_pos: Vector2
 
 func _ready():
@@ -16,6 +15,7 @@ func onCheck():
 	saveData()
 
 func loadData() -> bool:
+	
 	var file = ConfigFile.new()
 	if file.load("user://dat.cfg") != OK: return false
 	
